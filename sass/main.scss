@@ -1,0 +1,9 @@
+@import "./utils/variables.scss";
+@import "./utils/mixins.scss";
+//-------------------------------
+@import "./base/base.scss";
+//-------------------------------
+@import "./components/blockRecipes.scss";
+//-------------------------------
+@import "./layout/contentRecipes.scss";
+@import "./pages/index.scss";

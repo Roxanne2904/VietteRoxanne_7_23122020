@@ -1,0 +1,22 @@
+{
+  "name": "vietteroxanne_7_23122020",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch ./sass/main.scss:./css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roxanne2904/VietteRoxanne_7_23122020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roxanne2904/VietteRoxanne_7_23122020/issues"
+  },
+  "homepage": "https://github.com/Roxanne2904/VietteRoxanne_7_23122020#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
