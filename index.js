@@ -20,13 +20,29 @@ datas = await fetch("./datas/recipes.json")
     });
 };
 
-const showDatas = async ()=> {
+const showDatasIntoInputs = async ()=> {
     await fetchDatas();
-    console.log(datas);
+    // ----------------
+    let dataIngredients;
+    let uniqueDataIngredients;
+    const ingredientsUl = document.getElementById("ingredients__ul");
+    // ----------------
+    dataIngredients = datas.recipes.map((data)=>{
+        return data.ingredients.map((ingredient)=>{
+            return ingredient.ingredient
+        })
+    }).flat();
+    // ----------------
+   uniqueDataIngredients = Array.from(new Set(dataIngredients));
+
+   ingredientsUl.innerHTML = uniqueDataIngredients.map((ingredient)=>{
+     return `<li class="form__fieldset__bgd__content__ul__li">${ingredient}</li>`
+   }).join("");
+    
 };
 
 
 window.addEventListener("load", ()=>{
-    showDatas();
+    showDatasIntoInputs();
 });
 

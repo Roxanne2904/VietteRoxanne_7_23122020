@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css"/>
-    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
@@ -14,16 +13,100 @@
       crossorigin="anonymous"
     />
     <title>Les petits plats</title>
-</head>
+  </head>
 
-<body>
-<header class="headerIndex">
- <img  class="headerIndex__logo" src="./img/logo.png" alt="page principale des petits plats"/>
-</header>
-<main>
-
-</main>
+  <body>
+    <header class="headerIndex">
+      <img
+        class="headerIndex__logo"
+        src="./img/logo.png"
+        alt="page principale des petits plats"
+      />
+    </header>
+    <main>
+      <form method="POST" class="form" id="myform" action="index.html">
+        <fieldset class="form__fieldset">
+          <legend class="form__fieldset__legend">
+            none-a rendre invisible-
+          </legend>
+          <!-- INPUT GENERAL -->
+          <div class="form__fieldset__bgdMain">
+            <input
+              type="search"
+              class="form__fieldset__bgdMain__inputMain"
+              id="generalSearch"
+              name="generalSearch"
+              minlength="3"
+              placeholder="Rechercher un ingredient, appareil, ustensiles ou une recette"
+              required
+            />
+            <label
+              for="generalSearch"
+              class="form__fieldset__bgdMain__labelMain"
+              >icone loupe</label
+            >
+          </div>
+          <!--LES INPUTS INDIVIDUELS -->
+          <!-- INGREDIENTS -->
+          <div class="form__fieldset__bgd">
+            <div class="form__fieldset__bgd__content">
+              <input
+                type="search"
+                id="ingredients"
+                class="form__fieldset__bgd__content__inputs"
+                name="ingredients"
+                placeholder="Rechercher un ingredient"
+              />
+              <label
+                for="ingredients"
+                class="form__fieldset__bgd__content__labels"
+                >icone flèche</label
+              >
+              <ul
+                class="form__fieldset__bgd__content__ul"
+                id="ingredients__ul"
+              ></ul>
+            </div>
+            <!-- APPAREIL -->
+            <div class="form__fieldset____bgd__content">
+              <input
+                type="search"
+                id="appareil"
+                class="form__fieldset__bgd__content__inputs"
+                name="appareil"
+                placeholder="Rechercher un appareil"
+              />
+              <label for="appareil" class="form__fieldset__bgd__content__labels"
+                >icone flèche</label
+              >
+              <ul
+                class="form__fieldset__bgd__content__ul"
+                id="appareil__ul"
+              ></ul>
+            </div>
+            <!-- USTENSILES -->
+            <div class="form__fieldset__bgd__content">
+              <input
+                type="search"
+                id="ustensiles"
+                class="form__fieldset__bgd__content__inputs"
+                name="ustensiles"
+                placeholder="Rechercher un ustensiles"
+              />
+              <label
+                for="ustensiles"
+                class="form__fieldset__bgd__content__labels"
+                >icone flèche</label
+              >
+              <ul
+                class="form__fieldset__bgd__content__ul"
+                id="ustensiles__ul"
+              ></ul>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </main>
     <script src="index.js"></script>
-</body>
-
+  </body>
 </html>
