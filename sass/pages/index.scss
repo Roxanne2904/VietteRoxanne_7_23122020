@@ -1,4 +1,7 @@
 .headerIndex {
   display: flex;
   justify-content: center;
+  &__logo {
+    width: 268px;
+  }
 }

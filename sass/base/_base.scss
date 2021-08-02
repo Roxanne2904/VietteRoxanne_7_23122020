@@ -5,6 +5,13 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "latoregular";
+  src: url(".././font/lato-regular-webfont.woff2") format("woff2"),
+    url(".././font/lato-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 * {
   box-sizing: border-box;
@@ -12,11 +19,11 @@
   margin: 0;
   width: auto;
   font-weight: 100;
-  font-family: "robotoregular";
+  font-family: "latoregular";
 }
 
 html {
   scroll-behavior: smooth;
   transition: 1s ease;
-  margin: 20px;
+  margin: 42px 98px;
 }

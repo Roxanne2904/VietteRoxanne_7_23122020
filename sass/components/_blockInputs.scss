@@ -1,28 +1,49 @@
 .form {
   &__fieldset {
+    border: none;
     &__legend {
+      opacity: 0;
     }
     &__bgdMain {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      background-color: $colorGrey;
+      margin: 0 0 17px;
+      border: $radiusBlock;
+      &__inputMain {
+        width: 95%;
+        font-size: 1.125rem;
+        border: none;
+        background-color: $colorGrey;
+        &:focus {
+          outline: none;
+        }
+      }
+      &__labelMain {
+        font-size: 2rem;
+        padding: 0 7px;
+      }
     }
     &__bgd {
+      display: flex;
       &__content {
-        &__inputs {
-        }
-        &__labels {
+        @include loopForEachBlockListInputs($loopColorBlockList);
+        &__inputsBgd {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 10px 25px 0;
+          &__inputs {
+            @include loopForEachInputs($loopColorBlockList);
+          }
+          // &__labels {
+          // }
         }
         &__ul {
-          display: flex;
-          flex-wrap: wrap;
-          overflow: scroll;
-          max-height: 397px;
-          max-width: 667px;
-          list-style-type: none;
-          font-size: 1.125rem;
-          background: red;
-          border-radius: 5px;
+          @include blockListInputs;
           &__li {
             width: 33.3%;
-            padding: 4px 15px;
+            padding: 4px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

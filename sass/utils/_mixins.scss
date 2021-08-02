@@ -1,0 +1,41 @@
+// BLOCK LIST INPUTS
+@mixin blockListInputs {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 397px;
+  max-width: 100%;
+  overflow: auto;
+  list-style-type: none;
+  font-size: 1.125rem;
+}
+
+// LOOP FOR EACH CONTENT LIST INPUTS
+@mixin loopForEachBlockListInputs($map) {
+  @each $keys, $values in $map {
+    &#{$keys} {
+      max-width: 667px;
+      border-radius: $radiusBlock;
+      background-color: map-get($values, color);
+      padding: 15px;
+      color: white;
+    }
+  }
+}
+// LOOP FOR EACH INPUTS LIST
+@mixin loopForEachInputs($map) {
+  @each $keys, $values in $map {
+    &#{$keys} {
+      min-width: 86.5%;
+      background-color: map-get($values, color);
+      border: none;
+      font-size: 1.125rem;
+      &::placeholder {
+        color: white;
+        opacity: 0.5;
+      }
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+}
