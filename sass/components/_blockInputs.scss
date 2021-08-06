@@ -10,7 +10,7 @@
       padding: 15px;
       background-color: $colorGrey;
       margin: 0 0 17px;
-      border: $radiusBlock;
+      border-radius: $radiusBlock;
       &__inputMain {
         width: 95%;
         font-size: 1.125rem;
@@ -32,7 +32,6 @@
         &__inputsBgd {
           display: flex;
           justify-content: space-between;
-          padding: 0 10px 25px 0;
           &__inputs {
             @include loopForEachInputs($loopColorBlockList);
           }
@@ -40,16 +39,38 @@
           // }
         }
         &__ul {
-          @include blockListInputs;
+          opacity: 0;
+          display: block;
+          max-height: 0px;
           &__li {
-            width: 33.3%;
-            padding: 4px 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: 0px;
           }
         }
       }
     }
   }
+}
+
+//On click
+.openUlBlocks {
+  opacity: 1;
+  @include blockListInputs;
+}
+.openLiBlocks {
+  width: 33.3%;
+  padding: 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.openInputsBgd {
+  padding: 0 10px 25px 0;
+}
+.openInputs {
+  opacity: 0.5;
+}
+.openContent {
+  height: inherit;
+  width: inherit;
+  max-width: 667px;
 }

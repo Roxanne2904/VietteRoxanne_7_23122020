@@ -12,11 +12,14 @@
 // LOOP FOR EACH CONTENT LIST INPUTS
 @mixin loopForEachBlockListInputs($map) {
   @each $keys, $values in $map {
-    &#{$keys} {
-      max-width: 667px;
+    &--#{$keys} {
+      // max-width: 667px;
+      width: 170px;
+      height: 69px;
       border-radius: $radiusBlock;
       background-color: map-get($values, color);
-      padding: 15px;
+      padding: 20px;
+      margin: 0 20px 0 0;
       color: white;
     }
   }
@@ -31,7 +34,6 @@
       font-size: 1.125rem;
       &::placeholder {
         color: white;
-        opacity: 0.5;
       }
       &:focus {
         outline: 0;

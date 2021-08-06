@@ -49,19 +49,29 @@
           <!--LES INPUTS INDIVIDUELS -->
           <div class="form__fieldset__bgd">
             <!-- INGREDIENTS -->
-            <div class="form__fieldset__bgd__content1">
-              <div class="form__fieldset__bgd__content__inputsBgd">
+            <div
+              data-open="false"
+              class="
+                form__fieldset__bgd__content form__fieldset__bgd__content--1
+              "
+            >
+              <div
+                class="form__fieldset__bgd__content__inputsBgd"
+                id="inputsBgd__ingredients"
+              >
                 <input
                   type="search"
                   id="ingredients"
+                  data-value="Ingredients"
                   class="form__fieldset__bgd__content__inputsBgd__inputs1"
                   name="ingredients"
-                  placeholder="Rechercher un ingredient"
+                  placeholder="Ingredient"
                 />
                 <label
                   for="ingredients"
+                  id="label__ingredient"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
-                  ><i class="fas fa-chevron-up"></i
+                  ><i class="fas fa-chevron-down"></i
                 ></label>
               </div>
               <ul
@@ -70,19 +80,29 @@
               ></ul>
             </div>
             <!-- APPAREIL -->
-            <div class="form__fieldset__bgd__content2">
-              <div class="form__fieldset__bgd__content__inputsBgd">
+            <div
+              data-open="false"
+              class="
+                form__fieldset__bgd__content form__fieldset__bgd__content--2
+              "
+            >
+              <div
+                class="form__fieldset__bgd__content__inputsBgd"
+                id="inputsBgd__appareil"
+              >
                 <input
                   type="search"
                   id="appareil"
+                  data-value="Appareil"
                   class="form__fieldset__bgd__content__inputsBgd__inputs2"
                   name="appareil"
-                  placeholder="Rechercher un appareil"
+                  placeholder="Appareil"
                 />
                 <label
                   for="appareil"
+                  id="label__appareil"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
-                  ><i class="fas fa-chevron-up"></i
+                  ><i class="fas fa-chevron-down"></i
                 ></label>
               </div>
               <ul
@@ -91,19 +111,29 @@
               ></ul>
             </div>
             <!-- USTENSILES -->
-            <div class="form__fieldset__bgd__content3">
-              <div class="form__fieldset__bgd__content__inputsBgd">
+            <div
+              data-open="false"
+              class="
+                form__fieldset__bgd__content form__fieldset__bgd__content--3
+              "
+            >
+              <div
+                class="form__fieldset__bgd__content__inputsBgd"
+                id="inputsBgd__ustensiles"
+              >
                 <input
                   type="search"
                   id="ustensiles"
+                  data-value="Ustensiles"
                   class="form__fieldset__bgd__content__inputsBgd__inputs3"
                   name="ustensiles"
-                  placeholder="Rechercher un ustensiles"
+                  placeholder="Ustensiles"
                 />
                 <label
                   for="ustensiles"
+                  id="label__ustensiles"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
-                  ><i class="fas fa-chevron-up"></i
+                  ><i class="fas fa-chevron-down"></i
                 ></label>
               </div>
               <ul
@@ -114,6 +144,53 @@
           </div>
         </fieldset>
       </form>
+      <ul class="bgdRecipes">
+        <!-- BLOCK RECIPES -->
+        <li class="bgdRecipes__block">
+          <!-- content img or bgd -->
+          <div class="bgdRecipes__block__bgdImg"></div>
+          <!-- content txt -->
+          <div class="bgdRecipes__block__bgdText">
+            <!-- title -->
+            <div class="bgdRecipes__block__bgdText__contentTitle">
+              <span class="bgdRecipes__block__bgdText__contentTitle__title"
+                >Title</span
+              >
+              <span class="bgdRecipes__block__bgdText__contentTitle__time"
+                ><span><i class="far fa-clock"></i></span>10min</span
+              >
+            </div>
+            <!-- ingredients -->
+            <div class="bgdRecipes__block__bgdText__contentIngredients">
+              <span
+                class="
+                  bgdRecipes__block__bgdText__contentIngredients__ingredients
+                "
+                >ingredient: ...</span
+              >
+              <span
+                class="
+                  bgdRecipes__block__bgdText__contentIngredients__ingredients
+                "
+                >ingredient: ...</span
+              >
+              <span
+                class="
+                  bgdRecipes__block__bgdText__contentIngredients__ingredients
+                "
+                >ingredient: ...</span
+              >
+              <!-- recipes -->
+              <div class="bgdRecipes__block__bgdText__contentRecipes">
+                <span
+                  class="bgdRecipes__block__bgdText__contentRecipes__recipes"
+                  >...</span
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </main>
     <script src="index.js"></script>
   </body>
