@@ -21,9 +21,10 @@
 
 ##Tasks:
 
-> Mettre en place tout le html et le css en version static;
-> Finir les diagrammes pour préparer les algotithmes;
-> Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|;
+- [x] Mettre en place tout le html et le css en version static;
+- [x] Verifier que le html et css passe au w3c;
+- [x] Finir le diagramme pour préparer l'algorithmes;
+- [ ] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|;
 
 ---
 

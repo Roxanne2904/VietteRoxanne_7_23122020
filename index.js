@@ -120,13 +120,13 @@ const showDatasIntoInputs = async () => {
     // placeholder value
     if (inputs.placeholder === `Recherche un ${NoUpperCaseInputName}`) {
       inputs.setAttribute("placeholder", `${UpperCaseInputName}`);
-      label.innerHTML = `<i class="fas fa-chevron-down"></i>`;
+      label.innerHTML = "<i class=\"fas fa-chevron-down\"></i>";
     } else {
       inputs.setAttribute(
         "placeholder",
         `Recherche un ${NoUpperCaseInputName}`
       );
-      label.innerHTML = ` <i class="fas fa-chevron-up"></i>`;
+      label.innerHTML = " <i class=\"fas fa-chevron-up\"></i>";
     }
     // List appearence (close or open);
     ulBlock.classList.toggle("openUlBlocks");

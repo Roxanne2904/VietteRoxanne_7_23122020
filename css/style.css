@@ -25,6 +25,46 @@ html {
   margin: 42px 100px;
 }
 
+.bgdRecipes {
+  margin: 40px 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+.bgdRecipes__block {
+  width: 30%;
+  list-style-type: none;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.bgdRecipes__block__bgdImg {
+  width: 100%;
+  height: 178px;
+  background-color: #c7bebe;
+}
+.bgdRecipes__block__bgdText {
+  background-color: #e7e7e7;
+  padding: 18px 18px 64px 18px;
+}
+.bgdRecipes__block__bgdText__contentTitle {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+}
+.bgdRecipes__block__bgdText__contentTitle__time {
+  display: flex;
+}
+.bgdRecipes__block__bgdText__contentTitle__time__clockIcone {
+  display: block;
+  padding-right: 5px;
+}
+.bgdRecipes__block__bgdText__contentDatasRecipes {
+  display: flex;
+  justify-content: space-between;
+}
+.bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients {
+  display: block;
+}
+
 .form__fieldset {
   border: none;
 }
@@ -36,7 +76,6 @@ html {
   justify-content: space-between;
   padding: 15px;
   background-color: #e7e7e7;
-  margin: 0 0 17px;
   border-radius: 5px;
 }
 .form__fieldset__bgdMain__inputMain {
@@ -52,8 +91,26 @@ html {
   font-size: 2rem;
   padding: 0 7px;
 }
+.form__fieldset__bgdTags {
+  list-style-type: none;
+  padding-bottom: 17px;
+  display: none;
+}
+.form__fieldset__bgdTags__li {
+  border-radius: 5px;
+  font-size: 0.875rem;
+  border-radius: 5px;
+  padding: 5px 15px;
+  background-color: #3282f7;
+  width: 17%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+  color: white;
+}
 .form__fieldset__bgd {
   display: flex;
+  flex-wrap: wrap;
 }
 .form__fieldset__bgd__content--1 {
   width: 170px;
@@ -61,7 +118,7 @@ html {
   border-radius: 5px;
   background-color: #3282f7;
   padding: 20px;
-  margin: 0 20px 0 0;
+  margin: 17px 20px 0 0;
   color: white;
 }
 .form__fieldset__bgd__content--2 {
@@ -70,7 +127,7 @@ html {
   border-radius: 5px;
   background-color: #68d9a4;
   padding: 20px;
-  margin: 0 20px 0 0;
+  margin: 17px 20px 0 0;
   color: white;
 }
 .form__fieldset__bgd__content--3 {
@@ -79,7 +136,7 @@ html {
   border-radius: 5px;
   background-color: #ed6454;
   padding: 20px;
-  margin: 0 20px 0 0;
+  margin: 17px 20px 0 0;
   color: white;
 }
 .form__fieldset__bgd__content__inputsBgd {
@@ -121,6 +178,10 @@ html {
 }
 .form__fieldset__bgd__content__inputsBgd__inputs3:focus {
   outline: 0;
+}
+.form__fieldset__bgd__content__inputsBgd__labels {
+  cursor: pointer;
+  margin-top: 2px;
 }
 .form__fieldset__bgd__content__ul {
   opacity: 0;

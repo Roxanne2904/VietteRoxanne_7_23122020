@@ -46,6 +46,28 @@
               ><i class="fas fa-search"></i
             ></label>
           </div>
+          <!--LES TAGS -->
+          <ul class="form__fieldset__bgdTags">
+            <!-- <li class="form__fieldset__bgdTags__li">
+              <span class="form__fieldset__bgdTags__li__tagName">tags01</span
+              ><span
+                role="button"
+                tabindex="0"
+                class="form__fieldset__bgdTags__li__icone"
+                ><i class="far fa-times-circle"></i
+              ></span>
+            </li>
+
+            <li class="form__fieldset__bgdTags__li">
+              <span class="form__fieldset__bgdTags__li__tagName">tags02</span
+              ><span
+                role="button"
+                tabindex="0"
+                class="form__fieldset__bgdTags__li__icone"
+                ><i class="far fa-times-circle"></i
+              ></span>
+            </li> -->
+          </ul>
           <!--LES INPUTS INDIVIDUELS -->
           <div class="form__fieldset__bgd">
             <!-- INGREDIENTS -->
@@ -68,6 +90,7 @@
                   placeholder="Ingredient"
                 />
                 <label
+                  tabindex="0"
                   for="ingredients"
                   id="label__ingredient"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
@@ -99,6 +122,7 @@
                   placeholder="Appareil"
                 />
                 <label
+                  tabindex="0"
                   for="appareil"
                   id="label__appareil"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
@@ -130,6 +154,7 @@
                   placeholder="Ustensiles"
                 />
                 <label
+                  tabindex="0"
                   for="ustensiles"
                   id="label__ustensiles"
                   class="form__fieldset__bgd__content__inputsBgd__labels"
@@ -145,7 +170,7 @@
         </fieldset>
       </form>
       <ul class="bgdRecipes">
-        <!-- BLOCK RECIPES -->
+        <!-- BLOCK RECIPES 01 -->
         <li class="bgdRecipes__block">
           <!-- content img or bgd -->
           <div class="bgdRecipes__block__bgdImg"></div>
@@ -157,33 +182,174 @@
                 >Title</span
               >
               <span class="bgdRecipes__block__bgdText__contentTitle__time"
-                ><span><i class="far fa-clock"></i></span>10min</span
+                ><span
+                  class="
+                    bgdRecipes__block__bgdText__contentTitle__time__clockIcone
+                  "
+                  ><i class="far fa-clock"></i></span
+                >10min</span
               >
             </div>
-            <!-- ingredients -->
-            <div class="bgdRecipes__block__bgdText__contentIngredients">
-              <span
+            <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
+              <!-- ingredients -->
+              <div
                 class="
-                  bgdRecipes__block__bgdText__contentIngredients__ingredients
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
                 "
-                >ingredient: ...</span
               >
-              <span
-                class="
-                  bgdRecipes__block__bgdText__contentIngredients__ingredients
-                "
-                >ingredient: ...</span
-              >
-              <span
-                class="
-                  bgdRecipes__block__bgdText__contentIngredients__ingredients
-                "
-                >ingredient: ...</span
-              >
-              <!-- recipes -->
-              <div class="bgdRecipes__block__bgdText__contentRecipes">
                 <span
-                  class="bgdRecipes__block__bgdText__contentRecipes__recipes"
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+              </div>
+              <!-- recipes -->
+              <div
+                class="
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
+                "
+              >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
+                  "
+                  >...</span
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- BLOCK RECIPES 02 -->
+        <li class="bgdRecipes__block">
+          <!-- content img or bgd -->
+          <div class="bgdRecipes__block__bgdImg"></div>
+          <!-- content txt -->
+          <div class="bgdRecipes__block__bgdText">
+            <!-- title -->
+            <div class="bgdRecipes__block__bgdText__contentTitle">
+              <span class="bgdRecipes__block__bgdText__contentTitle__title"
+                >Title</span
+              >
+              <span class="bgdRecipes__block__bgdText__contentTitle__time"
+                ><span
+                  class="
+                    bgdRecipes__block__bgdText__contentTitle__time__clockIcone
+                  "
+                  ><i class="far fa-clock"></i></span
+                >10min</span
+              >
+            </div>
+            <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
+              <!-- ingredients -->
+              <div
+                class="
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
+                "
+              >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+              </div>
+              <!-- recipes -->
+              <div
+                class="
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
+                "
+              >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
+                  "
+                  >...</span
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- BLOCK RECIPES 03 -->
+        <li class="bgdRecipes__block">
+          <!-- content img or bgd -->
+          <div class="bgdRecipes__block__bgdImg"></div>
+          <!-- content txt -->
+          <div class="bgdRecipes__block__bgdText">
+            <!-- title -->
+            <div class="bgdRecipes__block__bgdText__contentTitle">
+              <span class="bgdRecipes__block__bgdText__contentTitle__title"
+                >Title</span
+              >
+              <span class="bgdRecipes__block__bgdText__contentTitle__time"
+                ><span
+                  class="
+                    bgdRecipes__block__bgdText__contentTitle__time__clockIcone
+                  "
+                  ><i class="far fa-clock"></i></span
+                >10min</span
+              >
+            </div>
+            <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
+              <!-- ingredients -->
+              <div
+                class="
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
+                "
+              >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                  "
+                  >ingredient: ...</span
+                >
+              </div>
+              <!-- recipes -->
+              <div
+                class="
+                  bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
+                "
+              >
+                <span
+                  class="
+                    bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
+                  "
                   >...</span
                 >
               </div>

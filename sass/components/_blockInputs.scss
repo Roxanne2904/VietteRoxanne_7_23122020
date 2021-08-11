@@ -9,7 +9,6 @@
       justify-content: space-between;
       padding: 15px;
       background-color: $colorGrey;
-      margin: 0 0 17px;
       border-radius: $radiusBlock;
       &__inputMain {
         width: 95%;
@@ -25,8 +24,30 @@
         padding: 0 7px;
       }
     }
+    &__bgdTags {
+      list-style-type: none;
+      padding-bottom: 17px;
+      display: none;
+      &__li {
+        border-radius: $radiusBlock;
+        font-size: 0.875rem;
+        border-radius: 5px;
+        padding: 5px 15px;
+        background-color: $colorPrimary;
+        width: 17%;
+        display: flex;
+        justify-content: space-between;
+        margin-right: 10px;
+        color: white;
+        // &__tagName {
+        // }
+        // &__icone {
+        // }
+      }
+    }
     &__bgd {
       display: flex;
+      flex-wrap: wrap;
       &__content {
         @include loopForEachBlockListInputs($loopColorBlockList);
         &__inputsBgd {
@@ -35,8 +56,10 @@
           &__inputs {
             @include loopForEachInputs($loopColorBlockList);
           }
-          // &__labels {
-          // }
+          &__labels {
+            cursor: pointer;
+            margin-top: 2px;
+          }
         }
         &__ul {
           opacity: 0;
