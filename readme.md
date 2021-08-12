@@ -24,7 +24,11 @@
 - [x] Mettre en place tout le html et le css en version static;
 - [x] Verifier que le html et css passe au w3c;
 - [x] Finir le diagramme pour préparer l'algorithmes;
-- [ ] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|;
+- [ ] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|:
+
+> - [ ] Mettre en place la condition du dépard;
+> - [ ] Mettre en place le message d'erreur si aucune correspondance;
+> - [ ] Mettre en place la recherche du system pour trouver des correspondance avec la "value" du main input;
 
 ---
 

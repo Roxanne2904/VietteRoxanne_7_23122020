@@ -19,9 +19,11 @@
           outline: none;
         }
       }
-      &__labelMain {
+      &__submitMain {
         font-size: 2rem;
         padding: 0 7px;
+        background-color: transparent;
+        border: none;
       }
     }
     &__bgdTags {

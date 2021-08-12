@@ -87,9 +87,11 @@ html {
 .form__fieldset__bgdMain__inputMain:focus {
   outline: none;
 }
-.form__fieldset__bgdMain__labelMain {
+.form__fieldset__bgdMain__submitMain {
   font-size: 2rem;
   padding: 0 7px;
+  background-color: transparent;
+  border: none;
 }
 .form__fieldset__bgdTags {
   list-style-type: none;
