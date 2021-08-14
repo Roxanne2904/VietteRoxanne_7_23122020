@@ -29,12 +29,15 @@ html {
   margin: 40px 0 0;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .bgdRecipes__block {
   width: 30%;
+  font-family: "robotoregular";
   list-style-type: none;
   border-radius: 5px;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 .bgdRecipes__block__bgdImg {
   width: 100%;
@@ -42,6 +45,7 @@ html {
   background-color: #c7bebe;
 }
 .bgdRecipes__block__bgdText {
+  width: 100%;
   background-color: #e7e7e7;
   padding: 18px 18px 64px 18px;
 }
@@ -57,12 +61,35 @@ html {
   display: block;
   padding-right: 5px;
 }
+.bgdRecipes__block__bgdText__contentTitle__time__nbs {
+  font-weight: bold;
+}
 .bgdRecipes__block__bgdText__contentDatasRecipes {
   display: flex;
   justify-content: space-between;
 }
+.bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients {
+  padding: 0 10px 0 0;
+}
 .bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients {
   display: block;
+  font-size: 0.75rem;
+}
+.bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong {
+  font-weight: bold;
+}
+.bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes {
+  font-family: "robotoregular";
+  font-size: 0.75rem;
+  width: 50%;
+}
+.bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  /* number of lines to show */
+  -webkit-box-orient: vertical;
 }
 
 .form__fieldset {
@@ -92,6 +119,7 @@ html {
   padding: 0 7px;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 .form__fieldset__bgdTags {
   list-style-type: none;

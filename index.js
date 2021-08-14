@@ -168,9 +168,9 @@ const displayRecipesDynamically = async () => {
     ".form__fieldset__bgdMain__inputMain"
   );
   // ---
-  const inputIngredients = document.querySelector("#ingredients");
-  const inputAppareils = document.querySelector("#appareil");
-  const inputUstensiles = document.querySelector("#ustensiles");
+  // const inputIngredients = document.querySelector("#ingredients");
+  // const inputAppareils = document.querySelector("#appareil");
+  // const inputUstensiles = document.querySelector("#ustensiles");
   // ---
   const form = document.querySelector("#myform");
   const ulRecipes = document.querySelector(".bgdRecipes");
@@ -184,35 +184,257 @@ const displayRecipesDynamically = async () => {
   onSubmit();
   // ---
   // 2) On met en place l'event "onInput" du main input;
-  function IslaunchingOnInputEventToMainInput(input) {
-    function IslookingAtTheValue(event) {
-      let value = event.target.value.toLowerCase();
+  function IslaunchingOnInputEvent(input) {
+    function displayRecipesMatchingWithValue(event) {
+      // ---
+      function currentValue() {
+        if (event.target.value[event.target.value.length - 1] === "s") {
+          return event.target.value
+            .substring(0, event.target.value.length - 1)
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+        }
+        return event.target.value
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      }
+      // ---
+      let value = currentValue();
       let isValid = input.validity.valid;
+      // ---
+      // 2)a. On vérifie si le main input répond à la condition des 3 caractères;
       if (!isValid) {
         ulRecipes.innerHTML = "";
       } else {
+        // ---
+        // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
         function recipesIsMatching(obj) {
+          function isPlural(name) {
+            if (name[name.length - 1] === "s") {
+              return name
+                .substring(0, name.length - 1)
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .includes(value);
+            }
+            return name
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(value);
+          }
+          // ---
+          let applianceIsMatchingValue = isPlural(obj.appliance);
+          // ---
+          let descriptionIsMatchingValue = isPlural(obj.description);
+          // ---
+          let nameIsMatchingValue = isPlural(obj.name);
+          // ---
+          let ingredientIsMatchingValue = obj.ingredients
+            .map((ingredient) => {
+              if (
+                ingredient.ingredient[ingredient.ingredient.length - 1] === "s"
+              ) {
+                return ingredient.ingredient
+                  .substring(0, ingredient.ingredient.length - 1)
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "");
+              }
+              return ingredient.ingredient
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+            })
+            .some((ingredient) => {
+              return ingredient.includes(value);
+            }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
+          // ---
+          let quantityIsMatchingValue = obj.ingredients
+            .map((ingredient) => {
+              if (ingredient.quantity != undefined) {
+                return ingredient.quantity.toString();
+              }
+            })
+            .some((quantity) => {
+              if (quantity != undefined) {
+                return quantity.includes(value);
+              }
+            });
+          // ---
+          let unitIsMatchingValue = obj.ingredients
+            .map((ingredient) => {
+              if (ingredient.unit != undefined) {
+                if (ingredient.unit[ingredient.unit.length - 1] === "s") {
+                  return ingredient.unit
+                    .substring(0, ingredient.unit.length - 1)
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+                }
+                return ingredient.unit.toLowerCase();
+              }
+            })
+            .some((unit) => {
+              if (unit != undefined) {
+                return unit.includes(value);
+              }
+            });
+          // ---
+          let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
+            if (ustensil[ustensil.length - 1] === "s") {
+              return ustensil
+                .substring(0, ustensil.length - 1)
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .includes(value);
+            }
+            return ustensil
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(value);
+          });
+          // ---
           if (
-            obj.appliance.toLowerCase().includes(value) === true ||
-            obj.description.toLowerCase().includes(value) === true ||
-            obj.name.toLowerCase().includes(value) === true ||
+            applianceIsMatchingValue === true ||
+            descriptionIsMatchingValue === true ||
+            nameIsMatchingValue === true ||
             obj.id.toString().includes(value) === true ||
             obj.servings.toString().includes(value) === true ||
-            obj.time.toString().includes(value) === true
+            obj.time.toString().includes(value) === true ||
+            ingredientIsMatchingValue === true ||
+            quantityIsMatchingValue === true ||
+            unitIsMatchingValue === true ||
+            ustensilIsMatchingValue === true
           ) {
             return true;
           }
         }
+
+        // ---
+        // console.log(datas.recipes);
+        // //test pour voir combien  de quantite au lieu de quantity;
+        // console.log(
+        //   datas.recipes.map((recipe) =>
+        //     recipe.ingredients.map((ingredient) => ingredient.quantite)
+        //   )
+        // );
+
+        // 2)c. On Obtient un array qui contient les recettes correspondantes;
+        // ---
         let MatchingRecipesArray = datas.recipes.filter(recipesIsMatching);
-        console.log(MatchingRecipesArray);
+        // ---
+        // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
+        //      puis on injecte les données;
+        if (MatchingRecipesArray.length === 0) {
+          return (ulRecipes.innerHTML = `« Aucune recette ne correspond à votre critère… vous pouvez
+          chercher « tarte aux pommes », « poisson », etc.
+          `);
+        } else {
+          return (ulRecipes.innerHTML = MatchingRecipesArray.map((recipe) => {
+            return `<!-- BLOCK RECIPES 01 -->
+              <li class="bgdRecipes__block">
+                <!-- content img or bgd -->
+                <div class="bgdRecipes__block__bgdImg"></div>
+                <!-- content txt -->
+                <div class="bgdRecipes__block__bgdText">
+                  <!-- title -->
+                  <div class="bgdRecipes__block__bgdText__contentTitle">
+                    <span class="bgdRecipes__block__bgdText__contentTitle__title"
+                      >${recipe.name}</span
+                    >
+                    <span class="bgdRecipes__block__bgdText__contentTitle__time"
+                      ><span
+                        class="
+                          bgdRecipes__block__bgdText__contentTitle__time__clockIcone
+                        "
+                        ><i class="far fa-clock"></i></span
+                      ><span class="
+                      bgdRecipes__block__bgdText__contentTitle__time__nbs
+                    ">${recipe.time} min</span></span
+                    >
+                  </div>
+                  <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
+                    <!-- ingredients -->
+                    <ul
+                    class="
+                      bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
+                    "
+                  >${recipe.ingredients
+                    .map((ingredient) => {
+                      if (
+                        ingredient.quantity === undefined &&
+                        ingredient.unit === undefined
+                      ) {
+                        return `<li
+                        class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                        "
+                        >
+                        <strong class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+                        >
+                        ${ingredient.ingredient}</strong>
+                        </li>`;
+                      } else if (
+                        ingredient.quantity != undefined &&
+                        ingredient.unit === undefined
+                      ) {
+                        return `<li
+                        class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                        "
+                        >
+                        <strong class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+                        >
+                        ${ingredient.ingredient} :</strong> ${ingredient.quantity}
+                        </li>`;
+                      } else {
+                        return `<li
+                        class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+                        "
+                        >
+                        <strong class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+                        >
+                        ${ingredient.ingredient} :</strong> ${ingredient.quantity} ${ingredient.unit}
+                        </li>`;
+                      }
+                    })
+                    .join("")}
+                  </ul>
+                    <!-- recipes -->
+                    <div
+                      class="
+                        bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
+                      "
+                    >
+                      <span
+                        class="
+                          bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
+                        "
+                        >${recipe.description}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </li>`;
+          }).join(""));
+        }
       }
     }
-    input.addEventListener("input", IslookingAtTheValue);
+    input.addEventListener("input", displayRecipesMatchingWithValue);
   }
-  IslaunchingOnInputEventToMainInput(mainInput);
+  IslaunchingOnInputEvent(mainInput);
 };
 
 window.addEventListener("load", () => {
-  displayEltsIntoInInputsLists();
   displayRecipesDynamically();
 });

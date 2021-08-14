@@ -24,11 +24,14 @@
 - [x] Mettre en place tout le html et le css en version static;
 - [x] Verifier que le html et css passe au w3c;
 - [x] Finir le diagramme pour préparer l'algorithmes;
-- [ ] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|:
+- [x] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|:
 
-> - [ ] Mettre en place la condition du dépard;
-> - [ ] Mettre en place le message d'erreur si aucune correspondance;
-> - [ ] Mettre en place la recherche du system pour trouver des correspondance avec la "value" du main input;
+> - [x] message d'erreur si - de 3 caractères;
+> - [x] le système recherche si des recettes match avec la valeur input;
+> - [x] le système affiche les recettes correspondantes ou met un msg d'erreur et fait des proposition;
+
+> - [ ] petits réglages à paufiner en css sur les blocks recipes;
+> - [ ] commencer à filtrer les elmnts ustensil, appareil et ingredients en fonction des recettes apparues;
 
 ---
 
