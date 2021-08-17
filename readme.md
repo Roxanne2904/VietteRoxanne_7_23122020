@@ -29,9 +29,12 @@
 > - [x] message d'erreur si - de 3 caractères;
 > - [x] le système recherche si des recettes match avec la valeur input;
 > - [x] le système affiche les recettes correspondantes ou met un msg d'erreur et fait des proposition;
+> - [x] Les mots clefs se mettent à jours en fonction des recettes présentent;
+> - [x] Le code à été nettoyé et optimisé;
 
-> - [ ] petits réglages à paufiner en css sur les blocks recipes;
-> - [ ] commencer à filtrer les elmnts ustensil, appareil et ingredients en fonction des recettes apparues;
+> - [ ] Modifier le diagramme comme vue lors de la dernière session;
+> - [ ] Nettoyer le code en retirant les "commentaires";
+> - [ ] Commencer à mettre en place le systeme de recherche des inputs secondaires;
 
 ---
 

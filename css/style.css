@@ -26,18 +26,20 @@ html {
 }
 
 .bgdRecipes {
-  margin: 40px 0 0;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  width: 104%;
+  position: relative;
+  right: 1.5%;
 }
 .bgdRecipes__block {
   width: 30%;
+  min-height: 364px;
   font-family: "robotoregular";
   list-style-type: none;
   border-radius: 5px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin: 2.5% 1.5% 0;
 }
 .bgdRecipes__block__bgdImg {
   width: 100%;
@@ -47,12 +49,15 @@ html {
 .bgdRecipes__block__bgdText {
   width: 100%;
   background-color: #e7e7e7;
-  padding: 18px 18px 64px 18px;
+  padding: 18px 18px 30px 18px;
 }
 .bgdRecipes__block__bgdText__contentTitle {
   display: flex;
   justify-content: space-between;
   padding-bottom: 18px;
+}
+.bgdRecipes__block__bgdText__contentTitle__title {
+  max-width: 60%;
 }
 .bgdRecipes__block__bgdText__contentTitle__time {
   display: flex;
@@ -90,6 +95,12 @@ html {
   -webkit-line-clamp: 6;
   /* number of lines to show */
   -webkit-box-orient: vertical;
+}
+
+#errorMsg {
+  padding: 12px;
+  position: relative;
+  left: 12px;
 }
 
 .form__fieldset {
@@ -219,7 +230,13 @@ html {
   max-height: 0px;
 }
 .form__fieldset__bgd__content__ul__li {
-  width: 0px;
+  width: 32%;
+  padding: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  left: 3%;
 }
 
 .openUlBlocks {
@@ -233,16 +250,8 @@ html {
   font-size: 1.125rem;
 }
 
-.openLiBlocks {
-  width: 33.3%;
-  padding: 4px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .openInputsBgd {
-  padding: 0 10px 25px 0;
+  padding: 23px;
 }
 
 .openInputs {
@@ -252,7 +261,9 @@ html {
 .openContent {
   height: inherit;
   width: inherit;
+  padding: 0 0 20px 0;
   max-width: 667px;
+  min-width: 500px;
 }
 
 .headerIndex {

@@ -69,7 +69,13 @@
           display: block;
           max-height: 0px;
           &__li {
-            width: 0px;
+            width: 32%;
+            padding: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            left: 3%;
           }
         }
       }
@@ -82,15 +88,15 @@
   opacity: 1;
   @include blockListInputs;
 }
-.openLiBlocks {
-  width: 33.3%;
-  padding: 4px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+// .openLiBlocks {
+//   min-width: 33.3%;
+//   padding: 5px 0;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
 .openInputsBgd {
-  padding: 0 10px 25px 0;
+  padding: 23px;
 }
 .openInputs {
   opacity: 0.5;
@@ -98,5 +104,7 @@
 .openContent {
   height: inherit;
   width: inherit;
+  padding: 0 0 20px 0;
   max-width: 667px;
+  min-width: 500px;
 }

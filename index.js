@@ -1,4 +1,12 @@
 let datas;
+// ---
+let uniqueDataIngredients = [];
+let uniqueDataAppareils = [];
+let uniqueDataUstensiles = [];
+// ---
+const ingredientsUl = document.getElementById("ingredients__ul");
+const appareilsUl = document.getElementById("appareil__ul");
+const ustensilesUl = document.getElementById("ustensiles__ul");
 // ----------------------------------------
 const fetchDatas = async () => {
   datas = await fetch("./datas/recipes.json")
@@ -12,21 +20,13 @@ const fetchDatas = async () => {
 // ----------------------------------------
 const displayEltsIntoInInputsLists = async () => {
   await fetchDatas();
-  // ----------------
-  const ingredientsUl = document.getElementById("ingredients__ul");
-  const appareilsUl = document.getElementById("appareil__ul");
-  const ustensilesUl = document.getElementById("ustensiles__ul");
-  // ----------------
+  // ---------------
   // __________________________________________________________________________________
   // INJECTION DES DONNEES DYNAMIQUE DES INGREDIENT, DES APPAREILS ET DES UNSTENSILES;
   // __________________________________________________________________________________
   let dataIngredients;
   let dataAppareils;
   let dataUstensiles;
-  // ----------------
-  let uniqueDataIngredients = [];
-  let uniqueDataAppareils = [];
-  let uniqueDataUstensiles = [];
   // ----------------
   dataIngredients = datas.recipes
     .map((data) => {
@@ -111,7 +111,8 @@ const displayEltsIntoInInputsLists = async () => {
   const iconeUstensiles = document.getElementById("label__ustensiles");
   // ----------------
   // la fonction du onclick;
-  const IsOpeningTheList = (ulBlock, liBlock) => {
+  const IsOpeningTheList = (ulBlock) => {
+    //liBlock)
     const inputs =
       ulBlock.parentElement.firstChild.nextElementSibling.firstChild
         .nextElementSibling;
@@ -135,28 +136,29 @@ const displayEltsIntoInInputsLists = async () => {
     }
     // List appearence (close or open);
     ulBlock.classList.toggle("openUlBlocks");
-    liBlock.forEach((elt) => {
-      elt.classList.toggle("openLiBlocks");
-    });
+    // liBlock.forEach((elt) => {
+    //   elt.classList.toggle("openLiBlocks");
+    // });
     inputBgd.classList.toggle("openInputsBgd");
     inputs.classList.toggle("openInputs");
     ulBlock.parentElement.classList.toggle("openContent");
   };
   // event onclick sur les inputs secondaires;
-  const islaunchingOnclickEventToInputs = (icone, ulBlock, liBlock) => {
+  const islaunchingOnclickEventToInputs = (icone, ulBlock) => {
+    //liBlock
     icone.addEventListener("click", () => {
-      IsOpeningTheList(ulBlock, liBlock);
+      IsOpeningTheList(ulBlock); //liBlock);
     });
   };
   // ----------------
   // l'appel des fonctions qui lancent les onclicks;
   islaunchingOnclickEventToInputs(
     iconeIngredient,
-    ingredientsUl,
-    ingredientsLi
+    ingredientsUl
+    //ingredientsLi
   );
-  islaunchingOnclickEventToInputs(iconeAppareil, appareilsUl, appareilsLi);
-  islaunchingOnclickEventToInputs(iconeUstensiles, ustensilesUl, ustensilesLi);
+  islaunchingOnclickEventToInputs(iconeAppareil, appareilsUl); //appareilsLi);
+  islaunchingOnclickEventToInputs(iconeUstensiles, ustensilesUl); //ustensilesLi);
   // ----------------
 };
 
@@ -175,79 +177,56 @@ const displayRecipesDynamically = async () => {
   const form = document.querySelector("#myform");
   const ulRecipes = document.querySelector(".bgdRecipes");
   // ---
+  // 0) On injecte toute les données dynamique dès le début;
+  displayRecipes(datas.recipes, ulRecipes);
+  // ---
   // 1) On met un preventDefault sur le submit du form;
-  function onSubmit() {
+  (function onSubmit() {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
     });
-  }
-  onSubmit();
+  })();
   // ---
   // 2) On met en place l'event "onInput" du main input;
   function IslaunchingOnInputEvent(input) {
     function displayRecipesMatchingWithValue(event) {
       // ---
-      function currentValue() {
-        if (event.target.value[event.target.value.length - 1] === "s") {
-          return event.target.value
-            .substring(0, event.target.value.length - 1)
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
-        }
-        return event.target.value
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-      }
-      // ---
-      let value = currentValue();
+      let value = currentValue(event.target.value);
       let isValid = input.validity.valid;
       // ---
       // 2)a. On vérifie si le main input répond à la condition des 3 caractères;
       if (!isValid) {
-        ulRecipes.innerHTML = "";
+        // ulRecipes.innerHTML = "";
+        displayRecipes(datas.recipes, ulRecipes);
+        // function displayKeywordsLists(list, content) {
+        //   content.innerHTML = list
+        //     .map(
+        //       (ingredient) =>
+        //         `<li class="form__fieldset__bgd__content__ul__li ingredients__li">${ingredient}</li>`
+        //     )
+        //     .join("");
+        // }
+        displayKeywordsLists(uniqueDataIngredients, ingredientsUl);
+        displayKeywordsLists(uniqueDataAppareils, appareilsUl);
+        displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
       } else {
         // ---
         // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
         function recipesIsMatching(obj) {
-          function isPlural(name) {
-            if (name[name.length - 1] === "s") {
-              return name
-                .substring(0, name.length - 1)
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .includes(value);
-            }
-            return name
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(value);
-          }
           // ---
-          let applianceIsMatchingValue = isPlural(obj.appliance);
+          let applianceIsMatchingValue = currentValue(obj.appliance).includes(
+            value
+          );
           // ---
-          let descriptionIsMatchingValue = isPlural(obj.description);
+          let descriptionIsMatchingValue = currentValue(
+            obj.description
+          ).includes(value);
           // ---
-          let nameIsMatchingValue = isPlural(obj.name);
+          let nameIsMatchingValue = currentValue(obj.name).includes(value);
           // ---
           let ingredientIsMatchingValue = obj.ingredients
             .map((ingredient) => {
-              if (
-                ingredient.ingredient[ingredient.ingredient.length - 1] === "s"
-              ) {
-                return ingredient.ingredient
-                  .substring(0, ingredient.ingredient.length - 1)
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "");
-              }
-              return ingredient.ingredient
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
+              return currentValue(ingredient.ingredient);
             })
             .some((ingredient) => {
               return ingredient.includes(value);
@@ -268,14 +247,7 @@ const displayRecipesDynamically = async () => {
           let unitIsMatchingValue = obj.ingredients
             .map((ingredient) => {
               if (ingredient.unit != undefined) {
-                if (ingredient.unit[ingredient.unit.length - 1] === "s") {
-                  return ingredient.unit
-                    .substring(0, ingredient.unit.length - 1)
-                    .toLowerCase()
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "");
-                }
-                return ingredient.unit.toLowerCase();
+                return currentValue(ingredient.unit);
               }
             })
             .some((unit) => {
@@ -285,19 +257,7 @@ const displayRecipesDynamically = async () => {
             });
           // ---
           let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-            if (ustensil[ustensil.length - 1] === "s") {
-              return ustensil
-                .substring(0, ustensil.length - 1)
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .includes(value);
-            }
-            return ustensil
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(value);
+            return currentValue(ustensil).includes(value);
           });
           // ---
           if (
@@ -306,7 +266,6 @@ const displayRecipesDynamically = async () => {
             nameIsMatchingValue === true ||
             obj.id.toString().includes(value) === true ||
             obj.servings.toString().includes(value) === true ||
-            obj.time.toString().includes(value) === true ||
             ingredientIsMatchingValue === true ||
             quantityIsMatchingValue === true ||
             unitIsMatchingValue === true ||
@@ -315,119 +274,194 @@ const displayRecipesDynamically = async () => {
             return true;
           }
         }
-
-        // ---
-        // console.log(datas.recipes);
-        // //test pour voir combien  de quantite au lieu de quantity;
-        // console.log(
-        //   datas.recipes.map((recipe) =>
-        //     recipe.ingredients.map((ingredient) => ingredient.quantite)
-        //   )
-        // );
-
         // 2)c. On Obtient un array qui contient les recettes correspondantes;
         // ---
-        let MatchingRecipesArray = datas.recipes.filter(recipesIsMatching);
+        let matchingRecipesArray = datas.recipes.filter(recipesIsMatching);
         // ---
         // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
         //      puis on injecte les données;
-        if (MatchingRecipesArray.length === 0) {
-          return (ulRecipes.innerHTML = `« Aucune recette ne correspond à votre critère… vous pouvez
-          chercher « tarte aux pommes », « poisson », etc.
-          `);
-        } else {
-          return (ulRecipes.innerHTML = MatchingRecipesArray.map((recipe) => {
-            return `<!-- BLOCK RECIPES 01 -->
-              <li class="bgdRecipes__block">
-                <!-- content img or bgd -->
-                <div class="bgdRecipes__block__bgdImg"></div>
-                <!-- content txt -->
-                <div class="bgdRecipes__block__bgdText">
-                  <!-- title -->
-                  <div class="bgdRecipes__block__bgdText__contentTitle">
-                    <span class="bgdRecipes__block__bgdText__contentTitle__title"
-                      >${recipe.name}</span
-                    >
-                    <span class="bgdRecipes__block__bgdText__contentTitle__time"
-                      ><span
-                        class="
-                          bgdRecipes__block__bgdText__contentTitle__time__clockIcone
-                        "
-                        ><i class="far fa-clock"></i></span
-                      ><span class="
-                      bgdRecipes__block__bgdText__contentTitle__time__nbs
-                    ">${recipe.time} min</span></span
-                    >
-                  </div>
-                  <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
-                    <!-- ingredients -->
-                    <ul
-                    class="
-                      bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
-                    "
-                  >${recipe.ingredients
-                    .map((ingredient) => {
-                      if (
-                        ingredient.quantity === undefined &&
-                        ingredient.unit === undefined
-                      ) {
-                        return `<li
-                        class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
-                        "
-                        >
-                        <strong class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
-                        >
-                        ${ingredient.ingredient}</strong>
-                        </li>`;
-                      } else if (
-                        ingredient.quantity != undefined &&
-                        ingredient.unit === undefined
-                      ) {
-                        return `<li
-                        class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
-                        "
-                        >
-                        <strong class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
-                        >
-                        ${ingredient.ingredient} :</strong> ${ingredient.quantity}
-                        </li>`;
-                      } else {
-                        return `<li
-                        class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
-                        "
-                        >
-                        <strong class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
-                        >
-                        ${ingredient.ingredient} :</strong> ${ingredient.quantity} ${ingredient.unit}
-                        </li>`;
-                      }
-                    })
-                    .join("")}
-                  </ul>
-                    <!-- recipes -->
-                    <div
-                      class="
-                        bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
-                      "
-                    >
-                      <span
-                        class="
-                          bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
-                        "
-                        >${recipe.description}</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              </li>`;
-          }).join(""));
-        }
+        (function displayMatchingRecipes() {
+          if (matchingRecipesArray.length === 0) {
+            return (ulRecipes.innerHTML = `<div id="errorMsg">« Aucune recette ne correspond à votre critère… vous pouvez
+            chercher « tarte aux pommes », « poisson », etc.</div>
+            `);
+          } else {
+            // return (ulRecipes.innerHTML = matchingRecipesArray
+            //   .map((recipe) => {
+            //     return `<!-- BLOCK RECIPES 01 -->
+            //     <li class="bgdRecipes__block">
+            //       <!-- content img or bgd -->
+            //       <div class="bgdRecipes__block__bgdImg"></div>
+            //       <!-- content txt -->
+            //       <div class="bgdRecipes__block__bgdText">
+            //         <!-- title -->
+            //         <div class="bgdRecipes__block__bgdText__contentTitle">
+            //           <span class="bgdRecipes__block__bgdText__contentTitle__title"
+            //             >${recipe.name}</span
+            //           >
+            //           <span class="bgdRecipes__block__bgdText__contentTitle__time"
+            //             ><span
+            //               class="
+            //                 bgdRecipes__block__bgdText__contentTitle__time__clockIcone
+            //               "
+            //               ><i class="far fa-clock"></i></span
+            //             ><span class="
+            //             bgdRecipes__block__bgdText__contentTitle__time__nbs
+            //           ">${recipe.time} min</span></span
+            //           >
+            //         </div>
+            //         <div class="bgdRecipes__block__bgdText__contentDatasRecipes">
+            //           <!-- ingredients -->
+            //           <ul
+            //           class="
+            //             bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients
+            //           "
+            //         >${recipe.ingredients
+            //           .map((ingredient) => {
+            //             if (
+            //               ingredient.quantity === undefined &&
+            //               ingredient.unit === undefined
+            //             ) {
+            //               return `<li
+            //               class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+            //               "
+            //               >
+            //               <strong class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+            //               >
+            //               ${ingredient.ingredient}</strong>
+            //               </li>`;
+            //             } else if (
+            //               ingredient.quantity != undefined &&
+            //               ingredient.unit === undefined
+            //             ) {
+            //               return `<li
+            //               class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+            //               "
+            //               >
+            //               <strong class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+            //               >
+            //               ${ingredient.ingredient} :</strong> ${ingredient.quantity}
+            //               </li>`;
+            //             } else {
+            //               return `<li
+            //               class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients
+            //               "
+            //               >
+            //               <strong class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentIngredients__ingredients__strong"
+            //               >
+            //               ${ingredient.ingredient} :</strong> ${ingredient.quantity} ${ingredient.unit}
+            //               </li>`;
+            //             }
+            //           })
+            //           .join("")}
+            //         </ul>
+            //           <!-- recipes -->
+            //           <div
+            //             class="
+            //               bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes
+            //             "
+            //           >
+            //             <span
+            //               class="
+            //                 bgdRecipes__block__bgdText__contentDatasRecipes__contentRecipes__recipes
+            //               "
+            //               >${recipe.description}</span
+            //             >
+            //           </div>
+            //         </div>
+            //       </div>
+            //     </li>`;
+            //   })
+            //   .join(""));
+            return displayRecipes(matchingRecipesArray, ulRecipes);
+          }
+        })();
+        // ---
+        // 3). On met à jour les ingedients, ustensils et appareils des recettes proposées;
+        const isUpdatingSecondariesInputsElements = (
+          uniqueDataList,
+          content
+        ) => {
+          // 3)a. On met en place la fonction qui va filtrer;
+          function keywordsIsMatchingWithRecipes(elt) {
+            let currentElt = currentValue(elt);
+            // console.log(currentElt);
+            if (uniqueDataList === uniqueDataIngredients) {
+              let ingredientFromRecipes = matchingRecipesArray
+                .map((ingredient) => {
+                  return ingredient.ingredients.map((ingredient) => {
+                    return currentValue(ingredient.ingredient);
+                  });
+                })
+                .some((ingredient) => {
+                  return ingredient.includes(currentElt);
+                });
+
+              if (ingredientFromRecipes === true) {
+                return true;
+              }
+            } else if (uniqueDataList === uniqueDataAppareils) {
+              let appareilsFromRecipes = matchingRecipesArray
+                .map((appareil) => {
+                  return currentValue(appareil.appliance);
+                })
+                .some((appareil) => {
+                  return appareil.includes(currentElt);
+                });
+              if (appareilsFromRecipes === true) {
+                return true;
+              }
+            } else if (uniqueDataList === uniqueDataUstensiles) {
+              console.log("je suis bien un ustensiles");
+              let ustensilesFromRecipes = matchingRecipesArray
+                .map((ustensil) => {
+                  return ustensil.ustensils.map((ustensil) => {
+                    return currentValue(ustensil);
+                  });
+                })
+                .some((ustensil) => {
+                  return ustensil.includes(currentElt);
+                });
+              console.log(ustensilesFromRecipes);
+              if (ustensilesFromRecipes === true) {
+                return true;
+              }
+            }
+          }
+          let matchingElements = uniqueDataList.filter(
+            keywordsIsMatchingWithRecipes
+          );
+          // 3)b. Une fois les bons elments filtrés on les affiche avec un innerHTML;
+          if (matchingRecipesArray.length === 0) {
+            // return (content.innerHTML = uniqueDataList
+            //   .map(
+            //     (ingredient) =>
+            //       `<li class="form__fieldset__bgd__content__ul__li ingredients__li">${ingredient}</li>`
+            //   )
+            //   .join(""));
+            return displayKeywordsLists(uniqueDataList, content);
+          }
+          // return (content.innerHTML = matchingElements
+          //   .map(
+          //     (ingredient) =>
+          //       `<li class="form__fieldset__bgd__content__ul__li ingredients__li">${ingredient}</li>`
+          //   )
+          //   .join(""));
+          return displayKeywordsLists(matchingElements, content);
+        };
+        // ---
+        isUpdatingSecondariesInputsElements(
+          uniqueDataIngredients,
+          ingredientsUl
+        );
+        isUpdatingSecondariesInputsElements(uniqueDataAppareils, appareilsUl);
+        isUpdatingSecondariesInputsElements(uniqueDataUstensiles, ustensilesUl);
       }
     }
     input.addEventListener("input", displayRecipesMatchingWithValue);
