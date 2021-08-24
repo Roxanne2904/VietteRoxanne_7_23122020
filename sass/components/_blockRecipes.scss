@@ -21,6 +21,7 @@
       width: 100%;
       background-color: $colorGrey;
       padding: 18px 18px 30px 18px;
+      height: 100%;
       &__contentTitle {
         display: flex;
         justify-content: space-between;
@@ -47,6 +48,10 @@
           &__ingredients {
             display: block;
             font-size: 0.75rem;
+            width: 97%;
+            white-space: nowrap;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
             &__strong {
               font-weight: bold;
             }

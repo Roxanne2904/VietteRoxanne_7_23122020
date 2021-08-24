@@ -1,3 +1,28 @@
+let datas;
+// ---
+let uniqueDataIngredients = [];
+let uniqueDataAppareils = [];
+let uniqueDataUstensiles = [];
+// ---
+const ingredientsUl = document.getElementById("ingredients__ul");
+const appareilsUl = document.getElementById("appareil__ul");
+const ustensilesUl = document.getElementById("ustensiles__ul");
+// ----------------------------------------
+// console.log(ingredientsUl.children);
+// ----------------------------------------
+const iconeIngredient = document.getElementById("label__ingredient");
+const iconeAppareil = document.getElementById("label__appareil");
+const iconeUstensiles = document.getElementById("label__ustensiles");
+// ----------------------------------------
+const mainInput = document.querySelector(".form__fieldset__bgdMain__inputMain");
+// ----------------------------------------
+const inputIngredients = document.querySelector("#ingredients");
+const inputAppareils = document.querySelector("#appareil");
+const inputUstensiles = document.querySelector("#ustensiles");
+// ----------------------------------------
+const form = document.querySelector("#myform");
+const ulRecipes = document.querySelector(".bgdRecipes");
+// ----------------------------------------
 function currentValue(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
@@ -7,6 +32,69 @@ function currentValue(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 }
+function updateLiAppearance(list, content) {
+  if (list.length <= 5) {
+    for (let i = 0; i < content.children.length; i++) {
+      content.children[i].style.width = "inherit";
+      content.children[i].style.padding = "0px 20px 0 6px";
+    }
+  }
+}
+const IsOpeningTheList = (ulBlock, click) => {
+  //liBlock)
+  const inputs =
+    ulBlock.parentElement.firstChild.nextElementSibling.firstChild
+      .nextElementSibling;
+  const inputBgd = ulBlock.parentElement.firstChild.nextElementSibling;
+  const label =
+    ulBlock.parentElement.firstChild.nextElementSibling.firstChild
+      .nextElementSibling.nextElementSibling;
+  const NoUpperCaseInputName = inputs.id;
+  const UpperCaseInputName = inputs.dataset.value;
+  // -----------------
+
+  if (click === true) {
+    // placeholder value
+    if (inputs.placeholder === `Recherche un ${NoUpperCaseInputName}`) {
+      inputs.setAttribute("placeholder", `${UpperCaseInputName}`);
+      label.innerHTML = '<i class="fas fa-chevron-down"></i>';
+    } else {
+      inputs.setAttribute(
+        "placeholder",
+        `Recherche un ${NoUpperCaseInputName}`
+      );
+      label.innerHTML = ' <i class="fas fa-chevron-up"></i>';
+    }
+    inputBgd.style.padding = "";
+    inputs.style.color = "";
+    inputs.style.opacity = "";
+    inputs.style.fontWeight = "";
+    // ---
+    ulBlock.classList.toggle("openUlBlocks");
+    inputBgd.classList.toggle("openInputsBgd");
+    inputs.classList.toggle("openInputs");
+    ulBlock.parentElement.classList.toggle("openContent");
+  } else {
+    label.innerHTML = ' <i class="fas fa-chevron-up"></i>';
+    // placeholder value
+    // ---
+    if (inputs.value === "") {
+      inputs.setAttribute(
+        "placeholder",
+        `Recherche un ${NoUpperCaseInputName}`
+      );
+    }
+    // ---
+
+    ulBlock.classList.add("openUlBlocks");
+    inputBgd.classList.add("openInputsBgd");
+    inputBgd.style.padding = "20px 20px 10px 20px";
+    inputs.classList.add("openInputs");
+    inputs.style.opacity = "1";
+    inputs.style.fontWeight = "600";
+    ulBlock.parentElement.classList.add("openContent");
+  }
+};
 //---
 function displayRecipes(array, content) {
   content.innerHTML = array
@@ -111,4 +199,6 @@ function displayKeywordsLists(list, content) {
         `<li class="form__fieldset__bgd__content__ul__li ingredients__li">${ingredient}</li>`
     )
     .join("");
+  updateLiAppearance(list, content);
 }
+// ---

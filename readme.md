@@ -26,22 +26,28 @@
 - [x] Finir le diagramme pour préparer l'algorithmes;
 - [x] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|:
 
-> - [x] message d'erreur si - de 3 caractères;
+> - [x] Le diagramme_1 a été réalisé;
+> - [x] l'affichages des listes ingredients ...etc, ne contiennent plus de doublons;
+> - [x] message d'erreur si moins de 3 caractères;
 > - [x] le système recherche si des recettes match avec la valeur input;
 > - [x] le système affiche les recettes correspondantes ou met un msg d'erreur et fait des proposition;
 > - [x] Les mots clefs se mettent à jours en fonction des recettes présentent;
 > - [x] Le code à été nettoyé et optimisé;
+> - [x] Les listes des mots clefs se mettent à jours en fonction de la valeur input;
+> - [x] adapté le css lors de l'event "oninput";
 
-> - [ ] Modifier le diagramme comme vue lors de la dernière session;
-> - [ ] Nettoyer le code en retirant les "commentaires";
-> - [ ] Commencer à mettre en place le systeme de recherche des inputs secondaires;
+> - [ ] Mettre en place le "onClick" sur les mots clefs;
+> - [ ] Mettre à jour le diagramme- plus détaillé l'algo du main input-;
+
+> - BONUS
+
+> - [ ] Afficher les recettes en fonction du resulat des tags et du main input ;
 
 ---
 
 ##Notes:
 
 > Blocks ingrédients, appareils et ustensiles peuvent s'ouvrir en même temps;
-> Il y a encore "casserolle et casserole" en doublons;
 
 ---
 

@@ -62,6 +62,7 @@
           &__labels {
             cursor: pointer;
             margin-top: 2px;
+            padding-right: 6px;
           }
         }
         &__ul {
@@ -69,13 +70,14 @@
           display: block;
           max-height: 0px;
           &__li {
-            width: 32%;
+            width: 33.3%;
             padding: 6px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            position: relative;
-            left: 3%;
+            opacity: 0.95;
+            // position: relative;
+            // left: 3%;
           }
         }
       }
@@ -96,15 +98,13 @@
 //   text-overflow: ellipsis;
 // }
 .openInputsBgd {
-  padding: 23px;
+  padding: 20px;
 }
 .openInputs {
   opacity: 0.5;
+  padding-left: 6px;
 }
 .openContent {
-  height: inherit;
-  width: inherit;
-  padding: 0 0 20px 0;
-  max-width: 667px;
-  min-width: 500px;
+  @include openContent;
+  min-width: 223px;
 }
