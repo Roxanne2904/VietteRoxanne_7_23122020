@@ -137,20 +137,45 @@ html {
 }
 .form__fieldset__bgdTags {
   list-style-type: none;
-  padding-bottom: 17px;
+  padding: 17px 0 0;
+  flex-wrap: wrap;
   display: none;
 }
-.form__fieldset__bgdTags__li {
+.form__fieldset__bgdTags__li1 {
   border-radius: 5px;
   font-size: 0.875rem;
   border-radius: 5px;
   padding: 5px 15px;
   background-color: #3282f7;
-  width: 17%;
-  display: flex;
-  justify-content: space-between;
-  margin-right: 10px;
+  max-width: 50%;
+  margin: 10px 10px 5px 0;
   color: white;
+}
+.form__fieldset__bgdTags__li2 {
+  border-radius: 5px;
+  font-size: 0.875rem;
+  border-radius: 5px;
+  padding: 5px 15px;
+  background-color: #68d9a4;
+  max-width: 50%;
+  margin: 10px 10px 5px 0;
+  color: white;
+}
+.form__fieldset__bgdTags__li3 {
+  border-radius: 5px;
+  font-size: 0.875rem;
+  border-radius: 5px;
+  padding: 5px 15px;
+  background-color: #ed6454;
+  max-width: 50%;
+  margin: 10px 10px 5px 0;
+  color: white;
+}
+.form__fieldset__bgdTags__li__tagName {
+  padding-right: 5px;
+}
+.form__fieldset__bgdTags__li__icone {
+  cursor: pointer;
 }
 .form__fieldset__bgd {
   display: flex;

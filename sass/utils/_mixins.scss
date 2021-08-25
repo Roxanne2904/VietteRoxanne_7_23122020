@@ -43,6 +43,21 @@
     }
   }
 }
+// LOOP TO CHANGE BGD COLOR FOR TAGS
+@mixin loopForEachTagsColor($map) {
+  @each $key, $value in $map {
+    &#{$key} {
+      border-radius: $radiusBlock;
+      font-size: 0.875rem;
+      border-radius: 5px;
+      padding: 5px 15px;
+      background-color: map-get($value, bgd);
+      max-width: 50%;
+      margin: 10px 10px 5px 0;
+      color: white;
+    }
+  }
+}
 // .OPENCONTENT -BLOCK INPUT SECONDAIRE-
 @mixin openContent {
   height: inherit;

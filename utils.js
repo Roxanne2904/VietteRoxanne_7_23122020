@@ -4,11 +4,14 @@ let uniqueDataIngredients = [];
 let uniqueDataAppareils = [];
 let uniqueDataUstensiles = [];
 // ---
+let tagsStock = [];
+let uniqueTagsStock;
+// ---
 const ingredientsUl = document.getElementById("ingredients__ul");
 const appareilsUl = document.getElementById("appareil__ul");
 const ustensilesUl = document.getElementById("ustensiles__ul");
 // ----------------------------------------
-// console.log(ingredientsUl.children);
+const tagsUL = document.getElementById("ul__tags");
 // ----------------------------------------
 const iconeIngredient = document.getElementById("label__ingredient");
 const iconeAppareil = document.getElementById("label__appareil");
@@ -32,6 +35,7 @@ function currentValue(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 }
+// LI des mots clefs;
 function updateLiAppearance(list, content) {
   if (list.length <= 5) {
     for (let i = 0; i < content.children.length; i++) {
@@ -40,6 +44,7 @@ function updateLiAppearance(list, content) {
     }
   }
 }
+// La listes des inputs ingredients, ustensiles, et appareils;
 const IsOpeningTheList = (ulBlock, click) => {
   //liBlock)
   const inputs =
@@ -95,7 +100,9 @@ const IsOpeningTheList = (ulBlock, click) => {
     ulBlock.parentElement.classList.add("openContent");
   }
 };
-//---
+// ---
+// AFFICHAGE
+// ---
 function displayRecipes(array, content) {
   content.innerHTML = array
     .map((recipe) => {
@@ -202,3 +209,80 @@ function displayKeywordsLists(list, content) {
   updateLiAppearance(list, content);
 }
 // ---
+// TAGS FUNCTIONS
+// ---
+function AddTagAndChooseTheRightBgdColor(nbs, value) {
+  return `<li class="form__fieldset__bgdTags__li${nbs}">
+  <span class="form__fieldset__bgdTags__li__tagName">${value}</span
+  ><span
+    role="button"
+    tabindex="0"
+    class="form__fieldset__bgdTags__li__icone"
+    ><i class="far fa-times-circle"></i
+  ></span>
+</li>`;
+}
+// ---
+function isDisplayingTags(contentTags, tagsStock) {
+  // ---
+  uniqueTagsStock = tagsStock.filter((ele, pos) => {
+    return tagsStock.indexOf(ele) == pos;
+  });
+  // ---
+  if (uniqueTagsStock.length === 0) {
+    contentTags.style.display = "none";
+  } else {
+    contentTags.style.display = "flex";
+    // ---
+    contentTags.innerHTML = uniqueTagsStock
+      .map(
+        (tag) => {
+          let isAnAppareil = uniqueDataAppareils.includes(tag);
+          let isAnUstensile = uniqueDataUstensiles.includes(tag);
+          if (isAnAppareil === true) {
+            return AddTagAndChooseTheRightBgdColor(2, tag);
+          } else if (isAnUstensile === true) {
+            return AddTagAndChooseTheRightBgdColor(3, tag);
+          } else {
+            return AddTagAndChooseTheRightBgdColor(1, tag);
+          }
+        }
+        //     `<li class="form__fieldset__bgdTags__li${mapNumber}">
+        //   <span class="form__fieldset__bgdTags__li__tagName">${tag}</span
+        //   ><span
+        //     role="button"
+        //     tabindex="0"
+        //     class="form__fieldset__bgdTags__li__icone"
+        //     ><i class="far fa-times-circle"></i
+        //   ></span>
+        // </li>`
+      )
+      .join("");
+  }
+}
+// ---
+function isAddingATag(e, content) {
+  let originalText = e.target.innerText;
+  let value = currentValue(e.target.innerText);
+  let stockage = {};
+  // 1) On veut récupérer a chaque fois la bonne liste aveec les bons mots clefs;
+  let currentList = [];
+  for (let i = 0; i < content.children.length; i++) {
+    let value = currentValue(content.children[i].innerText);
+    currentList.push(value);
+  }
+  // ---
+  stockage["keyW"] = value;
+  // ---
+
+  if (currentList.includes(stockage.keyW) === true) {
+    tagsStock.push(originalText);
+    isDisplayingTags(tagsUL, tagsStock);
+  }
+}
+// ---
+function isChoosingAnUlContent(content) {
+  content.addEventListener("click", (e) => {
+    isAddingATag(e, content);
+  });
+}

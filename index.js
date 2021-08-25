@@ -265,7 +265,7 @@ const displayRecipesDynamically = async () => {
       // ---
       // 2)e. On met à jour les ingedients, ustensils et appareils des recettes proposées;
       const isUpdatingSecondariesInputsElements = (uniqueDataList, content) => {
-        // 3)a. On met en place la fonction qui va filtrer;
+        // 2)f. On met en place la fonction qui va filtrer;
         function keywordsIsMatchingWithRecipes(elt) {
           let currentElt = currentValue(elt);
           // ---
@@ -312,7 +312,7 @@ const displayRecipesDynamically = async () => {
         let matchingElements = uniqueDataList.filter(
           keywordsIsMatchingWithRecipes
         );
-        // 3)b. Une fois les bons elments filtrés on les affiche avec un innerHTML;
+        // 2)g. Une fois les bons elments filtrés on les affiche avec un innerHTML;
         if (matchingRecipesArray.length === 0) {
           return displayKeywordsLists(uniqueDataList, content);
         }
@@ -329,6 +329,7 @@ const displayRecipesDynamically = async () => {
     let value = currentValue(e.target.value);
     let mainValue = mainInput.value;
     let matchingElemntsArray = [];
+    // _________________________________________
     // --- La fonction pour filtrer
     function keywordsIsMatchingWithValue(elt) {
       let currentElt = currentValue(elt);
@@ -336,7 +337,7 @@ const displayRecipesDynamically = async () => {
         return true;
       }
     }
-    // --- La fonction pour afficher le resultat;
+    // --- La fonction pour afficher le resultat des mots clefs qui matchent avec la valeur input;
     function displayMatchingKeywordsListWithValue(list, content) {
       if (value === "" || list.length === 0) {
         content.parentElement.firstChild.nextElementSibling.style.padding =
@@ -353,25 +354,24 @@ const displayRecipesDynamically = async () => {
       }
     }
     // ---
+    // _________________________________________
     if (currentList === uniqueDataIngredients) {
       IsOpeningTheList(ingredientsUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, ingredientsUl);
-      // console.log(matchingElemntsArray);
     }
     if (currentList === uniqueDataAppareils) {
       IsOpeningTheList(appareilsUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, appareilsUl);
-      // console.log(matchingElemntsArray);
     }
     if (currentList === uniqueDataUstensiles) {
       IsOpeningTheList(ustensilesUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, ustensilesUl);
-      // console.log(matchingElemntsArray);
     }
   }
+  // __________________________________
   // Appel de la fonction du mainInput;
   mainInput.addEventListener("input", displayRecipesMatchingWithMainInputValue);
   // Appel de la fonction des inputs secondaires;
@@ -387,6 +387,13 @@ const displayRecipesDynamically = async () => {
   inputUstensiles.addEventListener("input", (e) => {
     displayRecipesMatchingWithValues(e, uniqueDataUstensiles);
   });
+  // ___________________________________
+  // 4) ...enfin on met en place l'event onClick sur les "li" des listes "ul", des mots clefs, pour mettre
+  //       en place les TAGS!
+  // ---
+  isChoosingAnUlContent(ingredientsUl, 1);
+  isChoosingAnUlContent(appareilsUl, 2);
+  isChoosingAnUlContent(ustensilesUl, 3);
 };
 
 window.addEventListener("load", () => {

@@ -18,3 +18,15 @@ $loopColorBlockList: (
     color: $colorTertiary,
   ),
 );
+// ---
+$loopColorTags: (
+  1: (
+    bgd: $colorPrimary,
+  ),
+  2: (
+    bgd: $colorSecondary,
+  ),
+  3: (
+    bgd: $colorTertiary,
+  ),
+);

@@ -29,23 +29,25 @@
     }
     &__bgdTags {
       list-style-type: none;
-      padding-bottom: 17px;
+      padding: 17px 0 0;
+      flex-wrap: wrap;
       display: none;
       &__li {
-        border-radius: $radiusBlock;
-        font-size: 0.875rem;
-        border-radius: 5px;
-        padding: 5px 15px;
-        background-color: $colorPrimary;
-        width: 17%;
-        display: flex;
-        justify-content: space-between;
-        margin-right: 10px;
-        color: white;
-        // &__tagName {
-        // }
-        // &__icone {
-        // }
+        @include loopForEachTagsColor($loopColorTags);
+        // border-radius: $radiusBlock;
+        // font-size: 0.875rem;
+        // border-radius: 5px;
+        // padding: 5px 15px;
+        // background-color: $colorPrimary;
+        // max-width: 50%;
+        // margin: 10px 10px 5px 0;
+        // color: white;
+        &__tagName {
+          padding-right: 5px;
+        }
+        &__icone {
+          cursor: pointer;
+        }
       }
     }
     &__bgd {
@@ -85,7 +87,8 @@
   }
 }
 
-//On click
+// OPEN THE CURRENT LIST "ONCLICK"
+// ______________________________
 .openUlBlocks {
   opacity: 1;
   @include blockListInputs;
@@ -108,3 +111,8 @@
   @include openContent;
   min-width: 223px;
 }
+// // _________________________
+// // DISPLAY TAGS "ONCLICK"
+// .appareilappearance {
+//   background-color: $colorSecondary;
+// }
