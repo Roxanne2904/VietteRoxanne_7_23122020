@@ -47,7 +47,7 @@ const displayEltsIntoInInputsLists = async () => {
   const isFilteringEatchDataInArray = (arrayDatas, arrayWithUniqueElts) => {
     arrayDatas.forEach((ingredient) => {
       let result = ingredient;
-      let arrayResult = [];
+      // let arrayResult = [];
       //-----
       if (result[result.length - 1] === "s") {
         result = result.substring(0, result.length - 1);
@@ -56,14 +56,15 @@ const displayEltsIntoInInputsLists = async () => {
         result = result.substring(0, result.length - 1);
       }
       // ---
-      arrayResult = Array.from(result);
-      result = arrayResult.filter(function (ele, pos) {
-        return arrayResult.indexOf(ele) == pos;
-      });
-      result = result.join("").toString();
+      // arrayResult = Array.from(result);
+      // result = arrayResult.filter(function (ele, pos) {
+      //   return arrayResult.indexOf(ele) == pos;
+      // });
+      // result = result.join("").toString();
       // ---
       result = result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       result = result.toLowerCase();
+      // console.log(result);
       // ---
       if (!stockage[result] === true) {
         stockage[result] = true;
@@ -144,7 +145,7 @@ const displayEltsIntoInInputsLists = async () => {
   const islaunchingOnclickEventToInputs = (icone, ulBlock, click) => {
     //liBlock
     icone.addEventListener("click", () => {
-      IsOpeningTheList(ulBlock, click); //liBlock);
+      openTheList(ulBlock, click); //liBlock);
     });
   };
   // ----------------
@@ -154,7 +155,7 @@ const displayEltsIntoInInputsLists = async () => {
   islaunchingOnclickEventToInputs(iconeUstensiles, ustensilesUl, true); //ustensilesLi);
   // ----------------
 };
-
+// ----------------------------------------
 const displayRecipesDynamically = async () => {
   await displayEltsIntoInInputsLists();
   // -----
@@ -172,7 +173,7 @@ const displayRecipesDynamically = async () => {
   function displayRecipesMatchingWithMainInputValue(event) {
     // ---
     let value = currentValue(event.target.value);
-    let isValid = mainInput.validity.valid;
+    isValid = mainInput.validity.valid;
     // ---
     // 2)a. On vérifie si le main input répond à la condition des 3 caractères;
     if (!isValid) {
@@ -182,10 +183,10 @@ const displayRecipesDynamically = async () => {
       displayKeywordsLists(uniqueDataIngredients, ingredientsUl);
       displayKeywordsLists(uniqueDataAppareils, appareilsUl);
       displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
-    } else {
       // ---
+    } else {
       // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
-      function recipesIsMatching(obj) {
+      function recipesIsMatchingWithMainInput(obj) {
         // ---
         let applianceIsMatchingValue = currentValue(obj.appliance).includes(
           value
@@ -249,15 +250,17 @@ const displayRecipesDynamically = async () => {
       }
       // 2)c. On Obtient un array qui contient les recettes correspondantes;
       // ---
-      let matchingRecipesArray = datas.recipes.filter(recipesIsMatching);
+      matchingRecipesArray = datas.recipes.filter(
+        recipesIsMatchingWithMainInput
+      );
       // ---
       // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
       //      puis on injecte les données;
       (function displayMatchingRecipes() {
         if (matchingRecipesArray.length === 0) {
           return (ulRecipes.innerHTML = `<div id="errorMsg">« Aucune recette ne correspond à votre critère… vous pouvez
-            chercher « tarte aux pommes », « poisson », etc.</div>
-            `);
+          chercher « tarte aux pommes », « poisson », etc.</div>
+          `);
         } else {
           return displayRecipes(matchingRecipesArray, ulRecipes);
         }
@@ -312,8 +315,9 @@ const displayRecipesDynamically = async () => {
         let matchingElements = uniqueDataList.filter(
           keywordsIsMatchingWithRecipes
         );
+        // console.log(matchingElements);
         // 2)g. Une fois les bons elments filtrés on les affiche avec un innerHTML;
-        if (matchingRecipesArray.length === 0) {
+        if (matchingElements.length === 0) {
           return displayKeywordsLists(uniqueDataList, content);
         }
         return displayKeywordsLists(matchingElements, content);
@@ -325,9 +329,9 @@ const displayRecipesDynamically = async () => {
     }
   }
   // 3) On met en place la fonction pour le "oninput" des inputs secondaires;
-  function displayRecipesMatchingWithValues(e, currentList) {
+  function updateKeywordsLists(e, currentList) {
     let value = currentValue(e.target.value);
-    let mainValue = mainInput.value;
+    // let mainValue = mainInput.value;
     let matchingElemntsArray = [];
     // _________________________________________
     // --- La fonction pour filtrer
@@ -356,17 +360,17 @@ const displayRecipesDynamically = async () => {
     // ---
     // _________________________________________
     if (currentList === uniqueDataIngredients) {
-      IsOpeningTheList(ingredientsUl, false);
+      openTheList(ingredientsUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, ingredientsUl);
     }
     if (currentList === uniqueDataAppareils) {
-      IsOpeningTheList(appareilsUl, false);
+      openTheList(appareilsUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, appareilsUl);
     }
     if (currentList === uniqueDataUstensiles) {
-      IsOpeningTheList(ustensilesUl, false);
+      openTheList(ustensilesUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
       displayMatchingKeywordsListWithValue(matchingElemntsArray, ustensilesUl);
     }
@@ -377,23 +381,141 @@ const displayRecipesDynamically = async () => {
   // Appel de la fonction des inputs secondaires;
   // Ingredient;
   inputIngredients.addEventListener("input", (e) => {
-    displayRecipesMatchingWithValues(e, uniqueDataIngredients);
+    updateKeywordsLists(e, uniqueDataIngredients);
   });
   // Appareil;
   inputAppareils.addEventListener("input", (e) => {
-    displayRecipesMatchingWithValues(e, uniqueDataAppareils);
+    updateKeywordsLists(e, uniqueDataAppareils);
   });
   // Ustensiles
   inputUstensiles.addEventListener("input", (e) => {
-    displayRecipesMatchingWithValues(e, uniqueDataUstensiles);
+    updateKeywordsLists(e, uniqueDataUstensiles);
   });
   // ___________________________________
-  // 4) ...enfin on met en place l'event onClick sur les "li" des listes "ul", des mots clefs, pour mettre
-  //       en place les TAGS!
+  // 4) ...enfin on met en place l'event onClick sur les keywords mis à jour, pour mettre
+  //       en place les TAGS et afficher les recettes en fonction du main input et les secondaire!
   // ---
-  isChoosingAnUlContent(ingredientsUl, 1);
-  isChoosingAnUlContent(appareilsUl, 2);
-  isChoosingAnUlContent(ustensilesUl, 3);
+  function displayTagsAndRecipes(content, tagsStock, type) {
+    // ---
+    if (tagsStock.length === 0) {
+      content.style.display = "none";
+    } else {
+      content.style.display = "flex";
+      // ---
+      content.innerHTML = tagsStock
+        .map((tag) => {
+          let isAnAppareil = uniqueDataAppareils.includes(tag.text);
+          let isAnUstensile = uniqueDataUstensiles.includes(tag.text);
+          if (isAnAppareil === true) {
+            return chooseTheRightCodeHtml(2, tag.text);
+          } else if (isAnUstensile === true) {
+            return chooseTheRightCodeHtml(3, tag.text);
+          } else {
+            return chooseTheRightCodeHtml(1, tag.text);
+          }
+        })
+        .join("");
+    }
+
+    //--- On recupère les tags que l'on vient d'afficher;
+    let liTags = document.querySelectorAll(".liTags");
+    // //--- On récupère toutes la valeur de l'input main;
+    // let mainValue = mainInput.value;
+    // // ---
+    // if (mainValue != "" && isValid === true) {
+    //   uniqueTagsStock.map((ele) => {
+    //     ele = currentValue(ele);
+    //     allValueStored.push(ele);
+    //   });
+    //   // ---
+    //   allValueStored.push(mainValue);
+    //   allValueStored = allValueStored.filter((ele, pos) => {
+    //     return allValueStored.indexOf(ele) == pos;
+    //   });
+    //   console.log(allValueStored);
+    //   // ---
+    //   function recipesIsMatching(obj, value) {
+    //     let val = currentValue(value);
+    //     // console.log(val);
+    //     // console.log(obj);
+    //     // console.log(currentValue(obj.appliance));
+    //     if (currentValue(obj.appliance).includes(val) === true) {
+    //       return true;
+    //     }
+    //   }
+    //   // ---
+
+    //   console.log(matchingRecipesArray);
+    //   // = datas.recipes.filter((obj) =>
+    //   //   uniqueTagsStock.every((value) => recipesIsMatching(obj, value))
+    //   // );
+    // }
+    // console.log(matchingRecipesArray);
+
+    //--- On met en place un boucle sur chaque tag pour lui attribuer "un remove" lors du click;
+    for (let i = 0; i < liTags.length; i++) {
+      // ---
+      //On click : remove a TAG;
+      liTags[i].addEventListener("click", () => {
+        // ---
+        let value = liTags[i].innerText;
+        let indexOfValue = tagsStock.findIndex((t) => t.text === value);
+        // ---
+        tagsStock.forEach((ele) => {
+          if (ele.text.includes(value) === true) {
+            tagsStock.splice(indexOfValue, 1);
+            console.log(tagsStock);
+            liTags[i].remove();
+          }
+        });
+      });
+    }
+  }
+  // ---
+  function addTags(e, content, type) {
+    let originalText = e.target.innerText;
+    let value = currentValue(e.target.innerText);
+    let stockage = {};
+    // 1) On veut récupérer a chaque fois la bonne liste aveec les bons mots clefs;
+    let currentList = [];
+    for (let i = 0; i < content.children.length; i++) {
+      let value = currentValue(content.children[i].innerText);
+      currentList.push(value);
+    }
+    // ---
+    stockage["keyW"] = value;
+    // ---
+    if (currentList.includes(stockage.keyW) === true) {
+      class DataValue {
+        constructor(keyW, text, type) {
+          this.keyW = keyW;
+          this.text = text;
+          this.type = type;
+          this[value] = true;
+        }
+      }
+      // -----------------------------------------------
+      tagsStock.push(new DataValue(value, originalText, type));
+      // -----------------------------------------------
+      tagsStock = tagsStock.filter(
+        (obj, index, array) =>
+          array.findIndex((t) => t.keyW === obj.keyW) === index
+      );
+      // -----------------------------------------------
+      displayTagsAndRecipes(tagsUL, tagsStock, type);
+    }
+  }
+  // ---
+  function displayRecipesmatchingWithTagsAndMainInput(content, type) {
+    content.addEventListener("click", (e) => {
+      addTags(e, content, type);
+    });
+  }
+  // ---
+  displayRecipesmatchingWithTagsAndMainInput(ingredientsUl, "ingredient");
+  displayRecipesmatchingWithTagsAndMainInput(appareilsUl, "appareil");
+  displayRecipesmatchingWithTagsAndMainInput(ustensilesUl, "ustensile");
+  // ---
 };
 
 window.addEventListener("load", () => {

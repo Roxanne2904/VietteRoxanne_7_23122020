@@ -1,11 +1,14 @@
 let datas;
 // ---
+let isValid;
+// ---
 let uniqueDataIngredients = [];
 let uniqueDataAppareils = [];
 let uniqueDataUstensiles = [];
 // ---
+let matchingRecipesArray = [];
+// ---
 let tagsStock = [];
-let uniqueTagsStock;
 // ---
 const ingredientsUl = document.getElementById("ingredients__ul");
 const appareilsUl = document.getElementById("appareil__ul");
@@ -26,6 +29,67 @@ const inputUstensiles = document.querySelector("#ustensiles");
 const form = document.querySelector("#myform");
 const ulRecipes = document.querySelector(".bgdRecipes");
 // ----------------------------------------
+function recipesIsMatching(obj, value) {
+  // ---
+  let applianceIsMatchingValue = currentValue(obj.appliance).includes(value);
+  // ---
+  let descriptionIsMatchingValue = currentValue(obj.description).includes(
+    value
+  );
+  // ---
+  let nameIsMatchingValue = currentValue(obj.name).includes(value);
+  // ---
+  let ingredientIsMatchingValue = obj.ingredients
+    .map((ingredient) => {
+      return currentValue(ingredient.ingredient);
+    })
+    .some((ingredient) => {
+      return ingredient.includes(value);
+    }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
+  // ---
+  let quantityIsMatchingValue = obj.ingredients
+    .map((ingredient) => {
+      if (ingredient.quantity != undefined) {
+        return ingredient.quantity.toString();
+      }
+    })
+    .some((quantity) => {
+      if (quantity != undefined) {
+        return quantity.includes(value);
+      }
+    });
+  // ---
+  let unitIsMatchingValue = obj.ingredients
+    .map((ingredient) => {
+      if (ingredient.unit != undefined) {
+        return currentValue(ingredient.unit);
+      }
+    })
+    .some((unit) => {
+      if (unit != undefined) {
+        return unit.includes(value);
+      }
+    });
+  // ---
+  let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
+    return currentValue(ustensil).includes(value);
+  });
+  // ---
+  if (
+    applianceIsMatchingValue === true ||
+    descriptionIsMatchingValue === true ||
+    nameIsMatchingValue === true ||
+    obj.id.toString().includes(value) === true ||
+    obj.servings.toString().includes(value) === true ||
+    ingredientIsMatchingValue === true ||
+    quantityIsMatchingValue === true ||
+    unitIsMatchingValue === true ||
+    ustensilIsMatchingValue === true
+  ) {
+    return true;
+  }
+}
+// ---
 function currentValue(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
@@ -45,7 +109,7 @@ function updateLiAppearance(list, content) {
   }
 }
 // La listes des inputs ingredients, ustensiles, et appareils;
-const IsOpeningTheList = (ulBlock, click) => {
+const openTheList = (ulBlock, click) => {
   //liBlock)
   const inputs =
     ulBlock.parentElement.firstChild.nextElementSibling.firstChild
@@ -211,8 +275,8 @@ function displayKeywordsLists(list, content) {
 // ---
 // TAGS FUNCTIONS
 // ---
-function AddTagAndChooseTheRightBgdColor(nbs, value) {
-  return `<li class="form__fieldset__bgdTags__li${nbs}">
+function chooseTheRightCodeHtml(nbs, value) {
+  return `<li class="form__fieldset__bgdTags__li${nbs} liTags">
   <span class="form__fieldset__bgdTags__li__tagName">${value}</span
   ><span
     role="button"
@@ -223,66 +287,3 @@ function AddTagAndChooseTheRightBgdColor(nbs, value) {
 </li>`;
 }
 // ---
-function isDisplayingTags(contentTags, tagsStock) {
-  // ---
-  uniqueTagsStock = tagsStock.filter((ele, pos) => {
-    return tagsStock.indexOf(ele) == pos;
-  });
-  // ---
-  if (uniqueTagsStock.length === 0) {
-    contentTags.style.display = "none";
-  } else {
-    contentTags.style.display = "flex";
-    // ---
-    contentTags.innerHTML = uniqueTagsStock
-      .map(
-        (tag) => {
-          let isAnAppareil = uniqueDataAppareils.includes(tag);
-          let isAnUstensile = uniqueDataUstensiles.includes(tag);
-          if (isAnAppareil === true) {
-            return AddTagAndChooseTheRightBgdColor(2, tag);
-          } else if (isAnUstensile === true) {
-            return AddTagAndChooseTheRightBgdColor(3, tag);
-          } else {
-            return AddTagAndChooseTheRightBgdColor(1, tag);
-          }
-        }
-        //     `<li class="form__fieldset__bgdTags__li${mapNumber}">
-        //   <span class="form__fieldset__bgdTags__li__tagName">${tag}</span
-        //   ><span
-        //     role="button"
-        //     tabindex="0"
-        //     class="form__fieldset__bgdTags__li__icone"
-        //     ><i class="far fa-times-circle"></i
-        //   ></span>
-        // </li>`
-      )
-      .join("");
-  }
-}
-// ---
-function isAddingATag(e, content) {
-  let originalText = e.target.innerText;
-  let value = currentValue(e.target.innerText);
-  let stockage = {};
-  // 1) On veut récupérer a chaque fois la bonne liste aveec les bons mots clefs;
-  let currentList = [];
-  for (let i = 0; i < content.children.length; i++) {
-    let value = currentValue(content.children[i].innerText);
-    currentList.push(value);
-  }
-  // ---
-  stockage["keyW"] = value;
-  // ---
-
-  if (currentList.includes(stockage.keyW) === true) {
-    tagsStock.push(originalText);
-    isDisplayingTags(tagsUL, tagsStock);
-  }
-}
-// ---
-function isChoosingAnUlContent(content) {
-  content.addEventListener("click", (e) => {
-    isAddingATag(e, content);
-  });
-}
