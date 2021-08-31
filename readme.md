@@ -21,27 +21,11 @@
 
 ##Tasks:
 
-- [x] Mettre en place tout le html et le css en version static;
-- [x] Verifier que le html et css passe au w3c;
-- [x] Finir le diagramme pour préparer l'algorithmes;
-- [x] Commencer à mettre en place l'injection dynamique du à la recherche utilsateur |main search|:
-
-> - [x] Le diagramme_1 a été réalisé;
-> - [x] l'affichages des listes ingredients ...etc, ne contiennent plus de doublons;
-> - [x] message d'erreur si moins de 3 caractères;
-> - [x] le système recherche si des recettes match avec la valeur input;
-> - [x] le système affiche les recettes correspondantes ou met un msg d'erreur et fait des proposition;
-> - [x] Les mots clefs se mettent à jours en fonction des recettes présentent;
-> - [x] Le code à été nettoyé et optimisé;
-> - [x] Les listes des mots clefs se mettent à jours en fonction de la valeur input;
-> - [x] adapté le css lors de l'event "oninput";
-
-> - [ ] Mettre en place le "onClick" sur les mots clefs;
-> - [ ] Mettre à jour le diagramme- plus détaillé l'algo du main input-;
-
-> - BONUS
-
-> - [ ] Afficher les recettes en fonction du resulat des tags et du main input ;
+- [x] Les algorithmes du main input et ceux des secondaires fonctionnent;
+- [ ] Refaire une vérif avant la session de mentorat;
+- [ ] Mettre en place une seconde "branch feature" pour faire le 2ème algo du main;
+- [ ] Verifier le W3C du css et du HTML.
+- [ ] Mettre en place la fiche, des 2 algos!
 
 ---
 

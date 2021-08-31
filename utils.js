@@ -7,6 +7,10 @@ let uniqueDataAppareils = [];
 let uniqueDataUstensiles = [];
 // ---
 let matchingRecipesArray = [];
+let matchingRecipesArrayTags = [];
+let matchingElementsIngredient;
+let matchingElementsAppareil;
+let matchingElementsUstensile;
 // ---
 let tagsStock = [];
 // ---
@@ -271,6 +275,133 @@ function displayKeywordsLists(list, content) {
     )
     .join("");
   updateLiAppearance(list, content);
+}
+// ---
+// METTRE A JOUR LES ELEMENTS DES LISTES
+// ---
+const isUpdatingSecondariesInputsElements = (
+  uniqueDataList,
+  content,
+  type,
+  arrayRecipes
+) => {
+  // 2)f. On met en place la fonction qui va filtrer;
+  function keywordsIsMatchingWithRecipes(elt) {
+    let currentElt = currentValue(elt);
+    // ---
+    if (type === "ingredient") {
+      let ingredientFromRecipes = arrayRecipes
+        .map((ingredient) => {
+          return ingredient.ingredients.map((ingredient) => {
+            return currentValue(ingredient.ingredient);
+          });
+        })
+        .some((ingredient) => {
+          return ingredient.includes(currentElt);
+        });
+
+      if (ingredientFromRecipes === true) {
+        return true;
+      }
+    } else if (type === "appareil") {
+      let appareilsFromRecipes = arrayRecipes
+        .map((appareil) => {
+          return currentValue(appareil.appliance);
+        })
+        .some((appareil) => {
+          return appareil.includes(currentElt);
+        });
+      if (appareilsFromRecipes === true) {
+        return true;
+      }
+    } else if (type === "ustensile") {
+      let ustensilesFromRecipes = arrayRecipes
+        .map((ustensil) => {
+          return ustensil.ustensils.map((ustensil) => {
+            return currentValue(ustensil);
+          });
+        })
+        .some((ustensil) => {
+          return ustensil.includes(currentElt);
+        });
+      if (ustensilesFromRecipes === true) {
+        return true;
+      }
+    }
+  }
+  if (type === "ingredient") {
+    matchingElementsIngredient = uniqueDataList.filter(
+      keywordsIsMatchingWithRecipes
+    );
+    if (matchingElementsIngredient.length === 0) {
+      return displayKeywordsLists(uniqueDataList, content);
+    }
+    return displayKeywordsLists(matchingElementsIngredient, content);
+  } else if (type === "appareil") {
+    matchingElementsAppareil = uniqueDataList.filter(
+      keywordsIsMatchingWithRecipes
+    );
+    if (matchingElementsAppareil.length === 0) {
+      return displayKeywordsLists(uniqueDataList, content);
+    }
+    return displayKeywordsLists(matchingElementsAppareil, content);
+  } else if (type === "ustensile") {
+    matchingElementsUstensile = uniqueDataList.filter(
+      keywordsIsMatchingWithRecipes
+    );
+    if (matchingElementsUstensile.length === 0) {
+      return displayKeywordsLists(uniqueDataList, content);
+    }
+    return displayKeywordsLists(matchingElementsUstensile, content);
+  }
+  // console.log(matchingElements);
+  // 2)g. Une fois les bons elments filtrés on les affiche avec un innerHTML;
+};
+// --- Pour appeller "isUpdatingSecondariesInputsElements" sur les trois type de listes;
+function callFunctionToUpdateAllKeywords(
+  ListIngredient,
+  ListAppareil,
+  ListUstensile,
+  array
+) {
+  isUpdatingSecondariesInputsElements(
+    ListIngredient,
+    ingredientsUl,
+    "ingredient",
+    array
+  );
+  isUpdatingSecondariesInputsElements(
+    ListAppareil,
+    appareilsUl,
+    "appareil",
+    array
+  );
+  isUpdatingSecondariesInputsElements(
+    ListUstensile,
+    ustensilesUl,
+    "ustensile",
+    array
+  );
+}
+// ---
+function lookAtTermsToDisplay(initialArray) {
+  if (tagsStock.length != 0) {
+    displayRecipes(matchingRecipesArrayWithTags, ulRecipes);
+    callFunctionToUpdateAllKeywords(
+      uniqueDataIngredients,
+      uniqueDataAppareils,
+      uniqueDataUstensiles,
+      matchingRecipesArrayWithTags
+    );
+  } else {
+    displayRecipes(initialArray, ulRecipes);
+    callFunctionToUpdateAllKeywords(
+      uniqueDataIngredients,
+      uniqueDataAppareils,
+      uniqueDataUstensiles,
+      initialArray
+    );
+  }
 }
 // ---
 // TAGS FUNCTIONS
