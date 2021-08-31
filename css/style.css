@@ -254,7 +254,7 @@ html {
 .form__fieldset__bgd__content__inputsBgd__labels {
   cursor: pointer;
   margin-top: 2px;
-  padding-right: 6px;
+  padding: 0 6px;
 }
 .form__fieldset__bgd__content__ul {
   opacity: 0;
