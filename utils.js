@@ -1,13 +1,24 @@
 let datas;
 // ---
+// Pour créer "myMap"
+let stockDatasToMap = [];
+let stockRecipesNames = [];
+let RecipesMatchWithNames = [];
+// ---
+let myMap;
+// ---
+// Pour le main input: "is valid" respect la condition des 3 caractères min;
 let isValid;
 // ---
+// La liste des elements sans doublons;
 let uniqueDataIngredients = [];
 let uniqueDataAppareils = [];
 let uniqueDataUstensiles = [];
 // ---
-let matchingRecipesArray = [];
-let matchingRecipesArrayTags = [];
+// Recipes
+let matchingRecipesArray = []; // Les recettes qui matchent avec le main input;
+let matchingRecipesArrayTags = []; // Les recettes qui matchent avec les tags;
+// Elements des listes
 let matchingElementsIngredient;
 let matchingElementsAppareil;
 let matchingElementsUstensile;
