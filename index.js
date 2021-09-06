@@ -47,7 +47,7 @@ const displayEltsIntoInInputsLists = async () => {
   const isFilteringEatchDataInArray = (arrayDatas, arrayWithUniqueElts) => {
     arrayDatas.forEach((ingredient) => {
       let result = ingredient;
-      // let arrayResult = [];
+      let arrayResult = [];
       //-----
       if (result[result.length - 1] === "s") {
         result = result.substring(0, result.length - 1);
@@ -179,57 +179,71 @@ const displayRecipesDynamically = async () => {
     let title = [elt.name];
     // ---
     name.forEach((elt) => {
-      if (currentValue(elt).length >= 3) {
-        return stockRecipesNames.push(currentValue(elt));
+      elt = currentValue(elt);
+      if (elt.length >= 3) {
+        return stockRecipesNames.push(elt);
       }
     });
     // ---
     description.forEach((elt) => {
-      if (elt[elt.length - 1] === "." || elt[elt.length - 1] === ",") {
-        elt = elt.substring(0, elt.length - 1);
-      }
-      if (elt[elt.length - 1] === ")") {
-        elt = elt.substring(0, elt.length - 1);
-      }
-      if (elt[0] === "(") {
-        elt = elt.substring(1);
-      }
-      if (elt[0] === "d" && elt[1] === "'") {
-        elt = elt.substring(2);
-      }
-      if (elt[0] === "l" && elt[1] === "'") {
-        elt = elt.substring(2);
-      }
-      if (elt[0] === "n" && elt[1] === "'") {
-        elt = elt.substring(2);
-      }
-      // ---
-      if (currentValue(elt).length >= 3) {
-        return stockRecipesNames.push(currentValue(elt));
+      elt = currentEltFromTxtDescription(elt);
+      if (elt.length >= 3) {
+        return stockRecipesNames.push(elt);
       }
     });
     // ---
     title.forEach((elt) => {
-      return stockRecipesNames.push(currentValue(elt));
+      elt = currentValue(elt);
+      return stockRecipesNames.push(elt);
     });
   });
   // ---
   // On filtre pour éviter les doublons;
   // ---
-  stockRecipesNames = stockRecipesNames.filter((ele, index) => {
-    return stockRecipesNames.indexOf(ele) == index;
-  });
+  stockRecipesNames = stockRecipesNames
+    .filter((ele, index) => {
+      return stockRecipesNames.indexOf(ele) == index;
+    })
+    .sort();
   // ---
   console.log(stockRecipesNames);
   stockRecipesNames.map((ele) => {
-    RecipesMatchWithNames = datas.recipes.filter((obj) => {
-      if (
-        currentValue(obj.name).includes(ele) ||
-        currentValue(obj.description).includes(ele)
-      ) {
-        return true;
-      }
-    });
+    if (ele === "casserole") {
+      RecipesMatchWithNames = datas.recipes.filter((obj) => {
+        //  obj.ingredients.map((elt) => {
+        //   elt = currentValue(elt.ingredient);
+        //   return elt.includes(ele);
+        // });
+
+        if (
+          currentValue(obj.name).includes(ele) ||
+          currentValue(obj.appliance).includes(ele) ||
+          currentValue(obj.description).includes(ele) ||
+          obj.ingredients.map((elt) => {
+            elt = currentValue(elt.ingredient);
+            return elt.includes(ele);
+          }) === true ||
+          currentValue(obj.description).includes("casserolle")
+        ) {
+          return true;
+        }
+      });
+    } else {
+      RecipesMatchWithNames = datas.recipes.filter((obj) => {
+        if (
+          currentValue(obj.name).includes(ele) ||
+          currentValue(obj.appliance).includes(ele) ||
+          currentValue(obj.description).includes(ele) ||
+          obj.ingredients.map((elt) => {
+            elt = currentValue(elt.ingredient);
+            return elt.includes(ele);
+          }) === true
+        ) {
+          return true;
+        }
+      });
+    }
+
     stockDatasToMap.push([ele, RecipesMatchWithNames]);
   });
   // ---
@@ -322,14 +336,25 @@ const displayRecipesDynamically = async () => {
       // matchingRecipesArray = datas.recipes.filter(
       //   recipesIsMatchingWithMainInput
       // );
-
+      // ---
       //FEATURE02
       console.log(myMap);
-      matchingRecipesArray;
       console.log(value);
 
       if (myMap.get(value) === undefined) {
         console.log("le mot n'est pas dans la map");
+        let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
+          // console.log(elt[0]);
+          return elt[0].startsWith(value);
+          // console.log(elt[0].startsWith(value));
+        });
+        console.log(retrieveTheRightMapKey);
+        if (retrieveTheRightMapKey != undefined) {
+          retrieveTheRightMapKey = retrieveTheRightMapKey[0];
+          matchingRecipesArray = myMap.get(retrieveTheRightMapKey);
+        } else {
+          matchingRecipesArray = [];
+        }
       } else {
         console.log("le mot est dans la map");
         matchingRecipesArray = myMap.get(value);
@@ -382,7 +407,7 @@ const displayRecipesDynamically = async () => {
   // 3) On met en place la fonction "oninput" des inputs secondaires;
   function updateKeywordsLists(e, currentList) {
     let value = currentValue(e.target.value);
-    // let mainValue = mainInput.value;
+    let mainValue = mainInput.value;
     let matchingElemntsArray = [];
     // _________________________________________
     // --- La fonction pour filtrer
@@ -393,7 +418,11 @@ const displayRecipesDynamically = async () => {
       }
     }
     // --- La fonction pour afficher le resultat des mots clefs qui matchent avec la valeur input;
-    function displayMatchingKeywordsListWithValue(list, content) {
+    function displayMatchingKeywordsListWithValue(
+      list,
+      listIncludeMainValue,
+      content
+    ) {
       if (value === "" || list.length === 0) {
         content.parentElement.firstChild.nextElementSibling.style.padding =
           "20px";
@@ -401,11 +430,18 @@ const displayRecipesDynamically = async () => {
           "0.5";
         content.parentElement.firstChild.nextElementSibling.firstChild.nextElementSibling.style.fontWeight =
           "100";
-
-        displayKeywordsLists(currentList, content);
+        if (mainValue != "") {
+          // console.log("okay");
+          // console.log(currentList);
+          // console.log(matchingElementsIngredient);
+          // console.log(listIncludeMainValue);
+          displayKeywordsLists(listIncludeMainValue, content);
+        } else {
+          displayKeywordsLists(currentList, content);
+        }
       } else {
         displayKeywordsLists(list, content);
-        updateLiAppearance(list, content);
+        // updateLiAppearance(list, content);
       }
     }
     // ---
@@ -413,7 +449,11 @@ const displayRecipesDynamically = async () => {
     if (currentList === uniqueDataIngredients) {
       openTheList(ingredientsUl, false);
       matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
-      displayMatchingKeywordsListWithValue(matchingElemntsArray, ingredientsUl);
+      displayMatchingKeywordsListWithValue(
+        matchingElemntsArray,
+        matchingElementsIngredient,
+        ingredientsUl
+      );
     }
     if (currentList === uniqueDataAppareils) {
       openTheList(appareilsUl, false);

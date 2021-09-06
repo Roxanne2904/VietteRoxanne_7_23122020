@@ -109,10 +109,42 @@ function currentValue(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
   }
-  return value
+  value = value
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
+  if (value === "casserolle") {
+    return (value = "casserole");
+  } else {
+    return value;
+  }
+}
+// ---
+function currentEltFromTxtDescription(elt) {
+  elt = currentValue(elt);
+  if ((elt === "casserolle") === true) {
+    elt = "casserole";
+  }
+  if (elt[elt.length - 1] === "." || elt[elt.length - 1] === ",") {
+    elt = elt.substring(0, elt.length - 1);
+  }
+
+  if (elt[elt.length - 1] === ")") {
+    elt = elt.substring(0, elt.length - 1);
+  }
+  if (elt[0] === "(") {
+    elt = elt.substring(1);
+  }
+  if (elt[0] === "d" && elt[1] === "'") {
+    elt = elt.substring(2);
+  }
+  if (elt[0] === "l" && elt[1] === "'") {
+    elt = elt.substring(2);
+  }
+  if (elt[0] === "n" && elt[1] === "'") {
+    elt = elt.substring(2);
+  }
+  return elt;
 }
 // LI des mots clefs;
 function updateLiAppearance(list, content) {
@@ -429,3 +461,110 @@ function chooseTheRightCodeHtml(nbs, value) {
 </li>`;
 }
 // ---
+// ---
+
+//donnée test pour la simulation à garder au cas ou;
+// let test = {
+//   recipes: [
+//     {
+//       name: "limonade de coco",
+//       description:
+//         "Commencer par préparer les ingrédients.Coupez la coco, puis mixer",
+//     },
+//     {
+//       name: "Poulet au curry",
+//       description:
+//         "Coupez le poulet, puis préparer le riz. Faites cuire le tout dans une cocotte",
+//     },
+//     {
+//       name: "Boulettes de viande épicé",
+//       description: "Façonnez les boulettes de viandes, puis faites les cuires",
+//     },
+//     {
+//       name: "Riz au lait",
+//       description:
+//         "Mettez le riz à cuire dans l'eau, puis ensuite, faire le cuire dans le lait",
+//     },
+//     {
+//       name: "Purée de pomme de terre douce",
+//       description: "Epluchez les pommes de terre, puis écraser les",
+//     },
+//     {
+//       name: "Soupe de poulet",
+//       description: "Coupez le poulet et faites le cuire",
+//     },
+//   ],
+// };
+// let stock01 = [];
+// let stock02 = [];
+// let stock03 = [];
+// let mapEx;
+// // ---
+// test.recipes.forEach((elt) => {
+//   let name = elt.name.split(" ");
+//   let description = elt.description.split(" ");
+//   let title = [elt.name];
+//   // ---
+//   name.forEach((elt) => {
+//     if (currentValue(elt).length >= 3) {
+//       return stock01.push(currentValue(elt));
+//     }
+//   });
+//   // ---
+//   description.forEach((elt) => {
+//     if (
+//       currentValue(elt)[elt.length - 1] === "." ||
+//       elt[elt.length - 1] === ","
+//     ) {
+//       elt = elt.substring(0, elt.length - 1);
+//     }
+//     if (currentValue(elt)[elt.length - 1] === ")") {
+//       elt = elt.substring(0, elt.length - 1);
+//     }
+//     if (currentValue(elt)[0] === "(") {
+//       elt = elt.substring(1);
+//     }
+//     if (currentValue(elt)[0] === "d" && elt[1] === "'") {
+//       elt = elt.substring(2);
+//     }
+//     if (currentValue(elt)[0] === "l" && elt[1] === "'") {
+//       elt = elt.substring(2);
+//     }
+//     if (currentValue(elt)[0] === "n" && elt[1] === "'") {
+//       elt = elt.substring(2);
+//     }
+//     // ---
+//     if (currentValue(elt).length >= 3) {
+//       return stock01.push(currentValue(elt));
+//     }
+//   });
+//   // ---
+//   title.forEach((elt) => {
+//     return stock01.push(currentValue(elt));
+//   });
+// });
+// // ---
+// // On filtre pour éviter les doublons;
+// // ---
+// stock01 = stock01
+//   .filter((ele, index) => {
+//     return stock01.indexOf(ele) == index;
+//   })
+//   .sort();
+// // ---
+// console.log(stock01);
+// stock01.map((ele) => {
+//   stock02 = test.recipes.filter((obj) => {
+//     if (
+//       currentValue(obj.name).includes(ele) ||
+//       currentValue(obj.description).includes(ele)
+//     ) {
+//       return true;
+//     }
+//   });
+//   stock03.push([ele, stock02]);
+// });
+// // ---
+// console.log(stock03);
+// mapEx = new Map(stock03);
+// console.log(mapEx);
