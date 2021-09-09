@@ -174,78 +174,114 @@ const displayRecipesDynamically = async () => {
   //1)a.Feature02- On prépare la map;
   // ---
   datas.recipes.forEach((elt) => {
-    let name = elt.name.split(" ");
+    let words = elt.name.split(" ");
     let description = elt.description.split(" ");
     let title = [elt.name];
+    let arrayIngre = elt.ingredients.map((elt) => {
+      return elt.ingredient;
+    });
     // ---
-    name.forEach((elt) => {
+    let appliance = currentValue(elt.appliance);
+    let fullTxtAppliance = currentValueNotUniqueCharacter(elt.appliance);
+    // ---
+    let ustensil = elt.ustensils.map((elt) => {
+      return currentValue(elt);
+    });
+    // ---
+    ustensil.forEach((elt) => {
+      let fullTxt = currentValueNotUniqueCharacter(elt);
+      fullTxt = currentEltFromTxtDescription(fullTxt);
+      return stockWords.push([elt, fullTxt]);
+    });
+    // ---
+    stockWords.push([appliance, fullTxtAppliance]);
+    // ---
+    words.forEach((elt) => {
+      let fullTxt = currentValueNotUniqueCharacter(elt);
+      fullTxt = currentEltFromTxtDescription(fullTxt);
       elt = currentValue(elt);
       if (elt.length >= 3) {
-        return stockRecipesNames.push(elt);
+        return stockWords.push([elt, fullTxt]);
       }
     });
     // ---
+    arrayIngre.forEach((elt) => {
+      let fullTxt = currentValueNotUniqueCharacter(elt);
+      fullTxt = currentEltFromTxtDescription(fullTxt);
+      elt = currentValue(elt);
+      return stockWords.push([elt, fullTxt]);
+    });
+    // ---
     description.forEach((elt) => {
+      let fullTxt = currentValueNotUniqueCharacter(elt);
+      fullTxt = currentEltFromTxtDescription(fullTxt);
+      elt = currentValue(elt);
       elt = currentEltFromTxtDescription(elt);
       if (elt.length >= 3) {
-        return stockRecipesNames.push(elt);
+        return stockWords.push([elt, fullTxt]);
       }
     });
     // ---
     title.forEach((elt) => {
+      let fullTxt = currentValueNotUniqueCharacter(elt);
+      fullTxt = currentEltFromTxtDescription(fullTxt);
       elt = currentValue(elt);
-      return stockRecipesNames.push(elt);
+      return stockWords.push([elt, fullTxt]);
     });
   });
   // ---
   // On filtre pour éviter les doublons;
   // ---
-  stockRecipesNames = stockRecipesNames
-    .filter((ele, index) => {
-      return stockRecipesNames.indexOf(ele) == index;
+  stockWords = stockWords
+    .filter((obj, index, array) => {
+      return array.findIndex((t) => t[0] === obj[0]) === index;
     })
     .sort();
   // ---
-  console.log(stockRecipesNames);
-  stockRecipesNames.map((ele) => {
-    if (ele === "casserole") {
-      RecipesMatchWithNames = datas.recipes.filter((obj) => {
-        //  obj.ingredients.map((elt) => {
-        //   elt = currentValue(elt.ingredient);
-        //   return elt.includes(ele);
-        // });
-
-        if (
-          currentValue(obj.name).includes(ele) ||
-          currentValue(obj.appliance).includes(ele) ||
-          currentValue(obj.description).includes(ele) ||
-          obj.ingredients.map((elt) => {
-            elt = currentValue(elt.ingredient);
-            return elt.includes(ele);
-          }) === true ||
-          currentValue(obj.description).includes("casserolle")
-        ) {
-          return true;
-        }
-      });
-    } else {
-      RecipesMatchWithNames = datas.recipes.filter((obj) => {
-        if (
-          currentValue(obj.name).includes(ele) ||
-          currentValue(obj.appliance).includes(ele) ||
-          currentValue(obj.description).includes(ele) ||
-          obj.ingredients.map((elt) => {
-            elt = currentValue(elt.ingredient);
-            return elt.includes(ele);
-          }) === true
-        ) {
-          return true;
-        }
-      });
-    }
-
+  // console.log(stockWords);
+  // ---
+  stockWords.forEach((ele) => {
+    let fullWord = currentValueNotUniqueCharacter(ele[1]);
+    ele = ele[0];
+    // ---
+    RecipesMatchWithNames = datas.recipes.filter((obj) => {
+      let name = currentValue(obj.name);
+      let description = currentValueNotUniqueCharacter(obj.description);
+      // ---
+      let ingredient = obj.ingredients
+        .map((elt) => {
+          elt = currentValue(elt.ingredient);
+          return elt.includes(ele);
+        })
+        .some((elt) => elt === true);
+      // ---
+      let appliance = currentValue(obj.appliance);
+      appliance = currentEltFromTxtDescription(appliance);
+      // ---
+      let ustensil = obj.ustensils
+        .map((elt) => {
+          return elt.includes(ele);
+        })
+        .some((elt) => elt === true);
+      // ---
+      if (
+        name.includes(ele) ||
+        description.includes(fullWord) ||
+        ingredient === true ||
+        appliance.includes(ele) ||
+        ustensil === true
+      ) {
+        return true;
+      }
+    });
     stockDatasToMap.push([ele, RecipesMatchWithNames]);
   });
+
+  // On trie le tout;
+  stockDatasToMap = stockDatasToMap.sort(function compare(a, b) {
+    return a[0].localeCompare(b[0]);
+  });
+  console.log(stockDatasToMap);
   // ---
   myMap = new Map(stockDatasToMap);
   // console.log(myMap);
@@ -338,8 +374,8 @@ const displayRecipesDynamically = async () => {
       // );
       // ---
       //FEATURE02
-      console.log(myMap);
       console.log(value);
+      console.log(myMap);
 
       if (myMap.get(value) === undefined) {
         console.log("le mot n'est pas dans la map");
@@ -405,7 +441,7 @@ const displayRecipesDynamically = async () => {
   // DEBUT DE L'ALGO DES INPUTS SECONDAIRES
   // -----------------------------------------------------------------------------
   // 3) On met en place la fonction "oninput" des inputs secondaires;
-  function updateKeywordsLists(e, currentList) {
+  function updateKeywordsLists(e, currentList, listIncludeMainValue) {
     let value = currentValue(e.target.value);
     let mainValue = mainInput.value;
     let matchingElemntsArray = [];
@@ -431,10 +467,6 @@ const displayRecipesDynamically = async () => {
         content.parentElement.firstChild.nextElementSibling.firstChild.nextElementSibling.style.fontWeight =
           "100";
         if (mainValue != "") {
-          // console.log("okay");
-          // console.log(currentList);
-          // console.log(matchingElementsIngredient);
-          // console.log(listIncludeMainValue);
           displayKeywordsLists(listIncludeMainValue, content);
         } else {
           displayKeywordsLists(currentList, content);
@@ -448,36 +480,65 @@ const displayRecipesDynamically = async () => {
     // _________________________________________
     if (currentList === uniqueDataIngredients) {
       openTheList(ingredientsUl, false);
-      matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
+      if (mainValue != "") {
+        // console.log(listIncludeMainValue);
+        matchingElemntsArray = listIncludeMainValue.filter(
+          keywordsIsMatchingWithValue
+        );
+      } else {
+        matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
+      }
       displayMatchingKeywordsListWithValue(
         matchingElemntsArray,
-        matchingElementsIngredient,
+        listIncludeMainValue,
         ingredientsUl
       );
     }
     if (currentList === uniqueDataAppareils) {
       openTheList(appareilsUl, false);
-      matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
-      displayMatchingKeywordsListWithValue(matchingElemntsArray, appareilsUl);
+      if (mainValue != "") {
+        // console.log(listIncludeMainValue);
+        matchingElemntsArray = listIncludeMainValue.filter(
+          keywordsIsMatchingWithValue
+        );
+      } else {
+        matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
+      }
+      displayMatchingKeywordsListWithValue(
+        matchingElemntsArray,
+        listIncludeMainValue,
+        appareilsUl
+      );
     }
     if (currentList === uniqueDataUstensiles) {
       openTheList(ustensilesUl, false);
-      matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
-      displayMatchingKeywordsListWithValue(matchingElemntsArray, ustensilesUl);
+      if (mainValue != "") {
+        // console.log(listIncludeMainValue);
+        matchingElemntsArray = listIncludeMainValue.filter(
+          keywordsIsMatchingWithValue
+        );
+      } else {
+        matchingElemntsArray = currentList.filter(keywordsIsMatchingWithValue);
+      }
+      displayMatchingKeywordsListWithValue(
+        matchingElemntsArray,
+        listIncludeMainValue,
+        ustensilesUl
+      );
     }
   }
   // Appel de la fonction sur inputs secondaires;
   // Ingredient;
   inputIngredients.addEventListener("input", (e) => {
-    updateKeywordsLists(e, uniqueDataIngredients);
+    updateKeywordsLists(e, uniqueDataIngredients, matchingElementsIngredient);
   });
   // Appareil;
   inputAppareils.addEventListener("input", (e) => {
-    updateKeywordsLists(e, uniqueDataAppareils);
+    updateKeywordsLists(e, uniqueDataAppareils, matchingElementsAppareil);
   });
   // Ustensiles
   inputUstensiles.addEventListener("input", (e) => {
-    updateKeywordsLists(e, uniqueDataUstensiles);
+    updateKeywordsLists(e, uniqueDataUstensiles, matchingElementsUstensile);
   });
   // ___________________________________
   // 4) ...enfin on met en place l'event onClick sur les keywords mis à jour, pour mettre

@@ -2,7 +2,7 @@ let datas;
 // ---
 // Pour créer "myMap"
 let stockDatasToMap = [];
-let stockRecipesNames = [];
+let stockWords = [];
 let RecipesMatchWithNames = [];
 // ---
 let myMap;
@@ -113,18 +113,28 @@ function currentValue(value) {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
-  if (value === "casserolle") {
-    return (value = "casserole");
-  } else {
-    return value;
+
+  value = value
+    .split("")
+    .filter((ele, pos, array) => {
+      return array.indexOf(ele) === pos;
+    })
+    .join("")
+    .toString();
+  return value;
+} //Unique character
+// ---
+function currentValueNotUniqueCharacter(value) {
+  if (value[value.length - 1] === "s") {
+    value = value.substring(0, value.length - 1);
   }
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 // ---
 function currentEltFromTxtDescription(elt) {
-  elt = currentValue(elt);
-  if ((elt === "casserolle") === true) {
-    elt = "casserole";
-  }
   if (elt[elt.length - 1] === "." || elt[elt.length - 1] === ",") {
     elt = elt.substring(0, elt.length - 1);
   }
