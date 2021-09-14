@@ -161,6 +161,19 @@ const displayRecipesDynamically = async () => {
   await displayEltsIntoInInputsLists();
   // -----
   // 0) On injecte toute les données dynamique dès le début;
+  //    et on vérifie de bien remettre les données à jours lors du changement de valeur;
+  window.addEventListener("click", () => {
+    if (mainInput.value.length === 0) {
+      return updateTheSearch(value);
+    }
+  });
+  mainInput.addEventListener("keydown", (e) => {
+    let event = e.key;
+    if (event === "Enter") {
+      return updateTheSearch(value);
+    }
+  });
+  // ---
   displayRecipes(datas.recipes, ulRecipes);
   // ---
   // 1) On met un preventDefault sur le submit du form;
@@ -170,7 +183,6 @@ const displayRecipesDynamically = async () => {
     });
   })();
   // ---
-
   //1)a.Feature02- On prépare la map;
   // ---
   datas.recipes.forEach((elt) => {
@@ -181,11 +193,11 @@ const displayRecipesDynamically = async () => {
       return elt.ingredient;
     });
     // ---
-    let appliance = currentValue(elt.appliance);
+    let appliance = currentTitle(elt.appliance);
     let fullTxtAppliance = currentValueNotUniqueCharacter(elt.appliance);
     // ---
     let ustensil = elt.ustensils.map((elt) => {
-      return currentValue(elt);
+      return currentTitle(elt);
     });
     // ---
     ustensil.forEach((elt) => {
@@ -200,7 +212,8 @@ const displayRecipesDynamically = async () => {
       let fullTxt = currentValueNotUniqueCharacter(elt);
       fullTxt = currentEltFromTxtDescription(fullTxt);
       elt = currentValue(elt);
-      if (elt.length >= 3) {
+      // console.log(elt);
+      if (elt.length >= 2) {
         return stockWords.push([elt, fullTxt]);
       }
     });
@@ -208,7 +221,7 @@ const displayRecipesDynamically = async () => {
     arrayIngre.forEach((elt) => {
       let fullTxt = currentValueNotUniqueCharacter(elt);
       fullTxt = currentEltFromTxtDescription(fullTxt);
-      elt = currentValue(elt);
+      elt = currentTitle(elt);
       return stockWords.push([elt, fullTxt]);
     });
     // ---
@@ -217,16 +230,24 @@ const displayRecipesDynamically = async () => {
       fullTxt = currentEltFromTxtDescription(fullTxt);
       elt = currentValue(elt);
       elt = currentEltFromTxtDescription(elt);
-      if (elt.length >= 3) {
+      if (elt.length >= 2) {
         return stockWords.push([elt, fullTxt]);
       }
     });
     // ---
     title.forEach((elt) => {
+      words = words
+        .map((elt) => {
+          elt = currentValueNotUniqueCharacter(elt);
+          elt = currentEltFromTxtDescription(elt);
+
+          return (elt = elt.toString());
+        })
+        .join("");
+      words = currentValue(words);
       let fullTxt = currentValueNotUniqueCharacter(elt);
       fullTxt = currentEltFromTxtDescription(fullTxt);
-      elt = currentValue(elt);
-      return stockWords.push([elt, fullTxt]);
+      return stockWords.push([words, fullTxt]);
     });
   });
   // ---
@@ -245,24 +266,39 @@ const displayRecipesDynamically = async () => {
     ele = ele[0];
     // ---
     RecipesMatchWithNames = datas.recipes.filter((obj) => {
-      let name = currentValue(obj.name);
+      let name = currentTitle(obj.name);
       let description = currentValueNotUniqueCharacter(obj.description);
       // ---
       let ingredient = obj.ingredients
         .map((elt) => {
-          elt = currentValue(elt.ingredient);
+          elt = currentTitle(elt.ingredient);
+          // console.log(elt);
           return elt.includes(ele);
         })
         .some((elt) => elt === true);
       // ---
-      let appliance = currentValue(obj.appliance);
+      let appliance = currentTitle(obj.appliance);
       appliance = currentEltFromTxtDescription(appliance);
       // ---
       let ustensil = obj.ustensils
         .map((elt) => {
+          elt = currentTitle(elt);
+          // console.log(elt);
           return elt.includes(ele);
         })
         .some((elt) => elt === true);
+      // ---
+      // let title = currentTitle(obj.name);
+      // obj.name
+      //   .split(" ")
+      //   .map((elt) => {
+      //     elt = currentValueNotUniqueCharacter(elt);
+      //     elt = currentEltFromTxtDescription(elt);
+      //     return (elt = elt.toString());
+      //   })
+      //   .join("");
+      // title = currentValue(title);
+      // console.log(title);
       // ---
       if (
         name.includes(ele) ||
@@ -270,6 +306,7 @@ const displayRecipesDynamically = async () => {
         ingredient === true ||
         appliance.includes(ele) ||
         ustensil === true
+        // title.includes(ele)
       ) {
         return true;
       }
@@ -281,16 +318,40 @@ const displayRecipesDynamically = async () => {
   stockDatasToMap = stockDatasToMap.sort(function compare(a, b) {
     return a[0].localeCompare(b[0]);
   });
-  console.log(stockDatasToMap);
+  // console.log(stockDatasToMap);
   // ---
   myMap = new Map(stockDatasToMap);
-  // console.log(myMap);
-
+  console.log(myMap);
   // ---
   // 2) On met en place la fonction pour le "onInput" du main input;
   function displayRecipesMatchingWithMainInputValue(event) {
     // ---
-    let value = currentValue(event.target.value);
+    value = event.target.value;
+    value = value
+      .split(" ")
+      .map((elt) => {
+        elt = currentValueNotUniqueCharacter(elt);
+        elt = currentEltFromTxtDescription(elt);
+        return (elt = elt.toString());
+      })
+      .join("");
+    // ---
+    valueNotUniqueCharacter = value;
+    value = currentValue(value);
+    // ---
+    value = value.split("").map((elt) => {
+      if (elt.includes(" ") === true) {
+        return "";
+      }
+      return elt;
+    });
+    if (value.indexOf("") === value.length - 1) {
+      value = value.splice(value.length - 1, 1);
+      return value.toString();
+    }
+    value = value.join("");
+    console.log(value);
+    //  ---
     isValid = mainInput.validity.valid;
     // ---
     // 2)a. On vérifie si le main input répond à la condition des 3 caractères;
@@ -304,103 +365,111 @@ const displayRecipesDynamically = async () => {
       // ---
     } else {
       //FEATURE01
-      // // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
-      // function recipesIsMatchingWithMainInput(obj) {
-      //   // ---
-      //   // let applianceIsMatchingValue = currentValue(obj.appliance).includes(
-      //   //   value
-      //   // );
-      //   // ---
-      //   let descriptionIsMatchingValue = currentValue(obj.description).includes(
-      //     value
-      //   );
-      //   // ---
-      //   let nameIsMatchingValue = currentValue(obj.name).includes(value);
-      //   // ---
-      //   // let ingredientIsMatchingValue = obj.ingredients
-      //   //   .map((ingredient) => {
-      //   //     return currentValue(ingredient.ingredient);
-      //   //   })
-      //   //   .some((ingredient) => {
-      //   //     return ingredient.includes(value);
-      //   //   }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
-      //   // ---
-      //   // let quantityIsMatchingValue = obj.ingredients
-      //   //   .map((ingredient) => {
-      //   //     if (ingredient.quantity != undefined) {
-      //   //       return ingredient.quantity.toString();
-      //   //     }
-      //   //   })
-      //   //   .some((quantity) => {
-      //   //     if (quantity != undefined) {
-      //   //       return quantity.includes(value);
-      //   //     }
-      //   //   });
-      //   // ---
-      //   // let unitIsMatchingValue = obj.ingredients
-      //   //   .map((ingredient) => {
-      //   //     if (ingredient.unit != undefined) {
-      //   //       return currentValue(ingredient.unit);
-      //   //     }
-      //   //   })
-      //   //   .some((unit) => {
-      //   //     if (unit != undefined) {
-      //   //       return unit.includes(value);
-      //   //     }
-      //   //   });
-      //   // ---
-      //   // let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-      //   //   return currentValue(ustensil).includes(value);
-      //   // });
-      //   // ---
-      //   if (
-      //     // applianceIsMatchingValue === true ||
-      //     descriptionIsMatchingValue === true ||
-      //     nameIsMatchingValue === true
-      //     // obj.id.toString().includes(value) === true ||
-      //     // obj.servings.toString().includes(value) === true ||
-      //     // ingredientIsMatchingValue === true ||
-      //     // quantityIsMatchingValue === true ||
-      //     // unitIsMatchingValue === true ||
-      //     // ustensilIsMatchingValue === true
-      //   ) {
-      //     return true;
-      //   }
-      // }
-      // // 2)c. On Obtient un array qui contient les recettes correspondantes;
-      // // ---
-      // matchingRecipesArray = datas.recipes.filter(
-      //   recipesIsMatchingWithMainInput
-      // );
-      // ---
-      //FEATURE02
-      console.log(value);
-      console.log(myMap);
-
-      if (myMap.get(value) === undefined) {
-        console.log("le mot n'est pas dans la map");
-        let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
-          // console.log(elt[0]);
-          return elt[0].startsWith(value);
-          // console.log(elt[0].startsWith(value));
+      // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
+      function recipesIsMatchingWithMainInput(obj) {
+        // ---
+        let applianceIsMatchingValue = currentTitle(obj.appliance).includes(
+          value
+        );
+        // ---
+        let descriptionIsMatchingValue = currentValueNotUniqueCharacter(
+          obj.description
+        ).includes(valueNotUniqueCharacter);
+        // ---
+        let nameIsMatchingValue = currentTitle(obj.name).includes(value);
+        // ---
+        let ingredientIsMatchingValue = obj.ingredients
+          .map((ingredient) => {
+            return currentTitle(ingredient.ingredient);
+          })
+          .some((ingredient) => {
+            return ingredient.includes(value);
+          }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
+        // ---
+        // let quantityIsMatchingValue = obj.ingredients
+        //   .map((ingredient) => {
+        //     if (ingredient.quantity != undefined) {
+        //       return ingredient.quantity.toString();
+        //     }
+        //   })
+        //   .some((quantity) => {
+        //     if (quantity != undefined) {
+        //       return quantity.includes(value);
+        //     }
+        //   });
+        // ---
+        // let unitIsMatchingValue = obj.ingredients
+        //   .map((ingredient) => {
+        //     if (ingredient.unit != undefined) {
+        //       return currentValue(ingredient.unit);
+        //     }
+        //   })
+        //   .some((unit) => {
+        //     if (unit != undefined) {
+        //       return unit.includes(value);
+        //     }
+        //   });
+        // ---
+        let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
+          return currentTitle(ustensil).includes(value);
         });
-        console.log(retrieveTheRightMapKey);
-        if (retrieveTheRightMapKey != undefined) {
-          retrieveTheRightMapKey = retrieveTheRightMapKey[0];
-          matchingRecipesArray = myMap.get(retrieveTheRightMapKey);
-        } else {
-          matchingRecipesArray = [];
+        // ---
+        if (
+          applianceIsMatchingValue === true ||
+          descriptionIsMatchingValue === true ||
+          nameIsMatchingValue === true ||
+          // obj.id.toString().includes(value) === true ||
+          // obj.servings.toString().includes(value) === true ||
+          ingredientIsMatchingValue === true ||
+          // quantityIsMatchingValue === true ||
+          // unitIsMatchingValue === true ||
+          ustensilIsMatchingValue === true
+        ) {
+          return true;
         }
-      } else {
-        console.log("le mot est dans la map");
-        matchingRecipesArray = myMap.get(value);
       }
-      console.log(matchingRecipesArray);
-
+      // 2)c. On Obtient un array qui contient les recettes correspondantes;
       // ---
+      matchingRecipesArray = datas.recipes.filter(
+        recipesIsMatchingWithMainInput
+      );
+      // ---
+      // --- fin de FEATURE01
+
+      //FEATURE02
+      // console.log(value);
+      // console.log(myMap);
+
+      // if (myMap.get(value) === undefined) {
+      //   console.log("le mot n'est pas dans la map");
+      //   let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
+      //     // console.log(elt[0]);
+      //     // console.log(elt[0].startsWith(value));
+      //     if (value.indexOf("d") === value.length - 1) {
+      //       value = value.substring(0, value.length - 1);
+      //       return elt[0].startsWith(value);
+      //     } else {
+      //       return elt[0].startsWith(value);
+      //     }
+      //   });
+      //   console.log(retrieveTheRightMapKey);
+      //   if (retrieveTheRightMapKey != undefined) {
+      //     retrieveTheRightMapKey = retrieveTheRightMapKey[0];
+      //     matchingRecipesArray = myMap.get(retrieveTheRightMapKey);
+      //   } else {
+      //     matchingRecipesArray = [];
+      //   }
+      // } else {
+      //   console.log("le mot est dans la map");
+      //   matchingRecipesArray = myMap.get(value);
+      // }
+      // --- fin de FEATURE02
+
+      console.log(matchingRecipesArray);
       // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
       //      puis on injecte les données;
       (function displayMatchingRecipes() {
+        // ---
         if (matchingRecipesArray.length === 0) {
           return (ulRecipes.innerHTML = `<div id="errorMsg">« Aucune recette ne correspond à votre critère… vous pouvez
           chercher « tarte aux pommes », « poisson », etc.</div>

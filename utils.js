@@ -4,8 +4,12 @@ let datas;
 let stockDatasToMap = [];
 let stockWords = [];
 let RecipesMatchWithNames = [];
+let matchingRecipesArrayWithTags;
 // ---
 let myMap;
+// ---
+let value;
+let valueNotUniqueCharacter;
 // ---
 // Pour le main input: "is valid" respect la condition des 3 caractères min;
 let isValid;
@@ -44,6 +48,14 @@ const inputUstensiles = document.querySelector("#ustensiles");
 const form = document.querySelector("#myform");
 const ulRecipes = document.querySelector(".bgdRecipes");
 // ----------------------------------------
+function updateTheSearch(value) {
+  if (value.length === 0) {
+    displayRecipes(datas.recipes, ulRecipes);
+    displayKeywordsLists(uniqueDataIngredients, ingredientsUl);
+    displayKeywordsLists(uniqueDataAppareils, appareilsUl);
+    displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
+  }
+}
 function recipesIsMatching(obj, value) {
   // ---
   let applianceIsMatchingValue = currentValue(obj.appliance).includes(value);
@@ -109,6 +121,11 @@ function currentValue(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
   }
+  //
+  if (value[value.length - 1] === "x") {
+    value = value.substring(0, value.length - 1);
+  }
+  //
   value = value
     .toLowerCase()
     .normalize("NFD")
@@ -128,6 +145,11 @@ function currentValueNotUniqueCharacter(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
   }
+  //
+  if (value[value.length - 1] === "x") {
+    value = value.substring(0, value.length - 1);
+  }
+  //
   return value
     .toLowerCase()
     .normalize("NFD")
@@ -155,6 +177,18 @@ function currentEltFromTxtDescription(elt) {
     elt = elt.substring(2);
   }
   return elt;
+}
+// ---
+function currentTitle(value) {
+  value = value
+    .split(" ")
+    .map((elt) => {
+      elt = currentValueNotUniqueCharacter(elt);
+      elt = currentEltFromTxtDescription(elt);
+      return (elt = elt.toString());
+    })
+    .join("");
+  return currentValue(value);
 }
 // LI des mots clefs;
 function updateLiAppearance(list, content) {
@@ -189,7 +223,7 @@ const openTheList = (ulBlock, click) => {
         "placeholder",
         `Recherche un ${NoUpperCaseInputName}`
       );
-      label.innerHTML = ' <i class="fas fa-chevron-up"></i>';
+      label.innerHTML = '<i class="fas fa-chevron-up"></i>';
     }
     inputBgd.style.padding = "";
     inputs.style.color = "";
@@ -201,7 +235,7 @@ const openTheList = (ulBlock, click) => {
     inputs.classList.toggle("openInputs");
     ulBlock.parentElement.classList.toggle("openContent");
   } else {
-    label.innerHTML = ' <i class="fas fa-chevron-up"></i>';
+    label.innerHTML = '<i class="fas fa-chevron-up"></i>';
     // placeholder value
     // ---
     if (inputs.value === "") {
@@ -473,7 +507,7 @@ function chooseTheRightCodeHtml(nbs, value) {
 // ---
 // ---
 
-//donnée test pour la simulation à garder au cas ou;
+//code pour mettre en place la map, du test jsben.ch;
 // let test = {
 //   recipes: [
 //     {

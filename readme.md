@@ -23,9 +23,8 @@
 
 - [x] Les algorithmes du main input et ceux des secondaires fonctionnent;
 - [x] Mettre en place une seconde "branch feature" pour faire le 2ème algo du main;
-- [ ] Refaire une vérif avant la session de mentorat;
-- [ ] Verifier le W3C du css et du HTML.
-- [ ] Mettre en place la fiche, des 2 algos!
+- [x] Verifier le W3C du css et du HTML.
+- [x] Mettre en place la fiche d'investigation.
 
 ---
 
