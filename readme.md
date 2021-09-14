@@ -21,16 +21,18 @@
 
 ##Tasks:
 
-- [x] Les algorithmes du main input et ceux des secondaires fonctionnent;
-- [x] Mettre en place une seconde "branch feature" pour faire le 2ème algo du main;
+- [x] Le algorithme du main input (feature02) et celui des secondaires fonctionnent;
+- [x] mise en place de FEATURE02;
 - [x] Verifier le W3C du css et du HTML.
-- [x] Mettre en place la fiche d'investigation.
+- [x] Mise en place la fiche d'investigation;
 
 ---
 
 ##Notes:
 
-> Blocks ingrédients, appareils et ustensiles peuvent s'ouvrir en même temps;
+> Erreurs visibles eslint pour index.js parce que les variables sont déclarées dans utils.js;
+> Erreur visibles eslint pour utils.js parce que les variables sont utilisés dans index.js;
+> L'interface à été réalisé avec SASS;
 
 ---
 
