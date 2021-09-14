@@ -217,13 +217,13 @@ const openTheList = (ulBlock, click) => {
     // placeholder value
     if (inputs.placeholder === `Recherche un ${NoUpperCaseInputName}`) {
       inputs.setAttribute("placeholder", `${UpperCaseInputName}`);
-      label.innerHTML = '<i class="fas fa-chevron-down"></i>';
+      label.innerHTML = "<i class=\"fas fa-chevron-down\"></i>";
     } else {
       inputs.setAttribute(
         "placeholder",
         `Recherche un ${NoUpperCaseInputName}`
       );
-      label.innerHTML = '<i class="fas fa-chevron-up"></i>';
+      label.innerHTML = "<i class=\"fas fa-chevron-up\"></i>";
     }
     inputBgd.style.padding = "";
     inputs.style.color = "";
@@ -235,7 +235,7 @@ const openTheList = (ulBlock, click) => {
     inputs.classList.toggle("openInputs");
     ulBlock.parentElement.classList.toggle("openContent");
   } else {
-    label.innerHTML = '<i class="fas fa-chevron-up"></i>';
+    label.innerHTML = "<i class=\"fas fa-chevron-up\"></i>";
     // placeholder value
     // ---
     if (inputs.value === "") {

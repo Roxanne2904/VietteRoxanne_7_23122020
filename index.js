@@ -162,9 +162,7 @@ const displayRecipesDynamically = async () => {
   // 0) On injecte toute les données dynamique dès le début;
   //    et on vérifie de bien remettre les données à jours lors du changement de valeur;
   window.addEventListener("click", () => {
-    if (mainInput.value.length === 0) {
-      return updateTheSearch(value);
-    }
+    return updateTheSearch(mainInput.value);
   });
   mainInput.addEventListener("keydown", (e) => {
     let event = e.key;

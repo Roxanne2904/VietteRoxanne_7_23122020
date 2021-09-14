@@ -21,7 +21,7 @@
 
 ##Tasks:
 
-- [x] Le algorithme du main input (feature02) et celui des secondaires fonctionnent;
+- [x] L' algorithme du main input (feature02) et celui des secondaires fonctionnent;
 - [x] mise en place de FEATURE02;
 - [x] Verifier le W3C du css et du HTML.
 - [x] Mise en place la fiche d'investigation;
