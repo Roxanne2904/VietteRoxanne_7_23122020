@@ -441,7 +441,6 @@ const isUpdatingSecondariesInputsElements = (
     }
     return displayKeywordsLists(matchingElementsUstensile, content);
   }
-  // console.log(matchingElements);
   // 2)g. Une fois les bons elments filtrés on les affiche avec un innerHTML;
 };
 // --- Pour appeller "isUpdatingSecondariesInputsElements" sur les trois type de listes;
