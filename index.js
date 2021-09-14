@@ -162,9 +162,7 @@ const displayRecipesDynamically = async () => {
   // 0) On injecte toute les données dynamique dès le début;
   //    et on vérifie de bien remettre les données à jours lors du changement de valeur;
   window.addEventListener("click", () => {
-    if (mainInput.value.length === 0) {
-      return updateTheSearch(value);
-    }
+    return updateTheSearch(mainInput.value);
   });
   mainInput.addEventListener("keydown", (e) => {
     let event = e.key;
@@ -354,73 +352,73 @@ const displayRecipesDynamically = async () => {
     } else {
       //FEATURE01
 
-      // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
-      function recipesIsMatchingWithMainInput(obj) {
-        // ---
-        let applianceIsMatchingValue = currentTitle(obj.appliance).includes(
-          value
-        );
-        // ---
-        let descriptionIsMatchingValue = currentValueNotUniqueCharacter(
-          obj.description
-        ).includes(valueNotUniqueCharacter);
-        // ---
-        let nameIsMatchingValue = currentTitle(obj.name).includes(value);
-        // ---
-        let ingredientIsMatchingValue = obj.ingredients
-          .map((ingredient) => {
-            return currentTitle(ingredient.ingredient);
-          })
-          .some((ingredient) => {
-            return ingredient.includes(value);
-          }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
-        // ---
-        // let quantityIsMatchingValue = obj.ingredients
-        //   .map((ingredient) => {
-        //     if (ingredient.quantity != undefined) {
-        //       return ingredient.quantity.toString();
-        //     }
-        //   })
-        //   .some((quantity) => {
-        //     if (quantity != undefined) {
-        //       return quantity.includes(value);
-        //     }
-        //   });
-        // ---
-        // let unitIsMatchingValue = obj.ingredients
-        //   .map((ingredient) => {
-        //     if (ingredient.unit != undefined) {
-        //       return currentValue(ingredient.unit);
-        //     }
-        //   })
-        //   .some((unit) => {
-        //     if (unit != undefined) {
-        //       return unit.includes(value);
-        //     }
-        //   });
-        // ---
-        let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-          return currentTitle(ustensil).includes(value);
-        });
-        // ---
-        if (
-          applianceIsMatchingValue === true ||
-          descriptionIsMatchingValue === true ||
-          nameIsMatchingValue === true ||
-          // obj.id.toString().includes(value) === true ||
-          // obj.servings.toString().includes(value) === true ||
-          ingredientIsMatchingValue === true ||
-          // quantityIsMatchingValue === true ||
-          // unitIsMatchingValue === true ||
-          ustensilIsMatchingValue === true
-        ) {
-          return true;
-        }
-      }
-      // 2)c. On Obtient un array qui contient les recettes correspondantes;
+      // 2)b. On Obtient un array qui contient les recettes correspondantes
+      //      grâce à la fonction de filtre "recipesIsMatchingWithMainInput";
       // ---
       matchingRecipesArray = datas.recipes.filter(
-        recipesIsMatchingWithMainInput
+        // 2)c. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
+        function recipesIsMatchingWithMainInput(obj) {
+          // ---
+          let applianceIsMatchingValue = currentTitle(obj.appliance).includes(
+            value
+          );
+          // ---
+          let descriptionIsMatchingValue = currentValueNotUniqueCharacter(
+            obj.description
+          ).includes(valueNotUniqueCharacter);
+          // ---
+          let nameIsMatchingValue = currentTitle(obj.name).includes(value);
+          // ---
+          let ingredientIsMatchingValue = obj.ingredients
+            .map((ingredient) => {
+              return currentTitle(ingredient.ingredient);
+            })
+            .some((ingredient) => {
+              return ingredient.includes(value);
+            }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
+          // ---
+          // let quantityIsMatchingValue = obj.ingredients
+          //   .map((ingredient) => {
+          //     if (ingredient.quantity != undefined) {
+          //       return ingredient.quantity.toString();
+          //     }
+          //   })
+          //   .some((quantity) => {
+          //     if (quantity != undefined) {
+          //       return quantity.includes(value);
+          //     }
+          //   });
+          // ---
+          // let unitIsMatchingValue = obj.ingredients
+          //   .map((ingredient) => {
+          //     if (ingredient.unit != undefined) {
+          //       return currentValue(ingredient.unit);
+          //     }
+          //   })
+          //   .some((unit) => {
+          //     if (unit != undefined) {
+          //       return unit.includes(value);
+          //     }
+          //   });
+          // ---
+          let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
+            return currentTitle(ustensil).includes(value);
+          });
+          // ---
+          if (
+            applianceIsMatchingValue === true ||
+            descriptionIsMatchingValue === true ||
+            nameIsMatchingValue === true ||
+            // obj.id.toString().includes(value) === true ||
+            // obj.servings.toString().includes(value) === true ||
+            ingredientIsMatchingValue === true ||
+            // quantityIsMatchingValue === true ||
+            // unitIsMatchingValue === true ||
+            ustensilIsMatchingValue === true
+          ) {
+            return true;
+          }
+        }
       );
 
       // ---
