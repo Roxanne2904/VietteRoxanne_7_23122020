@@ -190,42 +190,42 @@ const displayRecipesDynamically = async () => {
       return elt.ingredient;
     });
     // ---
-    let appliance = currentTitle(elt.appliance);
-    let fullTxtAppliance = currentValueNotUniqueCharacter(elt.appliance);
+    let appliance = removeSpaceWordsAndModifyValue(elt.appliance);
+    let fullTxtAppliance = modifyValueNotUniqueCharacter(elt.appliance);
     // ---
     let ustensil = elt.ustensils.map((elt) => {
-      return currentTitle(elt);
+      return removeSpaceWordsAndModifyValue(elt);
     });
     // ---
     ustensil.forEach((elt) => {
-      let fullTxt = currentValueNotUniqueCharacter(elt);
-      fullTxt = currentEltFromTxtDescription(fullTxt);
+      let fullTxt = modifyValueNotUniqueCharacter(elt);
+      fullTxt = cleanEltFromTxtDescription(fullTxt);
       return stockWords.push([elt, fullTxt]);
     });
     // ---
     stockWords.push([appliance, fullTxtAppliance]);
     // ---
     words.forEach((elt) => {
-      let fullTxt = currentValueNotUniqueCharacter(elt);
-      fullTxt = currentEltFromTxtDescription(fullTxt);
-      elt = currentValue(elt);
+      let fullTxt = modifyValueNotUniqueCharacter(elt);
+      fullTxt = cleanEltFromTxtDescription(fullTxt);
+      elt = removeSpaceWordsAndModifyValue(elt);
       if (elt.length >= 2) {
         return stockWords.push([elt, fullTxt]);
       }
     });
     // ---
     arrayIngre.forEach((elt) => {
-      let fullTxt = currentValueNotUniqueCharacter(elt);
-      fullTxt = currentEltFromTxtDescription(fullTxt);
-      elt = currentTitle(elt);
+      let fullTxt = modifyValueNotUniqueCharacter(elt);
+      fullTxt = cleanEltFromTxtDescription(fullTxt);
+      elt = removeSpaceWordsAndModifyValue(elt);
       return stockWords.push([elt, fullTxt]);
     });
     // ---
     description.forEach((elt) => {
-      let fullTxt = currentValueNotUniqueCharacter(elt);
-      fullTxt = currentEltFromTxtDescription(fullTxt);
-      elt = currentValue(elt);
-      elt = currentEltFromTxtDescription(elt);
+      let fullTxt = modifyValueNotUniqueCharacter(elt);
+      fullTxt = cleanEltFromTxtDescription(fullTxt);
+      elt = modifyValue(elt);
+      elt = cleanEltFromTxtDescription(elt);
       if (elt.length >= 2) {
         return stockWords.push([elt, fullTxt]);
       }
@@ -234,15 +234,15 @@ const displayRecipesDynamically = async () => {
     title.forEach((elt) => {
       words = words
         .map((elt) => {
-          elt = currentValueNotUniqueCharacter(elt);
-          elt = currentEltFromTxtDescription(elt);
+          elt = modifyValueNotUniqueCharacter(elt);
+          elt = cleanEltFromTxtDescription(elt);
 
           return (elt = elt.toString());
         })
         .join("");
-      words = currentValue(words);
-      let fullTxt = currentValueNotUniqueCharacter(elt);
-      fullTxt = currentEltFromTxtDescription(fullTxt);
+      words = modifyValue(words);
+      let fullTxt = modifyValueNotUniqueCharacter(elt);
+      fullTxt = cleanEltFromTxtDescription(fullTxt);
       return stockWords.push([words, fullTxt]);
     });
   });
@@ -258,38 +258,40 @@ const displayRecipesDynamically = async () => {
   // On attribue les bonnes recettes aux bons mots clef de la map;
   // ---
   stockWords.forEach((ele) => {
-    let fullWord = currentValueNotUniqueCharacter(ele[1]);
+    let fullWord = modifyValueNotUniqueCharacter(ele[1]);
     ele = ele[0];
     // ---
     RecipesMatchWithNames = datas.recipes.filter((obj) => {
-      let name = currentTitle(obj.name);
-      let description = currentValueNotUniqueCharacter(obj.description);
+      let title = removeSpaceWordsAndModifyValue(obj.name);
+      let name = obj.name.split(" ").map((ele) => {
+        return removeSpaceWordsAndModifyValue(ele);
+      });
+      let description = modifyValueNotUniqueCharacter(obj.description);
       // ---
       let ingredient = obj.ingredients
         .map((elt) => {
-          elt = currentTitle(elt.ingredient);
+          elt = removeSpaceWordsAndModifyValue(elt.ingredient);
           return elt.includes(ele);
         })
         .some((elt) => elt === true);
       // ---
-      let appliance = currentTitle(obj.appliance);
-      appliance = currentEltFromTxtDescription(appliance);
+      let appliance = removeSpaceWordsAndModifyValue(obj.appliance);
+      appliance = cleanEltFromTxtDescription(appliance);
       // ---
       let ustensil = obj.ustensils
         .map((elt) => {
-          elt = currentTitle(elt);
+          elt = removeSpaceWordsAndModifyValue(elt);
           return elt.includes(ele);
         })
         .some((elt) => elt === true);
       // ---
-      // ---
       if (
-        name.includes(ele) ||
+        title.includes(ele) ||
         description.includes(fullWord) ||
         ingredient === true ||
         appliance.includes(ele) ||
-        ustensil === true
-        // title.includes(ele)
+        ustensil === true ||
+        name.includes(ele)
       ) {
         return true;
       }
@@ -314,14 +316,14 @@ const displayRecipesDynamically = async () => {
     value = value
       .split(" ")
       .map((elt) => {
-        elt = currentValueNotUniqueCharacter(elt);
-        elt = currentEltFromTxtDescription(elt);
+        elt = modifyValueNotUniqueCharacter(elt);
+        elt = cleanEltFromTxtDescription(elt);
         return (elt = elt.toString());
       })
       .join("");
     // ---
     valueNotUniqueCharacter = value;
-    value = currentValue(value);
+    value = modifyValue(value);
     // ---
     value = value.split("").map((elt) => {
       if (elt.includes(" ") === true) {
@@ -353,19 +355,19 @@ const displayRecipesDynamically = async () => {
       // // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
       // function recipesIsMatchingWithMainInput(obj) {
       //   // ---
-      //   let applianceIsMatchingValue = currentTitle(obj.appliance).includes(
+      //   let applianceIsMatchingValue = removeSpaceWordsAndModifyValue(obj.appliance).includes(
       //     value
       //   );
       //   // ---
-      //   let descriptionIsMatchingValue = currentValueNotUniqueCharacter(
+      //   let descriptionIsMatchingValue = modifyValueNotUniqueCharacter(
       //     obj.description
       //   ).includes(valueNotUniqueCharacter);
       //   // ---
-      //   let nameIsMatchingValue = currentTitle(obj.name).includes(value);
+      //   let nameIsMatchingValue = removeSpaceWordsAndModifyValue(obj.name).includes(value);
       //   // ---
       //   let ingredientIsMatchingValue = obj.ingredients
       //     .map((ingredient) => {
-      //       return currentTitle(ingredient.ingredient);
+      //       return removeSpaceWordsAndModifyValue(ingredient.ingredient);
       //     })
       //     .some((ingredient) => {
       //       return ingredient.includes(value);
@@ -386,7 +388,7 @@ const displayRecipesDynamically = async () => {
       //   // let unitIsMatchingValue = obj.ingredients
       //   //   .map((ingredient) => {
       //   //     if (ingredient.unit != undefined) {
-      //   //       return currentValue(ingredient.unit);
+      //   //       return modifyValue(ingredient.unit);
       //   //     }
       //   //   })
       //   //   .some((unit) => {
@@ -396,7 +398,7 @@ const displayRecipesDynamically = async () => {
       //   //   });
       //   // ---
       //   let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-      //     return currentTitle(ustensil).includes(value);
+      //     return removeSpaceWordsAndModifyValue(ustensil).includes(value);
       //   });
       //   // ---
       //   if (
@@ -424,15 +426,15 @@ const displayRecipesDynamically = async () => {
 
       //FEATURE02
 
-      // console.log(value);
-      // console.log(myMap);
+      console.log(value);
+      console.log(myMap);
 
       if (myMap.get(value) === undefined) {
         console.log("le mot n'est pas dans la map");
         let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
           // console.log(elt[0]);
           // console.log(elt[0].startsWith(value));
-          if (value.indexOf("d") === value.length - 1) {
+          if (value.indexOf("d") === value.length - 1 || value === "tareu") {
             value = value.substring(0, value.length - 1);
             return elt[0].startsWith(value);
           } else {
@@ -450,7 +452,7 @@ const displayRecipesDynamically = async () => {
         console.log("le mot est dans la map");
         matchingRecipesArray = myMap.get(value);
       }
-
+      console.log(matchingRecipesArray);
       // --- fin de FEATURE02
 
       // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
@@ -498,13 +500,13 @@ const displayRecipesDynamically = async () => {
   // -----------------------------------------------------------------------------
   // 3) On met en place la fonction "oninput" des inputs secondaires;
   function updateKeywordsLists(e, currentList, listIncludeMainValue) {
-    let value = currentValue(e.target.value);
+    let value = modifyValue(e.target.value);
     let mainValue = mainInput.value;
     let matchingElemntsArray = [];
     // _________________________________________
     // --- La fonction pour filtrer
     function keywordsIsMatchingWithValue(elt) {
-      let currentElt = currentValue(elt);
+      let currentElt = modifyValue(elt);
       if (currentElt.includes(value)) {
         return true;
       }
@@ -632,18 +634,18 @@ const displayRecipesDynamically = async () => {
       return tagsStock.every((ele) => {
         if (ele.type === "ingredient") {
           valueMatch = obj.ingredients.map((ingredient) =>
-            currentValue(ingredient.ingredient)
+            modifyValue(ingredient.ingredient)
           );
           if (valueMatch.includes(ele.keyW)) {
             return true;
           }
         } else if (ele.type === "appareil") {
-          valueMatch = currentValue(obj.appliance);
+          valueMatch = modifyValue(obj.appliance);
           if (valueMatch.includes(ele.keyW) === true) {
             return true;
           }
         } else if (ele.type === "ustensile") {
-          valueMatch = obj.ustensils.map((ustensil) => currentValue(ustensil));
+          valueMatch = obj.ustensils.map((ustensil) => modifyValue(ustensil));
           if (valueMatch.includes(ele.keyW) === true) {
             return true;
           }
@@ -697,12 +699,12 @@ const displayRecipesDynamically = async () => {
   // ---
   function addTags(e, content, type) {
     let originalText = e.target.innerText;
-    let value = currentValue(e.target.innerText);
+    let value = modifyValue(e.target.innerText);
     let stockage = {};
     // 1) On veut récupérer a chaque fois la bonne liste aveec les bons mots clefs;
     let currentList = [];
     for (let i = 0; i < content.children.length; i++) {
-      let value = currentValue(content.children[i].innerText);
+      let value = modifyValue(content.children[i].innerText);
       currentList.push(value);
     }
     // ---

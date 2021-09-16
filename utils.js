@@ -56,68 +56,68 @@ function updateTheSearch(value) {
     displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
   }
 }
-function recipesIsMatching(obj, value) {
-  // ---
-  let applianceIsMatchingValue = currentValue(obj.appliance).includes(value);
-  // ---
-  let descriptionIsMatchingValue = currentValue(obj.description).includes(
-    value
-  );
-  // ---
-  let nameIsMatchingValue = currentValue(obj.name).includes(value);
-  // ---
-  let ingredientIsMatchingValue = obj.ingredients
-    .map((ingredient) => {
-      return currentValue(ingredient.ingredient);
-    })
-    .some((ingredient) => {
-      return ingredient.includes(value);
-    }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
-  // ---
-  let quantityIsMatchingValue = obj.ingredients
-    .map((ingredient) => {
-      if (ingredient.quantity != undefined) {
-        return ingredient.quantity.toString();
-      }
-    })
-    .some((quantity) => {
-      if (quantity != undefined) {
-        return quantity.includes(value);
-      }
-    });
-  // ---
-  let unitIsMatchingValue = obj.ingredients
-    .map((ingredient) => {
-      if (ingredient.unit != undefined) {
-        return currentValue(ingredient.unit);
-      }
-    })
-    .some((unit) => {
-      if (unit != undefined) {
-        return unit.includes(value);
-      }
-    });
-  // ---
-  let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-    return currentValue(ustensil).includes(value);
-  });
-  // ---
-  if (
-    applianceIsMatchingValue === true ||
-    descriptionIsMatchingValue === true ||
-    nameIsMatchingValue === true ||
-    obj.id.toString().includes(value) === true ||
-    obj.servings.toString().includes(value) === true ||
-    ingredientIsMatchingValue === true ||
-    quantityIsMatchingValue === true ||
-    unitIsMatchingValue === true ||
-    ustensilIsMatchingValue === true
-  ) {
-    return true;
-  }
-}
+// function recipesIsMatching(obj, value) {
+//   // ---
+//   let applianceIsMatchingValue = modifyValue(obj.appliance).includes(value);
+//   // ---
+//   let descriptionIsMatchingValue = modifyValue(obj.description).includes(
+//     value
+//   );
+//   // ---
+//   let nameIsMatchingValue = modifyValue(obj.name).includes(value);
+//   // ---
+//   let ingredientIsMatchingValue = obj.ingredients
+//     .map((ingredient) => {
+//       return modifyValue(ingredient.ingredient);
+//     })
+//     .some((ingredient) => {
+//       return ingredient.includes(value);
+//     }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
+//   // ---
+//   let quantityIsMatchingValue = obj.ingredients
+//     .map((ingredient) => {
+//       if (ingredient.quantity != undefined) {
+//         return ingredient.quantity.toString();
+//       }
+//     })
+//     .some((quantity) => {
+//       if (quantity != undefined) {
+//         return quantity.includes(value);
+//       }
+//     });
+//   // ---
+//   let unitIsMatchingValue = obj.ingredients
+//     .map((ingredient) => {
+//       if (ingredient.unit != undefined) {
+//         return modifyValue(ingredient.unit);
+//       }
+//     })
+//     .some((unit) => {
+//       if (unit != undefined) {
+//         return unit.includes(value);
+//       }
+//     });
+//   // ---
+//   let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
+//     return modifyValue(ustensil).includes(value);
+//   });
+//   // ---
+//   if (
+//     applianceIsMatchingValue === true ||
+//     descriptionIsMatchingValue === true ||
+//     nameIsMatchingValue === true ||
+//     obj.id.toString().includes(value) === true ||
+//     obj.servings.toString().includes(value) === true ||
+//     ingredientIsMatchingValue === true ||
+//     quantityIsMatchingValue === true ||
+//     unitIsMatchingValue === true ||
+//     ustensilIsMatchingValue === true
+//   ) {
+//     return true;
+//   }
+// }
 // ---
-function currentValue(value) {
+function modifyValue(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
   }
@@ -141,7 +141,7 @@ function currentValue(value) {
   return value;
 } //Unique character
 // ---
-function currentValueNotUniqueCharacter(value) {
+function modifyValueNotUniqueCharacter(value) {
   if (value[value.length - 1] === "s") {
     value = value.substring(0, value.length - 1);
   }
@@ -156,7 +156,7 @@ function currentValueNotUniqueCharacter(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 // ---
-function currentEltFromTxtDescription(elt) {
+function cleanEltFromTxtDescription(elt) {
   if (elt[elt.length - 1] === "." || elt[elt.length - 1] === ",") {
     elt = elt.substring(0, elt.length - 1);
   }
@@ -177,19 +177,19 @@ function currentEltFromTxtDescription(elt) {
     elt = elt.substring(2);
   }
   return elt;
-}
+} //pour éviter le ")", les points "." etc... sur un mot découper dans un texte descriptif;
 // ---
-function currentTitle(value) {
+function removeSpaceWordsAndModifyValue(value) {
   value = value
     .split(" ")
     .map((elt) => {
-      elt = currentValueNotUniqueCharacter(elt);
-      elt = currentEltFromTxtDescription(elt);
+      elt = modifyValueNotUniqueCharacter(elt);
+      elt = cleanEltFromTxtDescription(elt);
       return (elt = elt.toString());
     })
     .join("");
-  return currentValue(value);
-}
+  return modifyValue(value);
+} // pour supprimer les espace entre les mots (avec les titres par exemples)
 // LI des mots clefs;
 function updateLiAppearance(list, content) {
   if (list.length <= 5) {
@@ -217,13 +217,13 @@ const openTheList = (ulBlock, click) => {
     // placeholder value
     if (inputs.placeholder === `Recherche un ${NoUpperCaseInputName}`) {
       inputs.setAttribute("placeholder", `${UpperCaseInputName}`);
-      label.innerHTML = "<i class=\"fas fa-chevron-down\"></i>";
+      label.innerHTML = '<i class="fas fa-chevron-down"></i>';
     } else {
       inputs.setAttribute(
         "placeholder",
         `Recherche un ${NoUpperCaseInputName}`
       );
-      label.innerHTML = "<i class=\"fas fa-chevron-up\"></i>";
+      label.innerHTML = '<i class="fas fa-chevron-up"></i>';
     }
     inputBgd.style.padding = "";
     inputs.style.color = "";
@@ -235,7 +235,7 @@ const openTheList = (ulBlock, click) => {
     inputs.classList.toggle("openInputs");
     ulBlock.parentElement.classList.toggle("openContent");
   } else {
-    label.innerHTML = "<i class=\"fas fa-chevron-up\"></i>";
+    label.innerHTML = '<i class="fas fa-chevron-up"></i>';
     // placeholder value
     // ---
     if (inputs.value === "") {
@@ -374,13 +374,13 @@ const isUpdatingSecondariesInputsElements = (
 ) => {
   // 2)f. On met en place la fonction qui va filtrer;
   function keywordsIsMatchingWithRecipes(elt) {
-    let currentElt = currentValue(elt);
+    let currentElt = modifyValue(elt);
     // ---
     if (type === "ingredient") {
       let ingredientFromRecipes = arrayRecipes
         .map((ingredient) => {
           return ingredient.ingredients.map((ingredient) => {
-            return currentValue(ingredient.ingredient);
+            return modifyValue(ingredient.ingredient);
           });
         })
         .some((ingredient) => {
@@ -393,7 +393,7 @@ const isUpdatingSecondariesInputsElements = (
     } else if (type === "appareil") {
       let appareilsFromRecipes = arrayRecipes
         .map((appareil) => {
-          return currentValue(appareil.appliance);
+          return modifyValue(appareil.appliance);
         })
         .some((appareil) => {
           return appareil.includes(currentElt);
@@ -405,7 +405,7 @@ const isUpdatingSecondariesInputsElements = (
       let ustensilesFromRecipes = arrayRecipes
         .map((ustensil) => {
           return ustensil.ustensils.map((ustensil) => {
-            return currentValue(ustensil);
+            return modifyValue(ustensil);
           });
         })
         .some((ustensil) => {
@@ -506,108 +506,118 @@ function chooseTheRightCodeHtml(nbs, value) {
 // ---
 // ---
 
-//code pour mettre en place la map, du test jsben.ch;
-// let test = {
-//   recipes: [
-//     {
-//       name: "limonade de coco",
-//       description:
-//         "Commencer par préparer les ingrédients.Coupez la coco, puis mixer",
-//     },
-//     {
-//       name: "Poulet au curry",
-//       description:
-//         "Coupez le poulet, puis préparer le riz. Faites cuire le tout dans une cocotte",
-//     },
-//     {
-//       name: "Boulettes de viande épicé",
-//       description: "Façonnez les boulettes de viandes, puis faites les cuires",
-//     },
-//     {
-//       name: "Riz au lait",
-//       description:
-//         "Mettez le riz à cuire dans l'eau, puis ensuite, faire le cuire dans le lait",
-//     },
-//     {
-//       name: "Purée de pomme de terre douce",
-//       description: "Epluchez les pommes de terre, puis écraser les",
-//     },
-//     {
-//       name: "Soupe de poulet",
-//       description: "Coupez le poulet et faites le cuire",
-//     },
-//   ],
-// };
-// let stock01 = [];
-// let stock02 = [];
-// let stock03 = [];
-// let mapEx;
-// // ---
-// test.recipes.forEach((elt) => {
-//   let name = elt.name.split(" ");
-//   let description = elt.description.split(" ");
-//   let title = [elt.name];
-//   // ---
-//   name.forEach((elt) => {
-//     if (currentValue(elt).length >= 3) {
-//       return stock01.push(currentValue(elt));
-//     }
-//   });
-//   // ---
-//   description.forEach((elt) => {
-//     if (
-//       currentValue(elt)[elt.length - 1] === "." ||
-//       elt[elt.length - 1] === ","
-//     ) {
-//       elt = elt.substring(0, elt.length - 1);
-//     }
-//     if (currentValue(elt)[elt.length - 1] === ")") {
-//       elt = elt.substring(0, elt.length - 1);
-//     }
-//     if (currentValue(elt)[0] === "(") {
-//       elt = elt.substring(1);
-//     }
-//     if (currentValue(elt)[0] === "d" && elt[1] === "'") {
-//       elt = elt.substring(2);
-//     }
-//     if (currentValue(elt)[0] === "l" && elt[1] === "'") {
-//       elt = elt.substring(2);
-//     }
-//     if (currentValue(elt)[0] === "n" && elt[1] === "'") {
-//       elt = elt.substring(2);
-//     }
-//     // ---
-//     if (currentValue(elt).length >= 3) {
-//       return stock01.push(currentValue(elt));
-//     }
-//   });
-//   // ---
-//   title.forEach((elt) => {
-//     return stock01.push(currentValue(elt));
-//   });
-// });
-// // ---
-// // On filtre pour éviter les doublons;
-// // ---
-// stock01 = stock01
-//   .filter((ele, index) => {
-//     return stock01.indexOf(ele) == index;
-//   })
-//   .sort();
-// // ---
+// code pour mettre en place la map, du test jsben.ch;
+let test = {
+  recipes: [
+    {
+      name: "limonade de coco",
+      description:
+        "Commencer par préparer les ingrédients.Coupez la coco, puis mixer",
+    },
+    {
+      name: "Poulet au curry",
+      description:
+        "Coupez le poulet, puis préparer le riz. Faites cuire le tout dans une cocotte",
+    },
+    {
+      name: "Boulettes de viande épicé",
+      description: "Façonnez les boulettes de viandes, puis faites les cuires",
+    },
+    {
+      name: "Riz au lait",
+      description:
+        "Mettez le riz à cuire dans l'eau, puis ensuite, faire le cuire dans le lait",
+    },
+    {
+      name: "Purée de pomme de terre douce",
+      description: "Epluchez les pommes de terre, puis écraser les",
+    },
+    {
+      name: "Soupe de poulet",
+      description: "Coupez le poulet et faites le cuire",
+    },
+  ],
+};
+let stock01 = [];
+let stock02 = [];
+let stock03 = [];
+let mapEx;
+// ---
+test.recipes.forEach((elt) => {
+  let name = elt.name.split(" ");
+  let description = elt.description.split(" ");
+  let title = [elt.name];
+  // ---
+  name.forEach((elt) => {
+    let fullTxt = modifyValueNotUniqueCharacter(elt);
+    fullTxt = cleanEltFromTxtDescription(fullTxt);
+    elt = removeSpaceWordsAndModifyValue(elt);
+    if (elt.length >= 2) {
+      return stock01.push([elt, fullTxt]);
+    }
+  });
+  // ---
+  description.forEach((elt) => {
+    let fullTxt = modifyValueNotUniqueCharacter(elt);
+    fullTxt = cleanEltFromTxtDescription(fullTxt);
+    elt = modifyValue(elt);
+    elt = cleanEltFromTxtDescription(elt);
+    // console.log(elt);
+    if (elt.length >= 2) {
+      return stock01.push([elt, fullTxt]);
+    }
+  });
+  // ---
+  title.forEach((elt) => {
+    name = name
+      .map((elt) => {
+        elt = modifyValueNotUniqueCharacter(elt);
+        elt = cleanEltFromTxtDescription(elt);
+
+        return (elt = elt.toString());
+      })
+      .join("");
+    name = modifyValue(name);
+    let fullTxt = modifyValueNotUniqueCharacter(elt);
+    fullTxt = cleanEltFromTxtDescription(fullTxt);
+    return stock01.push([name, fullTxt]);
+  });
+});
+// ---
+// On filtre pour éviter les doublons;
+// ---
+stock01 = stock01
+  .filter((obj, index, array) => {
+    return array.findIndex((t) => t[0] === obj[0]) === index;
+  })
+  .sort();
+// ---
 // console.log(stock01);
-// stock01.map((ele) => {
-//   stock02 = test.recipes.filter((obj) => {
-//     if (
-//       currentValue(obj.name).includes(ele) ||
-//       currentValue(obj.description).includes(ele)
-//     ) {
-//       return true;
-//     }
-//   });
-//   stock03.push([ele, stock02]);
-// });
-// // ---
-// console.log(stock03);
-// mapEx = new Map(stock03);
-// console.log(mapEx);
+stock01.map((ele) => {
+  let fullWord = modifyValueNotUniqueCharacter(ele[1]);
+  ele = ele[0];
+  stock02 = test.recipes.filter((obj) => {
+    let title = removeSpaceWordsAndModifyValue(obj.name);
+    let name;
+    name = obj.name.split(" ").map((ele) => {
+      return removeSpaceWordsAndModifyValue(ele);
+    });
+    // console.log(name);
+    let description = modifyValueNotUniqueCharacter(obj.description);
+    // ---
+    if (
+      title.includes(ele) ||
+      description.includes(fullWord) ||
+      name.includes(ele)
+    ) {
+      return true;
+    }
+  });
+  stock03.push([ele, stock02]);
+});
+// ---
+mapEx = new Map(stock03);
+console.log("{[test]: array pour générer la map} :");
+console.log(stock03);
+console.log("{[test]: map pour le test jsben} :");
+console.log(mapEx);
