@@ -45,6 +45,7 @@ const inputIngredients = document.querySelector("#ingredients");
 const inputAppareils = document.querySelector("#appareil");
 const inputUstensiles = document.querySelector("#ustensiles");
 // ----------------------------------------
+const btnSub = document.querySelector(".form__fieldset__bgdMain__submitMain");
 const form = document.querySelector("#myform");
 const ulRecipes = document.querySelector(".bgdRecipes");
 // ----------------------------------------
@@ -471,6 +472,7 @@ function callFunctionToUpdateAllKeywords(
 }
 // ---
 function lookAtTermsToDisplay(initialArray) {
+  // console.log(tagsStock.length);
   if (tagsStock.length != 0) {
     displayRecipes(matchingRecipesArrayWithTags, ulRecipes);
     callFunctionToUpdateAllKeywords(
@@ -503,7 +505,6 @@ function chooseTheRightCodeHtml(nbs, value) {
   ></span>
 </li>`;
 }
-// ---
 // ---
 
 // code pour mettre en place la map, du test jsben.ch;

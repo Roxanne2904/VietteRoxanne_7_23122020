@@ -161,15 +161,6 @@ const displayRecipesDynamically = async () => {
   // -----
   // 0) On injecte toute les données dynamique dès le début;
   //    et on vérifie de bien remettre les données à jours lors du changement de valeur;
-  window.addEventListener("click", () => {
-    return updateTheSearch(mainInput.value);
-  });
-  mainInput.addEventListener("keydown", (e) => {
-    let event = e.key;
-    if (event === "Enter") {
-      return updateTheSearch(value);
-    }
-  });
   // ---
   displayRecipes(datas.recipes, ulRecipes);
   // ---
@@ -331,7 +322,7 @@ const displayRecipesDynamically = async () => {
       }
       return elt;
     });
-    if (value.indexOf("") === value.length - 1) {
+    if (value.indexOf("") === value.length - 1 && value.length !=0) {
       value = value.splice(value.length - 1, 1);
       return value.toString();
     }
@@ -654,14 +645,14 @@ const displayRecipesDynamically = async () => {
     }
     function chooseGeneralsTermsToDisplay() {
       if (mainValue != "" && isValid === true) {
-        // console.log("il y a une valeur dans le main input");
+        console.log("il y a une valeur dans le main input");
         matchingRecipesArrayWithTags = matchingRecipesArray.filter(
           filterRecipesWithTags
         );
         // conditions d'affichages
         lookAtTermsToDisplay(matchingRecipesArray);
       } else {
-        // console.log("il n'y a PAS de valeur dans le main input");
+        console.log("il n'y a PAS de valeur dans le main input");
         matchingRecipesArrayWithTags = datas.recipes.filter(
           filterRecipesWithTags
         );
