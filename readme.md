@@ -20,7 +20,7 @@
 
 ---
 
-##Tasks:
+### Tasks:
 
 - [x] L' algorithme du main input (feature02) et celui des secondaires fonctionnent;
 - [x] mise en place de FEATURE02;
@@ -29,7 +29,7 @@
 
 ---
 
-##Notes:
+### Notes:
 
 > Erreurs visibles eslint pour index.js parce que les variables sont déclarées dans utils.js;
 > Erreur visibles eslint pour utils.js parce que les variables sont utilisés dans index.js;
