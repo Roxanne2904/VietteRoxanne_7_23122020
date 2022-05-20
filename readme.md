@@ -4,7 +4,7 @@
 
 ### Deployement
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7ab28d69-5507-417d-ae1d-58a1f3beef39/deploy-status)](https://app.netlify.com/sites/oc-rv-lespetitsplats/deploys)
-[Les petits plats](https://oc-rv-lespetitsplats.netlify.app/)
+- [Les petits plats](https://oc-rv-lespetitsplats.netlify.app/)
 ### Goal
 
 1. La recherche doit pouvoir se faire via le champ principal ou via les tags
