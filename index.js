@@ -182,7 +182,9 @@ const displayRecipesDynamically = async () => {
     });
     // ---
     let appliance = removeSpaceWordsAndModifyValue(elt.appliance);
-    let fullTxtAppliance = modifyValueNotUniqueCharacter(elt.appliance);
+    let fullTxtAppliance = cleanEltFromTxtDescription(modifyValueNotUniqueCharacter(elt.appliance));
+    // ---
+    stockWords.push([appliance, fullTxtAppliance]);
     // ---
     let ustensil = elt.ustensils.map((elt) => {
       return removeSpaceWordsAndModifyValue(elt);
@@ -194,7 +196,6 @@ const displayRecipesDynamically = async () => {
       return stockWords.push([elt, fullTxt]);
     });
     // ---
-    stockWords.push([appliance, fullTxtAppliance]);
     // ---
     words.forEach((elt) => {
       let fullTxt = modifyValueNotUniqueCharacter(elt);
@@ -224,13 +225,13 @@ const displayRecipesDynamically = async () => {
     // ---
     title.forEach((elt) => {
       words = words
-        .map((elt) => {
-          elt = modifyValueNotUniqueCharacter(elt);
-          elt = cleanEltFromTxtDescription(elt);
-
-          return (elt = elt.toString());
-        })
-        .join("");
+      .map((elt) => {
+        elt = modifyValueNotUniqueCharacter(elt);
+        elt = cleanEltFromTxtDescription(elt);
+        
+        return (elt = elt.toString());
+      })
+      .join("");
       words = modifyValue(words);
       let fullTxt = modifyValueNotUniqueCharacter(elt);
       fullTxt = cleanEltFromTxtDescription(fullTxt);
@@ -241,59 +242,147 @@ const displayRecipesDynamically = async () => {
   // On filtre pour éviter les doublons;
   // ---
   stockWords = stockWords
-    .filter((obj, index, array) => {
-      return array.findIndex((t) => t[0] === obj[0]) === index;
-    })
-    .sort();
-  // ---
+  .filter((obj, index, array) => {
+    return array.findIndex((t) => t[1] === obj[1])===index;
+  })
+  .sort();
+// ---
   // On attribue les bonnes recettes aux bons mots clef de la map;
   // ---
+  // console.log(stockWords);
   stockWords.forEach((ele) => {
-    let fullWord = modifyValueNotUniqueCharacter(ele[1]);
+    let fullWord = removeSpaceWords(ele[1]);
     ele = ele[0];
+    
     // ---
-    RecipesMatchWithNames = datas.recipes.filter((obj) => {
-      let title = removeSpaceWordsAndModifyValue(obj.name);
-      let name = obj.name.split(" ").map((ele) => {
-        return removeSpaceWordsAndModifyValue(ele);
-      });
-      let description = modifyValueNotUniqueCharacter(obj.description);
-      // ---
-      let ingredient = obj.ingredients
-        .map((elt) => {
-          elt = removeSpaceWordsAndModifyValue(elt.ingredient);
-          return elt.includes(ele);
-        })
-        .some((elt) => elt === true);
-      // ---
-      let appliance = removeSpaceWordsAndModifyValue(obj.appliance);
-      appliance = cleanEltFromTxtDescription(appliance);
-      // ---
-      let ustensil = obj.ustensils
-        .map((elt) => {
-          elt = removeSpaceWordsAndModifyValue(elt);
-          return elt.includes(ele);
-        })
-        .some((elt) => elt === true);
-      // ---
-      if (
-        title.includes(ele) ||
-        description.includes(fullWord) ||
-        ingredient === true ||
-        appliance.includes(ele) ||
-        ustensil === true ||
-        name.includes(ele)
-      ) {
-        return true;
-      }
-    });
-    stockDatasToMap.push([ele, RecipesMatchWithNames]);
-  });
+    function test(value){
+      return datas.recipes.filter((obj) => {
+        let fullTitle = removeSpaceWords(obj.name);
 
+        let title = removeSpaceWords(obj.name).split(" ")
+        .map((elt)=>{
+          let currentElt =removeSpaceWords(elt)
+           return currentElt.includes(value)
+        }).some((elt)=>elt===true)
+        
+        // let name = obj.name.split(" ").map((ele) => {
+        //   return removeSpaceWordsAndModifyValue(ele);
+        // });
+  
+        // let fullName= obj.name.split(" ").map((fullWord) => {
+        //   return modifyValueNotUniqueCharacter(fullWord);
+        // });
+        
+  
+        let description = removeSpaceWords(obj.description)
+        .split(" ")
+        .map((elt)=>{return elt.includes(value)})
+        .some((elt) => elt === true);
+        
+        // ---
+        let ingredient = obj.ingredients
+          .map((elt) => {
+            elt = removeSpaceWords(elt.ingredient);
+            return elt.includes(value);
+          })
+          .some((elt) => elt === true);
+          
+        // ---
+        let appliance = removeSpaceWords(obj.appliance);
+        appliance = cleanEltFromTxtDescription(appliance);
+        
+        // ---
+        let ustensil = obj.ustensils
+          .map((elt) => {
+            elt = removeSpaceWords(elt);
+            return elt.includes(value);
+          })
+          .some((elt) => elt === true);
+        // ---
+        if (
+          title===true||
+          fullTitle.includes(value)||
+          // title.includes(ele) 
+          description===true||
+          ingredient === true ||
+          appliance.includes(value) ||
+          ustensil === true 
+          // name.includes(fullWord)||
+          // fullName.includes(fullWord)
+        ) {
+          return true;
+        }
+      });
+    }
+// console.log(test(ele));
+
+    // RecipesMatchWithNames = datas.recipes.filter((obj) => {
+    //   let fullTitle = removeSpaceWords(obj.name);
+    //   // console.log(removeSpaceWords("tartelettes aux chocolat et aux fraises"));
+    //   let title = removeSpaceWords(obj.name).split(" ")
+    //   .map((elt)=>{
+    //     let currentElt =removeSpaceWords(elt)
+    //      return currentElt.includes(fullWord)
+    //   }).some((elt)=>elt===true)
+      
+    //   // let name = obj.name.split(" ").map((ele) => {
+    //   //   return removeSpaceWordsAndModifyValue(ele);
+    //   // });
+
+    //   // let fullName= obj.name.split(" ").map((fullWord) => {
+    //   //   return modifyValueNotUniqueCharacter(fullWord);
+    //   // });
+      
+
+    //   let description = removeSpaceWords(obj.description)
+    //   .split(" ")
+    //   .map((elt)=>{return elt.includes(fullWord)})
+    //   .some((elt) => elt === true);
+      
+    //   // ---
+    //   let ingredient = obj.ingredients
+    //     .map((elt) => {
+    //       elt = removeSpaceWords(elt.ingredient);
+    //       return elt.includes(fullWord);
+    //     })
+    //     .some((elt) => elt === true);
+        
+    //   // ---
+    //   let appliance = removeSpaceWordsAndModifyValue(obj.appliance);
+    //   appliance = cleanEltFromTxtDescription(appliance);
+      
+    //   // ---
+    //   let ustensil = obj.ustensils
+    //     .map((elt) => {
+    //       elt = removeSpaceWords(elt);
+    //       return elt.includes(ele);
+    //     })
+    //     .some((elt) => elt === true);
+    //   // ---
+    //   if (
+    //     title===true||
+    //     fullTitle.includes(fullWord)||
+    //     // title.includes(ele) 
+    //     description===true||
+    //     ingredient === true ||
+    //     appliance.includes(fullWord) ||
+    //     ustensil === true 
+    //     // name.includes(fullWord)||
+    //     // fullName.includes(fullWord)
+    //   ) {
+    //     return true;
+    //   }
+    // });
+    stockDatasToMap.push([ele, test(ele)]);
+    stockDatasToMap.push([fullWord, test(fullWord)]);
+    // console.log(stockDatasToMap);
+  });
+  
   // On trie le tout, par ordre alphabétique;
   stockDatasToMap = stockDatasToMap.sort(function compare(a, b) {
     return a[0].localeCompare(b[0]);
   });
+  // console.log(stockDatasToMap);
   // ---
   // On obtient notre map;
   myMap = new Map(stockDatasToMap);
@@ -304,6 +393,7 @@ const displayRecipesDynamically = async () => {
   function displayRecipesMatchingWithMainInputValue(event) {
     // ---
     value = event.target.value;
+    
     value = value
       .split(" ")
       .map((elt) => {
@@ -312,9 +402,12 @@ const displayRecipesDynamically = async () => {
         return (elt = elt.toString());
       })
       .join("");
+      
     // ---
-    valueNotUniqueCharacter = value;
-    value = modifyValue(value);
+    // valueNotUniqueCharacter = value;
+    // value = modifyValue(value);
+    // value = modifyValueNotUniqueCharacter(value);
+    // console.log(value);
     // ---
     value = value.split("").map((elt) => {
       if (elt.includes(" ") === true) {
@@ -417,22 +510,24 @@ const displayRecipesDynamically = async () => {
 
       //FEATURE02
 
-      console.log(value);
-      console.log(myMap);
+      // console.log(value);
+      // console.log(myMap);
 
       if (myMap.get(value) === undefined) {
-        console.log("le mot n'est pas dans la map");
+        // console.log("le mot n'est pas dans la map");
         let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
           // console.log(elt[0]);
           // console.log(elt[0].startsWith(value));
           if (value.indexOf("d") === value.length - 1 || value === "tareu") {
             value = value.substring(0, value.length - 1);
+            
             return elt[0].startsWith(value);
           } else {
+            
             return elt[0].startsWith(value);
           }
         });
-        console.log(retrieveTheRightMapKey);
+        // console.log(retrieveTheRightMapKey);
         if (retrieveTheRightMapKey != undefined) {
           retrieveTheRightMapKey = retrieveTheRightMapKey[0];
           matchingRecipesArray = myMap.get(retrieveTheRightMapKey);
@@ -440,10 +535,10 @@ const displayRecipesDynamically = async () => {
           matchingRecipesArray = [];
         }
       } else {
-        console.log("le mot est dans la map");
+        // console.log("le mot est dans la map");
         matchingRecipesArray = myMap.get(value);
       }
-      console.log(matchingRecipesArray);
+      // console.log(matchingRecipesArray);
       // --- fin de FEATURE02
 
       // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,
@@ -645,14 +740,14 @@ const displayRecipesDynamically = async () => {
     }
     function chooseGeneralsTermsToDisplay() {
       if (mainValue != "" && isValid === true) {
-        console.log("il y a une valeur dans le main input");
+        // console.log("il y a une valeur dans le main input");
         matchingRecipesArrayWithTags = matchingRecipesArray.filter(
           filterRecipesWithTags
         );
         // conditions d'affichages
         lookAtTermsToDisplay(matchingRecipesArray);
       } else {
-        console.log("il n'y a PAS de valeur dans le main input");
+        // console.log("il n'y a PAS de valeur dans le main input");
         matchingRecipesArrayWithTags = datas.recipes.filter(
           filterRecipesWithTags
         );

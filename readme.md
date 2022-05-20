@@ -1,7 +1,10 @@
 # Projet Les Petits Plats
 ## I started this project on 27/07/2021
 *Training begins on 23/12/2020*
-## Goal
+
+### Deployement
+
+### Goal
 
 1. La recherche doit pouvoir se faire via le champ principal ou via les tags
    |ingrédients,ustensiles ou appareil|

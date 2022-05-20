@@ -4,6 +4,7 @@ let datas;
 let stockDatasToMap = [];
 let stockWords = [];
 let RecipesMatchWithNames = [];
+let RecipesMatchWithfullWord=[];
 let matchingRecipesArrayWithTags;
 // ---
 let myMap;
@@ -151,6 +152,9 @@ function modifyValueNotUniqueCharacter(value) {
     value = value.substring(0, value.length - 1);
   }
   //
+  if(value==="casserol"||value==="casserolle"||value==="caserol"||value==="casseroll"){
+    return "casserole"
+  }
   return value
     .toLowerCase()
     .normalize("NFD")
@@ -189,7 +193,26 @@ function removeSpaceWordsAndModifyValue(value) {
       return (elt = elt.toString());
     })
     .join("");
+    if(value==="casserol"||value==="casserolle"||value==="caserol"){
+      return "casserole"
+    }
   return modifyValue(value);
+} // pour supprimer les espace entre les mots (avec les titres par exemples)
+
+function removeSpaceWords(value) {
+  value = value
+    .split(" ")
+    .map((elt) => {
+      elt = modifyValueNotUniqueCharacter(elt);
+      elt = cleanEltFromTxtDescription(elt);
+      return (elt = elt.toString());
+    })
+    .join("");
+    if(value==="casserol"||value==="casserolle"||value==="caserol"){
+      return "casserole"
+    }
+
+    return value;
 } // pour supprimer les espace entre les mots (avec les titres par exemples)
 // LI des mots clefs;
 function updateLiAppearance(list, content) {
@@ -618,7 +641,7 @@ stock01.map((ele) => {
 });
 // ---
 mapEx = new Map(stock03);
-console.log("{[test]: array pour générer la map} :");
-console.log(stock03);
-console.log("{[test]: map pour le test jsben} :");
-console.log(mapEx);
+// console.log("{[test]: array pour générer la map} :");
+// console.log(stock03);
+// console.log("{[test]: map pour le test jsben} :");
+// console.log(mapEx);
