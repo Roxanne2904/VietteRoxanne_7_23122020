@@ -97,50 +97,6 @@ const displayEltsIntoInInputsLists = async () => {
       return `<li class="form__fieldset__bgd__content__ul__li ustensiles__li">${ustensil}</li>`;
     })
     .join("");
-  // ________________________________________________________________________________________
-  // EVENT ONCLICK SUR LES INPUTS
-  // ________________________________________________________________________________________
-  // ----------------
-  // DOM ELTS
-  // ----------------
-  // const ingredientsLi = document.querySelectorAll(".ingredients__li");
-  // const appareilsLi = document.querySelectorAll(".appareils__li");
-  // const ustensilesLi = document.querySelectorAll(".ustensiles__li");
-  // ----------------
-  // la fonction du onclick;
-  // const IsOpeningTheList = (ulBlock) => {
-  //   //liBlock)
-  //   const inputs =
-  //     ulBlock.parentElement.firstChild.nextElementSibling.firstChild
-  //       .nextElementSibling;
-  //   const inputBgd = ulBlock.parentElement.firstChild.nextElementSibling;
-  //   const label =
-  //     ulBlock.parentElement.firstChild.nextElementSibling.firstChild
-  //       .nextElementSibling.nextElementSibling;
-  //   const NoUpperCaseInputName = inputs.id;
-  //   const UpperCaseInputName = inputs.dataset.value;
-  //   // -----------------
-  //   // placeholder value
-  //   if (inputs.placeholder === `Recherche un ${NoUpperCaseInputName}`) {
-  //     inputs.setAttribute("placeholder", `${UpperCaseInputName}`);
-  //     label.innerHTML = '<i class="fas fa-chevron-down"></i>';
-  //   } else {
-  //     inputs.setAttribute(
-  //       "placeholder",
-  //       `Recherche un ${NoUpperCaseInputName}`
-  //     );
-  //     label.innerHTML = ' <i class="fas fa-chevron-up"></i>';
-  //   }
-  //   // List appearence (close or open);
-  //   ulBlock.classList.toggle("openUlBlocks");
-  //   // liBlock.forEach((elt) => {
-  //   //   elt.classList.toggle("openLiBlocks");
-  //   // });
-  //   inputBgd.classList.toggle("openInputsBgd");
-  //   inputs.classList.toggle("openInputs");
-  //   ulBlock.parentElement.classList.toggle("openContent");
-  // };
-
   // event onclick sur les inputs secondaires;
   const islaunchingOnclickEventToInputs = (icone, ulBlock, click) => {
     //liBlock
@@ -249,13 +205,13 @@ const displayRecipesDynamically = async () => {
 // ---
   // On attribue les bonnes recettes aux bons mots clef de la map;
   // ---
-  // console.log(stockWords);
   stockWords.forEach((ele) => {
     let fullWord = removeSpaceWords(ele[1]);
     ele = ele[0];
     
     // ---
-    function test(value){
+    function RecipesMatchingWithsNames(value){
+      
       return datas.recipes.filter((obj) => {
         let fullTitle = removeSpaceWords(obj.name);
 
@@ -265,15 +221,6 @@ const displayRecipesDynamically = async () => {
            return currentElt.includes(value)
         }).some((elt)=>elt===true)
         
-        // let name = obj.name.split(" ").map((ele) => {
-        //   return removeSpaceWordsAndModifyValue(ele);
-        // });
-  
-        // let fullName= obj.name.split(" ").map((fullWord) => {
-        //   return modifyValueNotUniqueCharacter(fullWord);
-        // });
-        
-  
         let description = removeSpaceWords(obj.description)
         .split(" ")
         .map((elt)=>{return elt.includes(value)})
@@ -302,91 +249,28 @@ const displayRecipesDynamically = async () => {
         if (
           title===true||
           fullTitle.includes(value)||
-          // title.includes(ele) 
           description===true||
           ingredient === true ||
           appliance.includes(value) ||
           ustensil === true 
-          // name.includes(fullWord)||
-          // fullName.includes(fullWord)
+          
         ) {
           return true;
         }
       });
     }
-// console.log(test(ele));
-
-    // RecipesMatchWithNames = datas.recipes.filter((obj) => {
-    //   let fullTitle = removeSpaceWords(obj.name);
-    //   // console.log(removeSpaceWords("tartelettes aux chocolat et aux fraises"));
-    //   let title = removeSpaceWords(obj.name).split(" ")
-    //   .map((elt)=>{
-    //     let currentElt =removeSpaceWords(elt)
-    //      return currentElt.includes(fullWord)
-    //   }).some((elt)=>elt===true)
-      
-    //   // let name = obj.name.split(" ").map((ele) => {
-    //   //   return removeSpaceWordsAndModifyValue(ele);
-    //   // });
-
-    //   // let fullName= obj.name.split(" ").map((fullWord) => {
-    //   //   return modifyValueNotUniqueCharacter(fullWord);
-    //   // });
-      
-
-    //   let description = removeSpaceWords(obj.description)
-    //   .split(" ")
-    //   .map((elt)=>{return elt.includes(fullWord)})
-    //   .some((elt) => elt === true);
-      
-    //   // ---
-    //   let ingredient = obj.ingredients
-    //     .map((elt) => {
-    //       elt = removeSpaceWords(elt.ingredient);
-    //       return elt.includes(fullWord);
-    //     })
-    //     .some((elt) => elt === true);
-        
-    //   // ---
-    //   let appliance = removeSpaceWordsAndModifyValue(obj.appliance);
-    //   appliance = cleanEltFromTxtDescription(appliance);
-      
-    //   // ---
-    //   let ustensil = obj.ustensils
-    //     .map((elt) => {
-    //       elt = removeSpaceWords(elt);
-    //       return elt.includes(ele);
-    //     })
-    //     .some((elt) => elt === true);
-    //   // ---
-    //   if (
-    //     title===true||
-    //     fullTitle.includes(fullWord)||
-    //     // title.includes(ele) 
-    //     description===true||
-    //     ingredient === true ||
-    //     appliance.includes(fullWord) ||
-    //     ustensil === true 
-    //     // name.includes(fullWord)||
-    //     // fullName.includes(fullWord)
-    //   ) {
-    //     return true;
-    //   }
-    // });
-    stockDatasToMap.push([ele, test(ele)]);
-    stockDatasToMap.push([fullWord, test(fullWord)]);
-    // console.log(stockDatasToMap);
+    // ---
+    stockDatasToMap.push([ele, RecipesMatchingWithsNames(ele)]);
+    stockDatasToMap.push([fullWord, RecipesMatchingWithsNames(fullWord)]);
   });
   
   // On trie le tout, par ordre alphabétique;
   stockDatasToMap = stockDatasToMap.sort(function compare(a, b) {
     return a[0].localeCompare(b[0]);
   });
-  // console.log(stockDatasToMap);
   // ---
   // On obtient notre map;
   myMap = new Map(stockDatasToMap);
-  // console.log(myMap);
   // --- Fin de la création de la map;
 
   // 2) On met en place la fonction pour le "onInput" du main input;
@@ -402,12 +286,6 @@ const displayRecipesDynamically = async () => {
         return (elt = elt.toString());
       })
       .join("");
-      
-    // ---
-    // valueNotUniqueCharacter = value;
-    // value = modifyValue(value);
-    // value = modifyValueNotUniqueCharacter(value);
-    // console.log(value);
     // ---
     value = value.split("").map((elt) => {
       if (elt.includes(" ") === true) {
@@ -434,90 +312,10 @@ const displayRecipesDynamically = async () => {
       displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
       // ---
     } else {
-      //FEATURE01
-
-      // // 2)b. Fonction qui sert pour filtrer les recettes en fonction de la valeur input;
-      // function recipesIsMatchingWithMainInput(obj) {
-      //   // ---
-      //   let applianceIsMatchingValue = removeSpaceWordsAndModifyValue(obj.appliance).includes(
-      //     value
-      //   );
-      //   // ---
-      //   let descriptionIsMatchingValue = modifyValueNotUniqueCharacter(
-      //     obj.description
-      //   ).includes(valueNotUniqueCharacter);
-      //   // ---
-      //   let nameIsMatchingValue = removeSpaceWordsAndModifyValue(obj.name).includes(value);
-      //   // ---
-      //   let ingredientIsMatchingValue = obj.ingredients
-      //     .map((ingredient) => {
-      //       return removeSpaceWordsAndModifyValue(ingredient.ingredient);
-      //     })
-      //     .some((ingredient) => {
-      //       return ingredient.includes(value);
-      //     }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
-      //   // ---
-      //   // let quantityIsMatchingValue = obj.ingredients
-      //   //   .map((ingredient) => {
-      //   //     if (ingredient.quantity != undefined) {
-      //   //       return ingredient.quantity.toString();
-      //   //     }
-      //   //   })
-      //   //   .some((quantity) => {
-      //   //     if (quantity != undefined) {
-      //   //       return quantity.includes(value);
-      //   //     }
-      //   //   });
-      //   // ---
-      //   // let unitIsMatchingValue = obj.ingredients
-      //   //   .map((ingredient) => {
-      //   //     if (ingredient.unit != undefined) {
-      //   //       return modifyValue(ingredient.unit);
-      //   //     }
-      //   //   })
-      //   //   .some((unit) => {
-      //   //     if (unit != undefined) {
-      //   //       return unit.includes(value);
-      //   //     }
-      //   //   });
-      //   // ---
-      //   let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-      //     return removeSpaceWordsAndModifyValue(ustensil).includes(value);
-      //   });
-      //   // ---
-      //   if (
-      //     applianceIsMatchingValue === true ||
-      //     descriptionIsMatchingValue === true ||
-      //     nameIsMatchingValue === true ||
-      //     // obj.id.toString().includes(value) === true ||
-      //     // obj.servings.toString().includes(value) === true ||
-      //     ingredientIsMatchingValue === true ||
-      //     // quantityIsMatchingValue === true ||
-      //     // unitIsMatchingValue === true ||
-      //     ustensilIsMatchingValue === true
-      //   ) {
-      //     return true;
-      //   }
-      // }
-      // // 2)c. On Obtient un array qui contient les recettes correspondantes;
-      // // ---
-      // matchingRecipesArray = datas.recipes.filter(
-      //   recipesIsMatchingWithMainInput
-      // );
-
-      // ---
-      // --- fin de FEATURE01
-
+        
       //FEATURE02
-
-      // console.log(value);
-      // console.log(myMap);
-
       if (myMap.get(value) === undefined) {
-        // console.log("le mot n'est pas dans la map");
         let retrieveTheRightMapKey = stockDatasToMap.find((elt) => {
-          // console.log(elt[0]);
-          // console.log(elt[0].startsWith(value));
           if (value.indexOf("d") === value.length - 1 || value === "tareu") {
             value = value.substring(0, value.length - 1);
             
@@ -538,7 +336,6 @@ const displayRecipesDynamically = async () => {
         // console.log("le mot est dans la map");
         matchingRecipesArray = myMap.get(value);
       }
-      // console.log(matchingRecipesArray);
       // --- fin de FEATURE02
 
       // 2)d. On vérifie que il y a au moins une recette qui match avec la valeur input,

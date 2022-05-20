@@ -3,7 +3,7 @@ let datas;
 // Pour créer "myMap"
 let stockDatasToMap = [];
 let stockWords = [];
-let RecipesMatchWithNames = [];
+// let RecipesMatchWithNames = [];
 let RecipesMatchWithfullWord=[];
 let matchingRecipesArrayWithTags;
 // ---
@@ -58,66 +58,7 @@ function updateTheSearch(value) {
     displayKeywordsLists(uniqueDataUstensiles, ustensilesUl);
   }
 }
-// function recipesIsMatching(obj, value) {
-//   // ---
-//   let applianceIsMatchingValue = modifyValue(obj.appliance).includes(value);
-//   // ---
-//   let descriptionIsMatchingValue = modifyValue(obj.description).includes(
-//     value
-//   );
-//   // ---
-//   let nameIsMatchingValue = modifyValue(obj.name).includes(value);
-//   // ---
-//   let ingredientIsMatchingValue = obj.ingredients
-//     .map((ingredient) => {
-//       return modifyValue(ingredient.ingredient);
-//     })
-//     .some((ingredient) => {
-//       return ingredient.includes(value);
-//     }); // tout les ingredients d'une recette retourne un true ou false si il match avec la valeur de l'input;
-//   // ---
-//   let quantityIsMatchingValue = obj.ingredients
-//     .map((ingredient) => {
-//       if (ingredient.quantity != undefined) {
-//         return ingredient.quantity.toString();
-//       }
-//     })
-//     .some((quantity) => {
-//       if (quantity != undefined) {
-//         return quantity.includes(value);
-//       }
-//     });
-//   // ---
-//   let unitIsMatchingValue = obj.ingredients
-//     .map((ingredient) => {
-//       if (ingredient.unit != undefined) {
-//         return modifyValue(ingredient.unit);
-//       }
-//     })
-//     .some((unit) => {
-//       if (unit != undefined) {
-//         return unit.includes(value);
-//       }
-//     });
-//   // ---
-//   let ustensilIsMatchingValue = obj.ustensils.some((ustensil) => {
-//     return modifyValue(ustensil).includes(value);
-//   });
-//   // ---
-//   if (
-//     applianceIsMatchingValue === true ||
-//     descriptionIsMatchingValue === true ||
-//     nameIsMatchingValue === true ||
-//     obj.id.toString().includes(value) === true ||
-//     obj.servings.toString().includes(value) === true ||
-//     ingredientIsMatchingValue === true ||
-//     quantityIsMatchingValue === true ||
-//     unitIsMatchingValue === true ||
-//     ustensilIsMatchingValue === true
-//   ) {
-//     return true;
-//   }
-// }
+
 // ---
 function modifyValue(value) {
   if (value[value.length - 1] === "s") {
@@ -641,7 +582,3 @@ stock01.map((ele) => {
 });
 // ---
 mapEx = new Map(stock03);
-// console.log("{[test]: array pour générer la map} :");
-// console.log(stock03);
-// console.log("{[test]: map pour le test jsben} :");
-// console.log(mapEx);
