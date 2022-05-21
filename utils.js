@@ -511,13 +511,19 @@ function filterRecipesWithTags(obj) {
   });
 }
 // ---
-function chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags) {
+function chooseGeneralsTermsToDisplay(
+  mainValue,
+  filterRecipesWithTags,
+  isValid
+) {
   if (currentMainValue === "" && tagsStock.length === 0) {
-    // console.log("il aucune valeur");
+    // console.log("il y a aucune valeur");
     matchingRecipesArrayWithTags = datas.recipes.filter(filterRecipesWithTags);
     // conditions d'affichages
     lookAtTermsToDisplay(datas.recipes);
-  } else if (mainValue != "" && isValid === true) {
+  }
+
+  if (mainValue !== "" && isValid === true) {
     // console.log("il y a une valeur dans le main input");
     matchingRecipesArrayWithTags = matchingRecipesArray.filter(
       filterRecipesWithTags
@@ -525,7 +531,7 @@ function chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags) {
     // conditions d'affichages
     lookAtTermsToDisplay(matchingRecipesArray);
   } else {
-    // console.log("il n'y a PAS de valeur dans le main input");
+    // console.log("il n'y a PAS  de valeur dans le main input");
     matchingRecipesArrayWithTags = datas.recipes.filter(filterRecipesWithTags);
     // conditions d'affichages
     lookAtTermsToDisplay(datas.recipes);

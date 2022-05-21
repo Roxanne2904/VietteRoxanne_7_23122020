@@ -882,8 +882,9 @@ const handleMainInputFeature = () => {
         );
       }
     } else {
-      chooseGeneralsTermsToDisplay(value, filterRecipesWithTags);
+      chooseGeneralsTermsToDisplay(value, filterRecipesWithTags, isValid);
     }
+    // chooseGeneralsTermsToDisplay(value, filterRecipesWithTags);
   }
   // __________________________________
   // Appel de la fonction du mainInput;
@@ -1026,6 +1027,7 @@ const handleSecondariesInputs = () => {
     let liTags = document.querySelectorAll(".liTags");
     //--- On récupère la valeur de l'input main;
     let mainValue = mainInput.value;
+    let isValid = mainInput.validity.valid;
     // ---
 
     // ---
@@ -1078,7 +1080,8 @@ const handleSecondariesInputs = () => {
     //   }
     // }
     //display
-    chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags);
+    chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags, isValid);
+
     // ---
     // --------------------------------------------------------------------------------
 
@@ -1102,7 +1105,12 @@ const handleSecondariesInputs = () => {
             // chooseGeneralsTermsToDisplay();
             // console.log(currentMainValue);
             // console.log(tagsStock);
-            chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags);
+
+            chooseGeneralsTermsToDisplay(
+              mainValue,
+              filterRecipesWithTags,
+              isValid
+            );
             // if (currentMainValue === "" && tagsStock.length === 0) {
             //   chooseGeneralsTermsToDisplay(mainValue);
             // } else {
