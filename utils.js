@@ -4,13 +4,15 @@ let datas;
 let stockDatasToMap = [];
 let stockWords = [];
 // let RecipesMatchWithNames = [];
-let RecipesMatchWithfullWord=[];
+let RecipesMatchWithfullWord = [];
 let matchingRecipesArrayWithTags;
 // ---
 let myMap;
 // ---
 let value;
 let valueNotUniqueCharacter;
+let currentMainValue;
+let valueMatch;
 // ---
 // Pour le main input: "is valid" respect la condition des 3 caractères min;
 let isValid;
@@ -93,8 +95,13 @@ function modifyValueNotUniqueCharacter(value) {
     value = value.substring(0, value.length - 1);
   }
   //
-  if(value==="casserol"||value==="casserolle"||value==="caserol"||value==="casseroll"){
-    return "casserole"
+  if (
+    value === "casserol" ||
+    value === "casserolle" ||
+    value === "caserol" ||
+    value === "casseroll"
+  ) {
+    return "casserole";
   }
   return value
     .toLowerCase()
@@ -134,9 +141,9 @@ function removeSpaceWordsAndModifyValue(value) {
       return (elt = elt.toString());
     })
     .join("");
-    if(value==="casserol"||value==="casserolle"||value==="caserol"){
-      return "casserole"
-    }
+  if (value === "casserol" || value === "casserolle" || value === "caserol") {
+    return "casserole";
+  }
   return modifyValue(value);
 } // pour supprimer les espace entre les mots (avec les titres par exemples)
 
@@ -149,11 +156,11 @@ function removeSpaceWords(value) {
       return (elt = elt.toString());
     })
     .join("");
-    if(value==="casserol"||value==="casserolle"||value==="caserol"){
-      return "casserole"
-    }
+  if (value === "casserol" || value === "casserolle" || value === "caserol") {
+    return "casserole";
+  }
 
-    return value;
+  return value;
 } // pour supprimer les espace entre les mots (avec les titres par exemples)
 // LI des mots clefs;
 function updateLiAppearance(list, content) {
@@ -220,6 +227,17 @@ const openTheList = (ulBlock, click) => {
     ulBlock.parentElement.classList.add("openContent");
   }
 };
+// event onclick sur les inputs secondaires;
+const islaunchingOnclickEventToInputs = (icone, ulBlock, click) => {
+  //liBlock
+  icone.addEventListener("click", () => {
+    openTheList(ulBlock, click); //liBlock);
+  });
+};
+// ---
+// islaunchingOnclickEventToInputs(iconeIngredient, ingredientsUl, true);
+//   islaunchingOnclickEventToInputs(iconeAppareil, appareilsUl, true); //appareilsLi);
+//   islaunchingOnclickEventToInputs(iconeUstensiles, ustensilesUl, true); //ustensilesLi);
 // ---
 // AFFICHAGE
 // ---
@@ -468,6 +486,50 @@ function chooseTheRightCodeHtml(nbs, value) {
     ><i class="far fa-times-circle"></i
   ></span>
 </li>`;
+}
+// ---
+function filterRecipesWithTags(obj) {
+  return tagsStock.every((ele) => {
+    if (ele.type === "ingredient") {
+      valueMatch = obj.ingredients.map((ingredient) =>
+        removeSpaceWords(ingredient.ingredient)
+      );
+      if (valueMatch.includes(ele.keyW)) {
+        return true;
+      }
+    } else if (ele.type === "appareil") {
+      valueMatch = removeSpaceWords(obj.appliance);
+      if (valueMatch.includes(ele.keyW) === true) {
+        return true;
+      }
+    } else if (ele.type === "ustensile") {
+      valueMatch = obj.ustensils.map((ustensil) => removeSpaceWords(ustensil));
+      if (valueMatch.includes(ele.keyW) === true) {
+        return true;
+      }
+    }
+  });
+}
+// ---
+function chooseGeneralsTermsToDisplay(mainValue, filterRecipesWithTags) {
+  if (currentMainValue === "" && tagsStock.length === 0) {
+    // console.log("il aucune valeur");
+    matchingRecipesArrayWithTags = datas.recipes.filter(filterRecipesWithTags);
+    // conditions d'affichages
+    lookAtTermsToDisplay(datas.recipes);
+  } else if (mainValue != "" && isValid === true) {
+    // console.log("il y a une valeur dans le main input");
+    matchingRecipesArrayWithTags = matchingRecipesArray.filter(
+      filterRecipesWithTags
+    );
+    // conditions d'affichages
+    lookAtTermsToDisplay(matchingRecipesArray);
+  } else {
+    // console.log("il n'y a PAS de valeur dans le main input");
+    matchingRecipesArrayWithTags = datas.recipes.filter(filterRecipesWithTags);
+    // conditions d'affichages
+    lookAtTermsToDisplay(datas.recipes);
+  }
 }
 // ---
 
